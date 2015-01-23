@@ -13,8 +13,8 @@ user_account node[:valhalla][:user][:name] do
 end
 
 directory node[:valhalla][:basedir] do
-  action :create
+  action    :create
   recursive true
-  mode 0755
-  owner node[:valhalla][:user][:name]
+  mode      0755
+  owner     node[:valhalla][:user][:name]
 end

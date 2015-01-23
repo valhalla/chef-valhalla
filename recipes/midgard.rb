@@ -6,11 +6,9 @@
 
 # add c++11 ppa
 apt_repository 'ubuntu-toolchain-r' do
-  uri 'http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu'
-  distribution node['lsb']['codename']
-  components ['main']
-  # keyserver 'keyserver.ubuntu.com'
-  # key ''
+  uri           'http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu'
+  distribution  node[:lsb][:codename]
+  components    ['main']
 end
 
 # dev packages required
@@ -23,8 +21,8 @@ end
   g++-4.8
 ).each do |p|
   package p do
-    options '--force-yes'
     action :install
+    options '--force-yes'
   end
 end
 
@@ -38,9 +36,10 @@ end
 
 # clone the repository
 deploy "#{node[:valhalla][:basedir]}/midgard" do
-  user node[:valhalla][:user][:name]
-  repo node[:valhalla][:midgard][:repo]
-  revision node[:valhalla][:midgard][:revision]
+  user      node[:valhalla][:user][:name]
+  repo      node[:valhalla][:midgard][:repo]
+  revision  node[:valhalla][:midgard][:revision]
+
   symlink_before_migrate.clear
 
   notifies :run, 'execute[configure midgard]'
@@ -49,14 +48,14 @@ end
 
 # configure valhalla::midgard
 execute 'configure midgard' do
-  action :nothing
+  action  :nothing
   command './autogen.sh && ./configure CPPFLAGS="-DLOGGING_LEVEL_INFO"'
-  cwd "#{node[:valhalla][:basedir]}/midgard/current"
+  cwd     "#{node[:valhalla][:basedir]}/midgard/current"
 end
 
 # install valhalla::midgard
 execute 'install midgard' do
-  action :nothing
+  action  :nothing
   command "make -j#{node[:cpu][:total]} install"
-  cwd "#{node[:valhalla][:basedir]}/midgard/current"
+  cwd     "#{node[:valhalla][:basedir]}/midgard/current"
 end
