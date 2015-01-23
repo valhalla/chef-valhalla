@@ -9,7 +9,7 @@ apt_repository 'ubuntu-toolchain-r' do
   uri 'http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu'
   distribution node['lsb']['codename']
   components ['main']
-  # keyserver 'keyserver.ubuntu.com'
+  keyserver 'keyserver.ubuntu.com'
   # key ''
 end
 
@@ -39,7 +39,7 @@ end
 # configure valhalla::midgard
 execute 'configure midgard' do
   action :nothing
-  command 'autogen.sh && configure'
+  command './autogen.sh && ./configure CPPFLAGS="-03 -DLOGGING_LEVEL_INFO"'
   cwd "#{node[:valhalla][:basedir]}/midgard/current"
 end
 
