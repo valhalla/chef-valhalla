@@ -39,7 +39,7 @@ end
 # configure valhalla::midgard
 execute 'configure midgard' do
   action :nothing
-  command 'autogen.sh && configure'
+  command './autogen.sh && configure'
   cwd "#{node[:valhalla][:basedir]}/midgard/current"
 end
 
