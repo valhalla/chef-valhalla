@@ -8,7 +8,7 @@
 default[:valhalla][:basedir]            = '/opt/valhalla'
 
 # the repos
-default[:valhalla][:github][:base]      = 'https://github.com/valhalla/'
+default[:valhalla][:github][:base]      = 'https://github.com/valhalla'
 default[:valhalla][:github][:repos]     = %w(midgard baldr mjolnir loki odin thor tyr)
 default[:valhalla][:github][:revision]  = 'master'
 
