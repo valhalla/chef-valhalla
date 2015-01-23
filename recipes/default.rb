@@ -9,15 +9,12 @@
   git::default
   valhalla::setup
   valhalla::midgard
+  valhalla::baldr
+  valhalla::loki
+  valhalla::mjolnir
+  valhalla::odin
+  valhalla::thor
+  valhalla::tyr
 ).each do |r|
   include_recipe r
 end
-
-#  valhalla::baldr
-#  valhalla::mjolnir
-#  valhalla::loki
-#  valhalla::odin
-#  valhalla::thor
-#  valhalla::tyr
-#  valhalla::make_tiles
-#  valhalla::serve
