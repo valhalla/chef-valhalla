@@ -8,13 +8,7 @@
   apt::default
   git::default
   valhalla::setup
-  valhalla::midgard
-  valhalla::baldr
-  valhalla::loki
-  valhalla::mjolnir
-  valhalla::odin
-  valhalla::thor
-  valhalla::tyr
+  valhalla::install
 ).each do |r|
   include_recipe r
 end

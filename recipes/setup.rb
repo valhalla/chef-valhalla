@@ -21,7 +21,7 @@ directory node[:valhalla][:basedir] do
   owner node[:valhalla][:user][:name]
 end
 
-#install all the deps
+# install all the deps
 %w(
   autoconf
   automake
