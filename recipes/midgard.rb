@@ -50,7 +50,7 @@ end
 # configure valhalla::midgard
 execute 'configure midgard' do
   action :nothing
-  command './autogen.sh && ./configure CPPFLAGS="-03 -DLOGGING_LEVEL_INFO"'
+  command './autogen.sh && ./configure CPPFLAGS="-DLOGGING_LEVEL_INFO"'
   cwd "#{node[:valhalla][:basedir]}/midgard/current"
 end
 
