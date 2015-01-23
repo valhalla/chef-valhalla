@@ -36,6 +36,7 @@ node[:valhalla][:github][:repos].each do |repo|
   # build
   execute "build #{repo}" do
     action  :nothing
+    user    node[:valhalla][:user][:name]
     command "make -j#{node[:cpu][:total]}"
     cwd     "#{node[:valhalla][:basedir]}/#{repo}"
   end
