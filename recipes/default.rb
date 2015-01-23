@@ -8,16 +8,7 @@
   apt::default
   git::default
   valhalla::setup
-  valhalla::midgard
+  valhalla::install
 ).each do |r|
   include_recipe r
 end
-
-#  valhalla::baldr
-#  valhalla::mjolnir
-#  valhalla::loki
-#  valhalla::odin
-#  valhalla::thor
-#  valhalla::tyr
-#  valhalla::make_tiles
-#  valhalla::serve
