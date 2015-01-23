@@ -4,7 +4,14 @@
 # Recipe:: setup
 #
 
-# make a place to do some work
+user_account node[:valhalla][:user][:name] do
+  manage_home   true
+  create_group  true
+  ssh_keygen    false
+  home          node[:valhalla][:user][:home]
+  not_if        { node[:valhalla][:user][:name] == 'root' }
+end
+
 directory node[:valhalla][:basedir] do
   action :create
   recursive true
