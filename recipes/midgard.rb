@@ -9,7 +9,7 @@ apt_repository 'ubuntu-toolchain-r' do
   uri 'http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu'
   distribution node['lsb']['codename']
   components ['main']
-  keyserver 'keyserver.ubuntu.com'
+  # keyserver 'keyserver.ubuntu.com'
   # key ''
 end
 
@@ -22,7 +22,10 @@ end
   gcc-4.8
   g++-4.8
 ).each do |p|
-  package p
+  package p do
+    options "--force-yes"
+    action :install
+  end
 end
 
 # clone the repository
