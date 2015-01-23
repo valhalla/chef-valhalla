@@ -23,9 +23,17 @@ end
   g++-4.8
 ).each do |p|
   package p do
-    options "--force-yes"
+    options '--force-yes'
     action :install
   end
+end
+
+# update alternatives
+bash 'update alternatives' do
+  code <<-EOH
+    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 90;
+    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90;
+  EOH
 end
 
 # clone the repository
