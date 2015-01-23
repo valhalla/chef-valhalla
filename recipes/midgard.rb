@@ -30,6 +30,8 @@ deploy "#{node[:valhalla][:basedir]}/midgard" do
   user node[:valhalla][:user][:name]
   repo node[:valhalla][:midgard][:repo]
   revision node[:valhalla][:midgard][:revision]
+  symlink_before_migrate.clear
+
   notifies :run, 'execute[configure midgard]'
   notifies :run, 'execute[install midgard]'
 end
