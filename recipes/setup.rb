@@ -15,10 +15,10 @@ end
 
 # make a spot for checkouts
 directory node[:valhalla][:basedir] do
-  action :create
+  action    :create
   recursive true
-  mode 0755
-  owner node[:valhalla][:user][:name]
+  mode      0755
+  owner     node[:valhalla][:user][:name]
 end
 
 # install all the deps
@@ -42,7 +42,7 @@ end
 ).each do |p|
   package p do
     options '--force-yes'
-    action :install
+    action  :install
   end
 end
 
