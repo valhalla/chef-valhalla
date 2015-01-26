@@ -14,11 +14,18 @@ user_account node[:valhalla][:user][:name] do
 end
 
 # make a spot for checkouts
-directory node[:valhalla][:basedir] do
+directory node[:valhalla][:base_dir] do
   action    :create
   recursive true
   mode      0755
   owner     node[:valhalla][:user][:name]
+end
+
+# move the config file into place
+template "#{node[:valhalla][:base_dir]}/#{node[:valhalla][:config]}" do
+  source "#{node[:valhalla][:config]}.erb"
+  mode   0644
+  owner  node[:valhalla][:user][:name]
 end
 
 # install all the deps

@@ -3,7 +3,7 @@
     "type": "protocolbuffer"
   },
   "output": {
-    "tile_dir": "/data/valhalla",
+    "tile_dir": "<%= node[:valhalla][:tile_dir] %>",
     "levels": [
       {"name": "local", "level": 2, "size": 0.25},
       {"name": "arterial", "level": 1, "size": 1, "importance_cutoff": "TertiaryUnclassified"},
@@ -11,13 +11,20 @@
     ]
   },
   "tagtransform": {
-    "node_script": "conf/osm2pgsql/vertices.lua",
+    "node_script": "<%= "#{node[:valhalla][:base_dir]}/mjolnir/conf/osm2pgsql/vertices.lua" %>",
     "node_function": "nodes_proc",
-    "way_script": "conf/osm2pgsql/edges.lua",
+    "way_script": "<%= "#{node[:valhalla][:base_dir]}/mjolnir/conf/osm2pgsql/edges.lua" %>",
     "way_function": "ways_proc"
   },
   "logging": {
-    "type": "std_out",
-    "color": true
+    "mjolnir": {
+      "type": "file",
+      "file_name": "<%= "#{node[:valhalla][:logging][:mjolnir_log]" %>",
+      "reopen_interval": 5
+    },
+    "tyr": {
+      "type": "file",
+      "file_name": "<%= "#{node[:valhalla][:logging][:tyr_log]" %>",
+      "reopen_interval": 5
   }
 }

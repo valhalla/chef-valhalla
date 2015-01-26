@@ -9,6 +9,7 @@
   git::default
   valhalla::setup
   valhalla::install
+  valhalla::tile
 ).each do |r|
   include_recipe r
 end
