@@ -11,20 +11,20 @@
     ]
   },
   "tagtransform": {
-    "node_script": "<%= "#{node[:valhalla][:base_dir]}/mjolnir/conf/osm2pgsql/vertices.lua" %>",
+    "node_script": "<%= node[:valhalla][:conf_dir] %>/vertices.lua",
     "node_function": "nodes_proc",
-    "way_script": "<%= "#{node[:valhalla][:base_dir]}/mjolnir/conf/osm2pgsql/edges.lua" %>",
+    "way_script": "<%= node[:valhalla][:conf_dir] %>/edges.lua",
     "way_function": "ways_proc"
   },
   "logging": {
     "mjolnir": {
       "type": "file",
-      "file_name": "<%= "#{node[:valhalla][:logging][:mjolnir_log]" %>",
+      "file_name": "<%= node[:valhalla][:logging][:mjolnir_log] %>",
       "reopen_interval": 5
     },
     "tyr": {
       "type": "file",
-      "file_name": "<%= "#{node[:valhalla][:logging][:tyr_log]" %>",
+      "file_name": "<%= node[:valhalla][:logging][:tyr_log] %>",
       "reopen_interval": 5
   }
 }
