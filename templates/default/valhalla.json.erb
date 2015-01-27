@@ -19,12 +19,12 @@
   "logging": {
     "mjolnir": {
       "type": "file",
-      "file_name": "<%= node[:valhalla][:logging][:mjolnir_log] %>",
+      "file_name": "<%= node[:valhalla][:log_dir] %>/<%= node[:valhalla][:logging][:mjolnir_log] %>",
       "reopen_interval": 5
     },
     "tyr": {
       "type": "file",
-      "file_name": "<%= node[:valhalla][:logging][:tyr_log] %>",
+      "file_name": "<%= node[:valhalla][:log_dir] %>/<%= node[:valhalla][:logging][:tyr_log] %>",
       "reopen_interval": 5
   }
 }
