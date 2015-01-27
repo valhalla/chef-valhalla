@@ -27,5 +27,3 @@ default[:valhalla][:data][:file]           = 'liechtenstein-latest.osm.pbf'
 
 # configuration
 default[:valhalla][:config]                = 'valhalla.json'
-default[:valhalla][:logging][:mjolnir_log] = 'mjolnir.log'
-default[:valhalla][:logging][:tyr_log]     = 'tyr.log'
