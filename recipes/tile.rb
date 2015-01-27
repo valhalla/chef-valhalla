@@ -31,7 +31,7 @@ end
 execute "tile #{node[:valhalla][:data][:file]}" do
   action  :nothing
   user    node[:valhalla][:user][:name]
-  command "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/locla/lib pbfgraphbuilder -c \
+  command "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib pbfgraphbuilder -c \
           #{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]} \
           #{node[:valhalla][:tile_dir]}/#{node[:valhalla][:data][:file]}"
   cwd     "#{node[:valhalla][:base_dir]}"
