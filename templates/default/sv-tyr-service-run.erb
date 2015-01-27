@@ -1,5 +1,6 @@
 #!/bin/bash
 
 cd <%= node[:valhalla][:src_dir] %>/tyr
+exec 2>&1
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
-exec python py/server.py <%= node[:valhalla][:conf_dir] %>/<%= node[:valhalla][:config] %>
+exec chpst -u <%= node[:valhalla][:user][:name] %> python py/server.py <%= node[:valhalla][:conf_dir] %>/<%= node[:valhalla][:config] %>
