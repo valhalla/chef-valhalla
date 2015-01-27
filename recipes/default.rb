@@ -12,6 +12,7 @@
   valhalla::setup
   valhalla::install
   valhalla::tile
+  valhalla::serve
 ).each do |r|
   include_recipe r
 end
