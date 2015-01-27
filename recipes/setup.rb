@@ -13,12 +13,27 @@ user_account node[:valhalla][:user][:name] do
   not_if        { node[:valhalla][:user][:name] == 'root' }
 end
 
-# make a spot for checkouts
-directory node[:valhalla][:basedir] do
-  action    :create
-  recursive true
-  mode      0755
-  owner     node[:valhalla][:user][:name]
+# make a few places to work in
+[
+  node[:valhalla][:base_dir],
+  node[:valhalla][:tile_dir],
+  node[:valhalla][:log_dir],
+  node[:valhalla][:conf_dir],
+  node[:valhalla][:src_dir]
+].each do |dir|
+  directory dir do
+    action    :create
+    recursive true
+    mode      0755
+    owner     node[:valhalla][:user][:name]
+  end
+end
+
+# move the config file into place
+template "#{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]}" do
+  source "#{node[:valhalla][:config]}.erb"
+  mode   0644
+  owner  node[:valhalla][:user][:name]
 end
 
 # install all the deps

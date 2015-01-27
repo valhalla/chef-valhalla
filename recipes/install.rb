@@ -8,7 +8,7 @@
 node[:valhalla][:github][:repos].each do |repo|
 
   # clone it
-  git "#{node[:valhalla][:basedir]}/#{repo}" do
+  git "#{node[:valhalla][:src_dir]}/#{repo}" do
     action            :sync
     user              node[:valhalla][:user][:name]
     repo              "#{node[:valhalla][:github][:base]}/#{repo}.git"
@@ -30,7 +30,7 @@ node[:valhalla][:github][:repos].each do |repo|
              --with-valhalla-mjolnir=/usr/local --with-valhalla-loki=/usr/local \
              --with-valhalla-odin=/usr/local --with-valhalla-thor=/usr/local \
              --with-valhalla-tyr=/usr/local'
-    cwd     "#{node[:valhalla][:basedir]}/#{repo}"
+    cwd     "#{node[:valhalla][:src_dir]}/#{repo}"
   end
 
   # build
@@ -38,14 +38,14 @@ node[:valhalla][:github][:repos].each do |repo|
     action  :nothing
     user    node[:valhalla][:user][:name]
     command "make -j#{node[:cpu][:total]}"
-    cwd     "#{node[:valhalla][:basedir]}/#{repo}"
+    cwd     "#{node[:valhalla][:src_dir]}/#{repo}"
   end
 
   # install
   execute "install #{repo}" do
     action  :nothing
     command "make -j#{node[:cpu][:total]} install"
-    cwd     "#{node[:valhalla][:basedir]}/#{repo}"
+    cwd     "#{node[:valhalla][:src_dir]}/#{repo}"
   end
 
 end
