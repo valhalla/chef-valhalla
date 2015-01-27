@@ -34,6 +34,8 @@ template "#{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]}" do
   source "#{node[:valhalla][:config]}.erb"
   mode   0644
   owner  node[:valhalla][:user][:name]
+
+  notifies :restart, 'runit_service[tyr-service]', :delayed
 end
 
 # install all the deps

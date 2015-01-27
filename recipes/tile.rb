@@ -4,18 +4,40 @@
 # Recipe:: tile
 #
 
-# grab some data to cut tiles from
-remote_file "#{node[:valhalla][:tile_dir]}/#{node[:valhalla][:data][:file]}" do
-  action              :create
-  owner               node[:valhalla][:user][:name]
-  source              "#{node[:valhalla][:data][:server]}/#{node[:valhalla][:data][:path]}/#{node[:valhalla][:data][:file]}"
-  use_conditional_get true
-  use_etag            true
-  use_last_modified   true
+# get the checksum for the data
+remote_file "#{node[:valhalla][:tile_dir]}/#{node[:valhalla][:data][:file]}.md5" do
+  action   :create
+  backup   false
+  source   "#{node[:valhalla][:data][:server]}/#{node[:valhalla][:data][:path]}/#{node[:valhalla][:data][:file]}.md5"
+  mode     0644
 
-  notifies :run, "execute[configure #{node[:valhalla][:data][:file]}]", :immediately
-  notifies :run, "execute[tile #{node[:valhalla][:data][:file]}]", :immediately
-  # notifies :run, "execute[publish data deficiencies]", :immediately
+  notifies :run, 'execute[download data]', :immediately
+  notifies :run, 'ruby_block[verify md5]', :immediately
+  notifies :run, "execute[configure #{node[:valhalla][:data][:file]}]", :delayed
+  notifies :run, "execute[tile #{node[:valhalla][:data][:file]}]", :delayed
+  # notifies :run, "execute[publish data deficiencies]", :delayed
+  notifies :restart, 'runit_service[tyr-service]', :delayed
+end
+
+# get the actual data
+execute 'download data' do
+  action  :nothing
+  command "wget --quiet -O #{node[:valhalla][:tile_dir]}/#{node[:valhalla][:data][:file]} #{node[:valhalla][:data][:server]}/#{node[:valhalla][:data][:path]}/#{node[:valhalla][:data][:file]}"
+  user    node[:valhalla][:user][:name]
+end
+
+# check the md5sum
+ruby_block 'verify md5' do
+  action :nothing
+  block do
+    require 'digest'
+    planet_md5  = Digest::MD5.file("#{node[:valhalla][:tile_dir]}/#{node[:valhalla][:data][:file]}").hexdigest
+    md5         = File.read("#{node[:valhalla][:tile_dir]}/#{node[:valhalla][:data][:file]}.md5").split(' ').first
+    if planet_md5 != md5
+      Chef::Log.info('Failure: the md5 of the data we downloaded does not appear to be correct. Aborting.')
+      abort
+    end
+  end
 end
 
 # grab the lua transforms from the checkout
