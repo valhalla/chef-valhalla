@@ -4,7 +4,7 @@
 # Recipe:: setup
 #
 
-include_recipe 'retile'
+include_recipe 'valhalla::retile'
 
 # make the valhalla user
 user_account node[:valhalla][:user][:name] do

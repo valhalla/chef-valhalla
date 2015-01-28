@@ -4,7 +4,7 @@
 # Recipe:: data
 #
 
-include_recipe 'retile'
+include_recipe 'valhalla::retile'
 
 # get the checksum for the data
 remote_file "#{node[:valhalla][:tile_dir]}/#{node[:valhalla][:data][:file]}.md5" do

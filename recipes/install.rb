@@ -4,7 +4,7 @@
 # Recipe:: install
 #
 
-include_recipe 'retile'
+include_recipe 'valhalla::retile'
 
 # for each repository
 node[:valhalla][:github][:repos].each do |repo|

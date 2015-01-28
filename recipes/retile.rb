@@ -1,10 +1,10 @@
 # -*- coding: UTF-8 -*-
 #
 # Cookbook Name:: valhalla
-# Recipe:: tile
+# Recipe:: retile
 #
 
-include_recipe 'serve'
+include_recipe 'valhalla::serve'
 
 # create new tiles and restart the server
 execute 'retile' do
@@ -39,4 +39,3 @@ end
 
 # TODO: add an execute for publishing the possible data issues to maproulette
 # or some other such data correction facility
-
