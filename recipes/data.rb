@@ -8,7 +8,6 @@ include_recipe 'valhalla::retile'
 
 # for each extract
 node[:valhalla][:extract].each do |url|
-
   # for the sake of brevity
   file = url.split('/').last
 
@@ -44,5 +43,4 @@ node[:valhalla][:extract].each do |url|
       end
     end
   end
-
 end

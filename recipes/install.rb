@@ -8,7 +8,6 @@ include_recipe 'valhalla::retile'
 
 # for each repository
 node[:valhalla][:github][:repos].each do |repo|
-
   # clone it
   git "#{node[:valhalla][:src_dir]}/#{repo}" do
     action            :sync
@@ -50,5 +49,4 @@ node[:valhalla][:github][:repos].each do |repo|
     command "make -j#{node[:cpu][:total]} install"
     cwd     "#{node[:valhalla][:src_dir]}/#{repo}"
   end
-
 end
