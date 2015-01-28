@@ -15,7 +15,7 @@ execute 'retile' do
   notifies :create,   'link[vertices config]',              :immediately
   notifies :create,   'link[edges config]',                 :immediately
   notifies :run,      'execute[cut tiles]',                 :immediately
-  #notifies :run,      'execute[publish data deficiencies]', :delayed
+  # notifies :run,      'execute[publish data deficiencies]', :delayed
   notifies :restart,  'runit_service[tyr-service]',         :immediately
 end
 
