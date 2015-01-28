@@ -4,6 +4,8 @@
 # Recipe:: serve
 #
 
+include_recipe  'runit::default'
+
 # restart the service if all is well
 runit_service 'tyr-service' do
   action          :enable

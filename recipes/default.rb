@@ -8,7 +8,6 @@
   user::default
   apt::default
   git::default
-  runit::default
   valhalla::setup
   valhalla::install
   valhalla::data
