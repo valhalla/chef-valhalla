@@ -21,9 +21,8 @@ default[:valhalla][:user][:name]           = 'valhalla'
 default[:valhalla][:user][:home]           = '/home/valhalla'
 
 # the data to create tiles
-default[:valhalla][:data][:server]         = 'http://download.geofabrik.de'
-default[:valhalla][:data][:path]           = 'europe'
-default[:valhalla][:data][:file]           = 'liechtenstein-latest.osm.pbf'
-
+default[:valhalla][:extracts]              = %w(
+                                               http://download.geofabrik.de/europe/liechtenstein-latest.osm.pbf
+                                             )
 # configuration
 default[:valhalla][:config]                = 'valhalla.json'

@@ -6,35 +6,43 @@
 
 include_recipe 'valhalla::retile'
 
-# get the checksum for the data
-remote_file "#{node[:valhalla][:tile_dir]}/#{node[:valhalla][:data][:file]}.md5" do
-  action   :create
-  backup   false
-  source   "#{node[:valhalla][:data][:server]}/#{node[:valhalla][:data][:path]}/#{node[:valhalla][:data][:file]}.md5"
-  mode     0644
+# for each extract
+node[:valhalla][:extract].each do |url|
 
-  notifies :run, 'execute[download data]', :immediately
-  notifies :run, 'ruby_block[verify md5]', :immediately
-  notifies :run, 'execute[retile]', :delayed
-end
+  # for the sake of brevity
+  file = url.split('/').last
 
-# get the actual data
-execute 'download data' do
-  action  :nothing
-  command "wget --quiet -O #{node[:valhalla][:tile_dir]}/#{node[:valhalla][:data][:file]} #{node[:valhalla][:data][:server]}/#{node[:valhalla][:data][:path]}/#{node[:valhalla][:data][:file]}"
-  user    node[:valhalla][:user][:name]
-end
+  # get the checksum for the data
+  remote_file "#{node[:valhalla][:tile_dir]}/#{file}.md5" do
+    action   :create
+    backup   false
+    source   "#{url}.md5"
+    mode     0644
 
-# check the md5sum
-ruby_block 'verify md5' do
-  action :nothing
-  block do
-    require 'digest'
-    planet_md5  = Digest::MD5.file("#{node[:valhalla][:tile_dir]}/#{node[:valhalla][:data][:file]}").hexdigest
-    md5         = File.read("#{node[:valhalla][:tile_dir]}/#{node[:valhalla][:data][:file]}.md5").split(' ').first
-    if planet_md5 != md5
-      Chef::Log.info('Failure: the md5 of the data we downloaded does not appear to be correct. Aborting.')
-      abort
+    notifies :run, "execute[download #{url}]", :immediately
+    notifies :run, "ruby_block[verify #{file}]", :immediately
+    notifies :run, 'execute[retile]', :delayed
+  end
+
+  # get the actual data
+  execute "download #{url}" do
+    action  :nothing
+    command "wget --quiet -O #{node[:valhalla][:tile_dir]}/#{file} #{url}"
+    user    node[:valhalla][:user][:name]
+  end
+
+  # check the md5sum
+  ruby_block "verify #{file}" do
+    action :nothing
+    block do
+      require 'digest'
+      file_md5  = Digest::MD5.file("#{node[:valhalla][:tile_dir]}/#{file}").hexdigest
+      md5         = File.read("#{node[:valhalla][:tile_dir]}/#{file}.md5").split(' ').first
+      if file_md5 != md5
+        Chef::Log.info('Failure: the md5 of the data we downloaded does not appear to be correct. Aborting.')
+        abort
+      end
     end
   end
+
 end

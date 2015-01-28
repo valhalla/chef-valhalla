@@ -12,14 +12,14 @@ execute 'retile' do
   command 'echo "Re-tiling and then restarting server"'
 
   # TODO: write tiles to tmp location, then swap them in on server restart
-  notifies :run, "execute[configure #{node[:valhalla][:data][:file]}]", :immediately
-  notifies :run, "execute[tile #{node[:valhalla][:data][:file]}]", :immediately
+  notifies :run, 'execute[configure tile cutter]', :immediately
+  notifies :run, 'execute[cut tiles]', :immediately
   # notifies :run, "execute[publish data deficiencies]", :delayed
   notifies :restart, 'runit_service[tyr-service]', :immediately
 end
 
 # grab the lua transforms from the checkout
-execute "configure #{node[:valhalla][:data][:file]}" do
+execute 'configure tile cutter' do
   action  :nothing
   user    node[:valhalla][:user][:name]
   command "cp -rp #{node[:valhalla][:src_dir]}/mjolnir/conf/osm2pgsql/vertices.lua #{node[:valhalla][:conf_dir]}; \
@@ -27,13 +27,17 @@ execute "configure #{node[:valhalla][:data][:file]}" do
   cwd     "#{node[:valhalla][:base_dir]}"
 end
 
+# the list of the files we will be importing
+files = node[:valhalla][:extracts]
+files.map! { |url| url.split('/').last }
+extracts = node[:valhalla][:tile_dir] + '/' + files.join(' ' + node[:valhalla][:tile_dir] + '/')
+
 # cut tiles from the data
-execute "tile #{node[:valhalla][:data][:file]}" do
+execute 'cut tiles' do
   action  :nothing
   user    node[:valhalla][:user][:name]
   command "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib pbfgraphbuilder -c \
-          #{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]} \
-          #{node[:valhalla][:tile_dir]}/#{node[:valhalla][:data][:file]}"
+          #{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]} #{extracts}"
   cwd     "#{node[:valhalla][:base_dir]}"
 end
 
