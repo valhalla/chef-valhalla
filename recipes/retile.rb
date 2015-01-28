@@ -28,8 +28,7 @@ execute 'configure tile cutter' do
 end
 
 # the list of the files we will be importing
-files = node[:valhalla][:extracts]
-files.map { |url| url.split('/').last }
+files = node[:valhalla][:extracts].map { |url| url.split('/').last }
 extracts = node[:valhalla][:tile_dir] + '/' + files.join(' ' + node[:valhalla][:tile_dir] + '/')
 
 # cut tiles from the data
