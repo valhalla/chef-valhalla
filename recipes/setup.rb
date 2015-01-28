@@ -4,6 +4,8 @@
 # Recipe:: setup
 #
 
+include_recipe 'retile'
+
 # make the valhalla user
 user_account node[:valhalla][:user][:name] do
   manage_home   true

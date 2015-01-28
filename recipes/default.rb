@@ -11,8 +11,7 @@
   runit::default
   valhalla::setup
   valhalla::install
-  valhalla::tile
-  valhalla::serve
+  valhalla::data
 ).each do |r|
   include_recipe r
 end
