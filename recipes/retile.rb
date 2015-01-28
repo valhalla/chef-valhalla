@@ -24,7 +24,7 @@ execute 'configure tile cutter' do
   user    node[:valhalla][:user][:name]
   command "cp -rp #{node[:valhalla][:src_dir]}/mjolnir/conf/osm2pgsql/vertices.lua #{node[:valhalla][:conf_dir]}; \
           cp -rp #{node[:valhalla][:src_dir]}/mjolnir/conf/osm2pgsql/edges.lua #{node[:valhalla][:conf_dir]};"
-  cwd     "#{node[:valhalla][:base_dir]}"
+  cwd     node[:valhalla][:base_dir]
 end
 
 # the list of the files we will be importing
@@ -38,7 +38,7 @@ execute 'cut tiles' do
   user    node[:valhalla][:user][:name]
   command "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib pbfgraphbuilder -c \
           #{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]} #{extracts}"
-  cwd     "#{node[:valhalla][:base_dir]}"
+  cwd     node[:valhalla][:base_dir]
 end
 
 # TODO: add an execute for publishing the possible data issues to maproulette
