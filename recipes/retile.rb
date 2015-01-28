@@ -24,7 +24,7 @@ execute "configure #{node[:valhalla][:data][:file]}" do
   user    node[:valhalla][:user][:name]
   command "cp -rp #{node[:valhalla][:src_dir]}/mjolnir/conf/osm2pgsql/vertices.lua #{node[:valhalla][:conf_dir]}; \
           cp -rp #{node[:valhalla][:src_dir]}/mjolnir/conf/osm2pgsql/edges.lua #{node[:valhalla][:conf_dir]};"
-  cwd     "#{node[:valhalla][:base_dir]}"
+  cwd     node[:valhalla][:base_dir]
 end
 
 # cut tiles from the data
@@ -34,7 +34,7 @@ execute "tile #{node[:valhalla][:data][:file]}" do
   command "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib pbfgraphbuilder -c \
           #{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]} \
           #{node[:valhalla][:tile_dir]}/#{node[:valhalla][:data][:file]}"
-  cwd     "#{node[:valhalla][:base_dir]}"
+  cwd     node[:valhalla][:base_dir]
 end
 
 # TODO: add an execute for publishing the possible data issues to maproulette
