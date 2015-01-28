@@ -13,10 +13,7 @@ remote_file "#{node[:valhalla][:tile_dir]}/#{node[:valhalla][:data][:file]}.md5"
 
   notifies :run, 'execute[download data]', :immediately
   notifies :run, 'ruby_block[verify md5]', :immediately
-  notifies :run, "execute[configure #{node[:valhalla][:data][:file]}]", :delayed
-  notifies :run, "execute[tile #{node[:valhalla][:data][:file]}]", :delayed
-  # notifies :run, "execute[publish data deficiencies]", :delayed
-  notifies :restart, 'runit_service[tyr-service]', :delayed
+  notifies :run, 'execute[retile]', :delayed
 end
 
 # get the actual data
@@ -38,6 +35,17 @@ ruby_block 'verify md5' do
       abort
     end
   end
+end
+
+# create new tiles and restart the server
+execute 'retile' do
+  action  :nothing
+
+  # TODO: write tiles to tmp location, then swap them in on server restart
+  notifies :run, "execute[configure #{node[:valhalla][:data][:file]}]", :immediately
+  notifies :run, "execute[tile #{node[:valhalla][:data][:file]}]", :immediately
+  # notifies :run, "execute[publish data deficiencies]", :delayed
+  notifies :restart, 'runit_service[tyr-service]', :immediately
 end
 
 # grab the lua transforms from the checkout

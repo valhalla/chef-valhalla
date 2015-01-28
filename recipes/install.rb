@@ -19,10 +19,7 @@ node[:valhalla][:github][:repos].each do |repo|
     notifies :run, "execute[configure #{repo}]", :immediately
     notifies :run, "execute[build #{repo}]", :immediately
     notifies :run, "execute[install #{repo}]", :immediately
-    notifies :run, "execute[configure #{node[:valhalla][:data][:file]}]", :delayed
-    notifies :run, "execute[tile #{node[:valhalla][:data][:file]}]", :delayed
-    # notifies :run, "execute[publish data deficiencies]", :delayed
-    notifies :restart, 'runit_service[tyr-service]', :delayed
+    notifies :run, 'execute[retile]', :delayed
   end
 
   # configure
