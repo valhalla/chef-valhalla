@@ -15,7 +15,7 @@ execute 'retile' do
   notifies :create,   'link[vertices config]',              :immediately
   notifies :create,   'link[edges config]',                 :immediately
   notifies :run,      'execute[cut tiles]',                 :immediately
-  # notifies :run,      'execute[publish data deficiencies]', :delayed
+  # notifies :run,      'execute[publish data deficiencies]', :immediately
   notifies :restart,  'runit_service[tyr-service]',         :immediately
 end
 
@@ -25,13 +25,13 @@ end
     action      :nothing
     owner       node[:valhalla][:user][:name]
     target_file "#{node[:valhalla][:conf_dir]}/#{lua}.lua"
-    to          "#{node[:valhalla][:src_dir]}/mjolnir/conf/osm2pgsql/#{lua}.lua"
+    to          "#{node[:valhalla][:src_dir]}/mjolnir/conf/#{lua}.lua"
   end
 end
 
 # the list of the files we will be importing
 files = node[:valhalla][:extracts].map { |url| url.split('/').last }
-extracts = node[:valhalla][:tile_dir] + '/' + files.join(' ' + node[:valhalla][:tile_dir] + '/')
+extracts = node[:valhalla][:extracts_dir] + '/' + files.join(' ' + node[:valhalla][:extracts_dir] + '/')
 
 # cut tiles from the data
 execute 'cut tiles' do

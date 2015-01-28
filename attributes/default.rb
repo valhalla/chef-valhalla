@@ -10,6 +10,7 @@ default[:valhalla][:tile_dir]              = "#{default[:valhalla][:base_dir]}/t
 default[:valhalla][:log_dir]               = "#{default[:valhalla][:base_dir]}/log"
 default[:valhalla][:conf_dir]              = "#{default[:valhalla][:base_dir]}/etc"
 default[:valhalla][:src_dir]               = "#{default[:valhalla][:base_dir]}/src"
+default[:valhalla][:extracts_dir]          = "#{default[:valhalla][:base_dir]}/extracts"
 
 # the repos
 default[:valhalla][:github][:base]         = 'https://github.com/valhalla'

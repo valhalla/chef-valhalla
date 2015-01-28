@@ -11,6 +11,7 @@ runit_service 'tyr-service' do
   default_logger  true
   sv_timeout      60
   env(
-    'LD_LIBRARY_PATH' => '/usr/lib:/usr/local/lib'
+    'LD_LIBRARY_PATH' => '/usr/lib:/usr/local/lib',
+    'PYTHONPATH'      => '/usr/local/lib/python2.7/dist-packages'
   )
 end
