@@ -6,7 +6,7 @@
 
 # restart the service if all is well
 runit_service 'tyr-service' do
-  action          :enable
+  action          :create
   log             true
   default_logger  true
   sv_timeout      60
