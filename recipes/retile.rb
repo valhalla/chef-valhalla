@@ -12,11 +12,11 @@ execute 'retile' do
   command 'echo "Re-tiling and then restarting server"'
 
   # TODO: write tiles to tmp location, then swap them in on server restart
-  notifies :run, 'link[vertices config]', :immediately
-  notifies :run, 'link[edges config]',    :immediately
-  notifies :run, 'execute[cut tiles]',    :immediately
-  # notifies :run, "execute[publish data deficiencies]", :delayed
-  notifies :restart, 'runit_service[tyr-service]', :immediately
+  notifies :create,   'link[vertices config]',              :immediately
+  notifies :create,   'link[edges config]',                 :immediately
+  notifies :run,      'execute[cut tiles]',                 :immediately
+  #notifies :run,      'execute[publish data deficiencies]', :delayed
+  notifies :restart,  'runit_service[tyr-service]',         :immediately
 end
 
 # link the lua transforms from the checkout
