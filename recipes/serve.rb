@@ -10,4 +10,7 @@ runit_service 'tyr-service' do
   log             true
   default_logger  true
   sv_timeout      60
+  env(
+    'LD_LIBRARY_PATH' => '/usr/lib:/usr/local/lib'
+  )
 end
