@@ -12,19 +12,21 @@ execute 'retile' do
   command 'echo "Re-tiling and then restarting server"'
 
   # TODO: write tiles to tmp location, then swap them in on server restart
-  notifies :run, 'execute[configure tile cutter]', :immediately
-  notifies :run, 'execute[cut tiles]', :immediately
-  # notifies :run, "execute[publish data deficiencies]", :delayed
-  notifies :restart, 'runit_service[tyr-service]', :immediately
+  notifies :create,   'link[vertices config]',              :immediately
+  notifies :create,   'link[edges config]',                 :immediately
+  notifies :run,      'execute[cut tiles]',                 :immediately
+  # notifies :run,      'execute[publish data deficiencies]', :delayed
+  notifies :restart,  'runit_service[tyr-service]',         :immediately
 end
 
-# grab the lua transforms from the checkout
-execute 'configure tile cutter' do
-  action  :nothing
-  user    node[:valhalla][:user][:name]
-  command "cp -rp #{node[:valhalla][:src_dir]}/mjolnir/conf/osm2pgsql/vertices.lua #{node[:valhalla][:conf_dir]}; \
-          cp -rp #{node[:valhalla][:src_dir]}/mjolnir/conf/osm2pgsql/edges.lua #{node[:valhalla][:conf_dir]};"
-  cwd     node[:valhalla][:base_dir]
+# link the lua transforms from the checkout
+%w(vertices edges).each do |lua|
+  link "#{lua} config" do
+    action      :nothing
+    owner       node[:valhalla][:user][:name]
+    target_file "#{node[:valhalla][:conf_dir]}/#{lua}.lua"
+    to          "#{node[:valhalla][:src_dir]}/mjolnir/conf/osm2pgsql/#{lua}.lua"
+  end
 end
 
 # the list of the files we will be importing
