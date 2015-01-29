@@ -23,7 +23,7 @@ default[:valhalla][:user][:home]                                 = '/home/valhal
 
 # the data to create tiles
 default[:valhalla][:extracts]                                    = %w(
-http://download.geofabrik.de/europe/liechtenstein-latest.osm.pbf
+  http://download.geofabrik.de/europe/liechtenstein-latest.osm.pbf
 )
 
 # configuration
