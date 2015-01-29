@@ -41,6 +41,7 @@ execute 'cut tiles' do
           #{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]} #{extracts} \
           >/tmp/pbfgraphbuilder.out 2>&1"
   cwd     node[:valhalla][:base_dir]
+  timeout node[:valhalla][:retile][:cut_tiles_timeout]
 end
 
 # TODO: add an execute for publishing the possible data issues to maproulette
