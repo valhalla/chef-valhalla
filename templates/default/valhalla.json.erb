@@ -18,12 +18,16 @@
       "way_function": "ways_proc"
     },
     "logging": {
-      "type": "std_out"
+      "type": "file",
+      "file_name": "<%= node[:valhalla][:log][:mjolnir] %>",
+      "reopen_interval": "60"
     }
   },
   "thor": {
     "logging": {
-      "type": "std_out"
+      "type": "file",
+      "file_name": "<%= node[:valhalla][:log][:thor] %>",
+      "reopen_interval": "60"
     }
   },
   "tyr": {
