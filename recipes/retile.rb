@@ -38,7 +38,8 @@ execute 'cut tiles' do
   action  :nothing
   user    node[:valhalla][:user][:name]
   command "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib pbfgraphbuilder -c \
-          #{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]} #{extracts}"
+          #{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]} #{extracts} \
+          >/tmp/pbfgraphbuilder.out 2>&1"
   cwd     node[:valhalla][:base_dir]
 end
 
