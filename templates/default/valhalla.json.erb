@@ -1,6 +1,6 @@
 {
   "mjolnir": {
-    "concurrency": <%= node[:cpu][:total] %>,
+    "concurrency": <%= node[:valhalla][:mjolnir][:concurrency] %>,
     "input": {
       "type": "protocolbuffer"
     },
