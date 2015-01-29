@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd <%= node[:valhalla][:src_dir] %>/tyr
+exec 2>&1
+exec chpst -u <%= node[:valhalla][:user][:name] %> -e /etc/sv/tyr-service/env python py/server.py <%= node[:valhalla][:conf_dir] %>/<%= node[:valhalla][:config] %>

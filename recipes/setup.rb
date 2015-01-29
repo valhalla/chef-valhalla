@@ -19,7 +19,8 @@ end
   node[:valhalla][:tile_dir],
   node[:valhalla][:log_dir],
   node[:valhalla][:conf_dir],
-  node[:valhalla][:src_dir]
+  node[:valhalla][:src_dir],
+  node[:valhalla][:extracts_dir]
 ].each do |dir|
   directory dir do
     action    :create
@@ -27,13 +28,6 @@ end
     mode      0755
     owner     node[:valhalla][:user][:name]
   end
-end
-
-# move the config file into place
-template "#{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]}" do
-  source "#{node[:valhalla][:config]}.erb"
-  mode   0644
-  owner  node[:valhalla][:user][:name]
 end
 
 # install all the deps
@@ -67,4 +61,15 @@ bash 'update alternatives' do
     update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 90;
     update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90;
   EOH
+end
+
+include_recipe 'valhalla::retile'
+
+# move the config file into place
+template "#{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]}" do
+  source "#{node[:valhalla][:config]}.erb"
+  mode   0644
+  owner  node[:valhalla][:user][:name]
+
+  notifies :run, 'execute[retile]', :delayed
 end
