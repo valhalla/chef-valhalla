@@ -6,11 +6,11 @@
 
 # where to do some install work
 default[:valhalla][:base_dir]              = '/opt/valhalla'
-default[:valhalla][:tile_dir]              = "#{default[:valhalla][:base_dir]}/tiles"
-default[:valhalla][:log_dir]               = "#{default[:valhalla][:base_dir]}/log"
-default[:valhalla][:conf_dir]              = "#{default[:valhalla][:base_dir]}/etc"
-default[:valhalla][:src_dir]               = "#{default[:valhalla][:base_dir]}/src"
-default[:valhalla][:extracts_dir]          = "#{default[:valhalla][:base_dir]}/extracts"
+default[:valhalla][:tile_dir]              = "#{node[:valhalla][:base_dir]}/tiles"
+default[:valhalla][:log_dir]               = "#{node[:valhalla][:base_dir]}/log"
+default[:valhalla][:conf_dir]              = "#{node[:valhalla][:base_dir]}/etc"
+default[:valhalla][:src_dir]               = "#{node[:valhalla][:base_dir]}/src"
+default[:valhalla][:extracts_dir]          = "#{node[:valhalla][:base_dir]}/extracts"
 
 # the repos
 default[:valhalla][:github][:base]         = 'https://github.com/valhalla'
