@@ -31,6 +31,7 @@ default[:valhalla][:config]                                      = 'valhalla.jso
 default[:valhalla][:log][:mjolnir]                               = "#{node[:valhalla][:log_dir]}/mjolnir.log"
 default[:valhalla][:log][:thor]                                  = "#{node[:valhalla][:log_dir]}/thor.log"
 default[:valhalla][:log][:tyr]                                   = "#{node[:valhalla][:log_dir]}/tyr.log"
+default[:valhalla][:mjolnir][:concurrency]                       = node[:cpu][:total]
 
 # retile
 default[:valhalla][:retile][:cut_tiles_timeout]                  = 86_400 # 4 hours
