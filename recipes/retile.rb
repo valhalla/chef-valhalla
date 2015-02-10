@@ -12,12 +12,12 @@ execute 'retile' do
   command 'echo "Re-tiling and then restarting server"'
 
   # TODO: write tiles to tmp location, then swap them in on server restart
-  # notifies :create,   'sometempdir[resource]',              'immediately'
+  # notifies :create,  'sometempdir[resource]',              'immediately'
   notifies :create,   'link[vertices config]',              :immediately
   notifies :create,   'link[edges config]',                 :immediately
   notifies :run,      'execute[clean tiles]',               :immediately
   notifies :run,      'execute[cut tiles]',                 :immediately
-  # notifies :run,      'execute[publish data deficiencies]', :immediately
+  # notifies :run,     'execute[publish data deficiencies]', :immediately
   notifies :restart,  'runit_service[tyr-service]',         :immediately
 end
 
