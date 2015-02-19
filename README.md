@@ -9,19 +9,19 @@
           ░        ░  ░    ░  ░ ░  ░  ░      ░  ░    ░  ░    ░  ░     ░  ░
          ░                                                                    
 
-Valhalla is an open source routing engine and accompanying libraries for use with Open Street Map and other open data sets. The chef-valhalla repository, as its name suggests, is a chef cookbook. The cookbook demonstrates how to deploy the valhalla stack to a virtual machine (sample vagrant file included). Upon completion the virtual machine will have cut a set of routable graph tiles and started up a server to hanlde route requests against that tile set. We hope this can serve as a primer on how to get up and running with the valhalla code base or even deploy your own routing cluster.
+Valhalla is an open source routing engine and accompanying libraries for use with Open Street Map and other open data sets. The chef-valhalla repository, as its name suggests, is a chef cookbook. The cookbook demonstrates how to deploy the valhalla stack to a virtual machine (sample vagrant file included). Upon completion the virtual machine will have cut a set of routable graph tiles and started up a server to handle route requests against that tile set. We hope this can serve as a primer on how to get up and running with the valhalla code base or even deploy your own routing cluster.
 
 Overview
 --------
 
 The are several key features that we hope can differentiate the valhalla project from other route engines. They are:
 
-- Open source software, on open source data with a very liberal license. Should allow for transparency in developement, encourage contribution and community input and foster use in other projects.
+- Open source software, on open source data with a very liberal license. Should allow for transparency in development, encourage contribution and community input and foster use in other projects.
 - Tiled hierarchical data structure. Should allow users to have a small memory footprint on memory constrained devices, enable offline routing, provide a means for regional extracts and partial updates.
 - Runtime costing of edges and vertices within the graph via a plugin architecture. Should allow for customizable and alternate routes.
 - C++ based API. Should allow for cross compilation of the various pieces to enable routing on offline portable devices.
 - A plugin based narrative and maneuver generation architecture. Should allow for generation that is customized either to the administrative area or to the target locale.
-- Mutli-modal and time-based routes. Should allow for mixing auto, pedestrian, bike and public transportation in the same route or setting a time by which one must arrive at a location.
+- Multi-modal and time-based routes. Should allow for mixing auto, pedestrian, bike and public transportation in the same route or setting a time by which one must arrive at a location.
 
 The valhalla organization is comprised of several repositories each responsible for a different function. The layout of the various projects is as follows:
 
