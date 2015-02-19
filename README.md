@@ -17,23 +17,23 @@ Overview
 The are several key features that we hope can differentiate the valhalla project from other route engines. They are:
 
 - Open source software, on open source data with a very liberal license. Should allow for transparency in developement, encourage contribution and community input and foster use in other projects.
-- Tiled hierarchical data structure. Should allow users to have a small memory foot print in memory constrained devices, enable offline routing, provide a means for regional extracts and partial updates.
+- Tiled hierarchical data structure. Should allow users to have a small memory footprint on memory constrained devices, enable offline routing, provide a means for regional extracts and partial updates.
 - Runtime costing of edges and vertices within the graph via a plugin architecture. Should allow for customizable and alternate routes.
-- C++ based API. Should allow for cross compilation of the various pieces to enable native routing computation on mobile devices for example.
+- C++ based API. Should allow for cross compilation of the various pieces to enable routing on offline portable devices.
 - A plugin based narrative and maneuver generation architecture. Should allow for generation that is customized either to the administrative area or to the target locale.
-- Mutli-modal and time-based routes. Should allow for mixing auto, pedestrian, bike and public transportation in the same route or setting a time by which the route must arrive at a location.
+- Mutli-modal and time-based routes. Should allow for mixing auto, pedestrian, bike and public transportation in the same route or setting a time by which one must arrive at a location.
 
 The valhalla organization is comprised of several repositories each responsible for a different function. The layout of the various projects is as follows:
 
-[Midgard](https//github.com/valhalla/midgard) - Basic geographic/metric algorithms for use in the various other projects
-[Baldr](https//github.com/valhalla/baldr) - The base data structures for reading/accessing tiled route data. Depends on `midgard`
-[Mjolnir](https//github.com/valhalla/mjolnir) - Tools for turning open data into graph tiles. Depends on `midgard` and `baldr`
-[Loki](https//github.com/valhalla/loki) - Library used to search graph tiles and correlate (at least lat,lon) to an entity within a tile. This correlated entity (edge or vertex) can be used as input to `thor`. Depends on `midgard`, `baldr` and `mjolnir`
-[Thor](https//github.com/valhalla/thor) - Library used to generate a path through the graph tile hierarchy. This path can be used as input to `odin`. Depends on `midgard`, `baldr`, `loki` and `odin`
-[Odin](https//github.com/valhalla/odin) - Library used to generate maneuvers and narrative based on a path. This bundle of directions can be used as input to `tyr`. Depends on `midgard` and `baldr` 
-[Tyr](https//github.com/valhalla/tyr) - Service used to handle http requests for a route. The service will support json and protocol bufffer output and an [OSRM](http://project-osrm.org) compatibility mode in which OSRM-like json output is produced. Depends on `midgard`, `baldr`, `mjolnir`, `loki`, `thor` and `odin`
-[Demos](https//github.com/valhalla/demos) - A set of demos which allows interacting with the service and APIs
-[Chef]((https//github.com/valhalla/chef) - This cookbook for installing and running valhalla
+- [Midgard](https//github.com/valhalla/midgard) - Basic geographic and geometric algorithms for use in the various other projects
+- [Baldr](https//github.com/valhalla/baldr) - The base data structures for accessing and caching tiled route data. Depends on `midgard`
+- [Mjolnir](https//github.com/valhalla/mjolnir) - Tools for turning open data into graph tiles. Depends on `midgard` and `baldr`
+- [Loki](https//github.com/valhalla/loki) - Library used to search graph tiles and correlate input locations to an entity within a tile. This correlated entity (edge or vertex) can be used as input to `thor`. Depends on `midgard`, `baldr` and `mjolnir`
+- [Thor](https//github.com/valhalla/thor) - Library used to generate a path through the graph tile hierarchy. This path can be used as input to `odin`. Depends on `midgard`, `baldr`, `loki` and `odin`
+- [Odin](https//github.com/valhalla/odin) - Library used to generate maneuvers and narrative based on a path. This set of directions information can be used as input to `tyr`. Depends on `midgard` and `baldr`
+- [Tyr](https//github.com/valhalla/tyr) - Service used to handle http requests for a route communicating with all of the other valhalla APIs. The service will format output from `odin` and support json and protocol buffer output. It will also offer an [OSRM](http://project-osrm.org) compatibility mode in which OSRM-like json output is produced. Depends on `midgard`, `baldr`, `mjolnir`, `loki`, `thor` and `odin`
+- [Demos](https//github.com/valhalla/demos) - A set of demos which allows interacting with the service and APIs
+- [Chef]((https//github.com/valhalla/chef) - This cookbook for installing and running valhalla
 
 Building and Running
 --------------------
@@ -84,4 +84,4 @@ Contributing
 
 We welcome contributions to the cookbook. If you would like to report an issue, or even better fix an existing one, please use the [chef issue tracker](https://github.com/valhalla/chef-valhalla/issues) on GitHub.
 
-If you would like to make an improvement to the cookbook, please be aware that we adhere to strict style guidlines all valhalla projects are written mostly in C++11, in the K&R (1TBS variant) with two spaces as indentation. We generally follow this [c++ style guide](http://google-styleguide.googlecode.com/svn/trunk/cppguide.html). We welcome contributions as pull requests to the [repository](https://github.com/valhalla/demos) and highly recommend that your pull request include a test to validate the addition/change of functionality.
+If you would like to make an improvement to the cookbook, please be aware that we adhere to strict style guidlines and enforce them using `rake`. We welcome contributions as pull requests to the [repository](https://github.com/valhalla/chef-valhalla).
