@@ -9,7 +9,7 @@
           ░        ░  ░    ░  ░ ░  ░  ░      ░  ░    ░  ░    ░  ░     ░  ░
          ░                                                                    
 
-Valhalla is an open source routing engine and accompanying libraries for use with Open Street Map and other open data sets. The chef-valhalla repository, as its name suggests, is a chef cookbook. The cookbook demonstrates how to deploy the valhalla stack to a virtual machine (sample vagrant file included). Upon completion the virtual machine will have cut a set of routable graph tiles and started up a server to hanlde route requests against that tile set.
+Valhalla is an open source routing engine and accompanying libraries for use with Open Street Map and other open data sets. The chef-valhalla repository, as its name suggests, is a chef cookbook. The cookbook demonstrates how to deploy the valhalla stack to a virtual machine (sample vagrant file included). Upon completion the virtual machine will have cut a set of routable graph tiles and started up a server to hanlde route requests against that tile set. We hope this can serve as a primer on how to get up and running with the valhalla code base or even deploy your own routing cluster.
 
 Overview
 --------
@@ -84,4 +84,27 @@ Contributing
 
 We welcome contributions to the cookbook. If you would like to report an issue, or even better fix an existing one, please use the [chef issue tracker](https://github.com/valhalla/chef-valhalla/issues) on GitHub.
 
-If you would like to make an improvement to the cookbook, please be aware that we adhere to strict style guidlines and enforce them using `rake`. We welcome contributions as pull requests to the [repository](https://github.com/valhalla/chef-valhalla).
+If you would like to make an improvement to the cookbook, please be aware that we adhere to strict style guidlines and enforce them using `rake`. If you would like to make an improvement to the C++ APIs, please be aware that all valhalla projects are written mostly in C++11, in the K&R (1TBS variant) with two spaces as indentation. We generally follow this [c++ style guide](http://google-styleguide.googlecode.com/svn/trunk/cppguide.html). We welcome contributions as pull requests to the repository linked above and highly recommend that your pull request include a test to validate the addition/change of functionality.
+
+As noted above we forsee several good places to start in terms of contributing. We've outlined plugin architectures for the path finding algorithm's costing model, maneuver generation and narrative generation. As these things take shape please look to the [Thor](https//github.com/valhalla/thor) and [Odin](https//github.com/valhalla/odin) repositories' documentation. These should provide more information on how to write your own plugins for custom functionality.
+
+API Tests
+---------
+
+We highly encourage running and updating the tests when contributing to the above repositories to make sure no regressions have been made. We use the Automake test suite to run our tests by simply making the `check` target:
+
+    make check
+
+You can also build a test coverage report. This requires that the packages `lcov`, `gcov` and `genhtml` be installed. On Ubuntu you can get these with:
+
+    sudo apt-get install lcov
+
+To make the coverage report, configure the build for it:
+
+    ./configure --enable-coverage
+
+And generate an HTML coverage report in the `coverage/` directory:
+
+    make coverage-report
+
+Note also that, because calculating the coverage requires compiler support, you will need to clean any object files from a non-coverage build by running `make clean` before `make coverage-report`.
