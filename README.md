@@ -33,7 +33,7 @@ The valhalla organization is comprised of several repositories each responsible 
 - [Odin](https//github.com/valhalla/odin) - Library used to generate maneuvers and narrative based on a path. This set of directions information can be used as input to `tyr`. Depends on `midgard` and `baldr`
 - [Tyr](https//github.com/valhalla/tyr) - Service used to handle http requests for a route communicating with all of the other valhalla APIs. The service will format output from `odin` and support json and protocol buffer output. It will also offer an [OSRM](http://project-osrm.org) compatibility mode in which OSRM-like json output is produced. Depends on `midgard`, `baldr`, `mjolnir`, `loki`, `thor` and `odin`
 - [Demos](https//github.com/valhalla/demos) - A set of demos which allows interacting with the service and APIs
-- [Chef]((https//github.com/valhalla/chef) - This cookbook for installing and running valhalla
+- [Chef](https//github.com/valhalla/chef) - This cookbook for installing and running valhalla
 
 Building and Running
 --------------------
