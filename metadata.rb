@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 name             'valhalla'
-maintainer       'mapzen'
+maintainer       'valhalla'
 maintainer_email 'kevin@mapzen.com'
 license          'MIT'
 description      'Installs/Configures valhalla'
