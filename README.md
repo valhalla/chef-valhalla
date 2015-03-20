@@ -70,7 +70,7 @@ To build, install and run valhalla on Ubuntu (or other Debian based systems) try
     firefox demos/routing/index.html
 
     #start up the server
-    python -m tyr\_simple\_server mjolnir/conf/valhalla.json
+    python -m tyr_simple_server mjolnir/conf/valhalla.json
 
     #HAVE FUN!
 
