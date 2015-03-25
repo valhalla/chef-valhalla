@@ -48,7 +48,7 @@ To build, install and run valhalla on Ubuntu (or other Debian based systems) try
 
     #build and install all valhalla includes, libraries and binaries
     for repo in midgard baldr mjolnir loki odin thor tyr; do
-      git clone https://github.com/valhalla/$repo.git
+      git clone --depth=1 --recurse-submodules --single-branch --branch=master https://github.com/valhalla/$repo.git
       cd $repo
       ./autogen.sh
       ./configure
@@ -67,7 +67,7 @@ To build, install and run valhalla on Ubuntu (or other Debian based systems) try
     cd ..
 
     #grab the demos repo and open up the point and click routing sample
-    git clone https://github.com/valhalla/demos.git
+    git clone --depth=1 --recurse-submodules --single-branch --branch=master https://github.com/valhalla/demos.git
     firefox demos/routing/index.html
 
     #start up the server
