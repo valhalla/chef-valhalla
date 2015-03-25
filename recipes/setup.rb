@@ -48,6 +48,10 @@ end
   libprotobuf-dev
   lua5.2
   liblua5.2-dev
+  libsqlite3-dev
+  libspatialite-dev
+  libgeos-dev
+  libgeos++-dev
 ).each do |p|
   package p do
     options '--force-yes'
