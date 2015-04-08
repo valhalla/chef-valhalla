@@ -27,6 +27,7 @@ The valhalla organization is comprised of several repositories each responsible 
 
 - [Midgard](https//github.com/valhalla/midgard) - Basic geographic and geometric algorithms for use in the various other projects
 - [Baldr](https//github.com/valhalla/baldr) - The base data structures for accessing and caching tiled route data. Depends on `midgard`
+- [Sif](https//github.com/valhalla/sif) - Library used in costing of graph nodes and edges. This can be used as input to `loki` and `thor`. Depends on `midgard` and `baldr`
 - [Mjolnir](https//github.com/valhalla/mjolnir) - Tools for turning open data into graph tiles. Depends on `midgard` and `baldr`
 - [Loki](https//github.com/valhalla/loki) - Library used to search graph tiles and correlate input locations to an entity within a tile. This correlated entity (edge or vertex) can be used as input to `thor`. Depends on `midgard`, `baldr` and `mjolnir`
 - [Thor](https//github.com/valhalla/thor) - Library used to generate a path through the graph tile hierarchy. This path can be used as input to `odin`. Depends on `midgard`, `baldr`, `loki` and `odin`
@@ -47,7 +48,7 @@ To build, install and run valhalla on Ubuntu (or other Debian based systems) try
     update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
 
     #build and install all valhalla includes, libraries and binaries
-    for repo in midgard baldr mjolnir loki odin thor tyr; do
+    for repo in midgard baldr sif mjolnir loki odin thor tyr; do
       git clone --depth=1 --recurse-submodules --single-branch --branch=master https://github.com/valhalla/$repo.git
       cd $repo
       ./autogen.sh
