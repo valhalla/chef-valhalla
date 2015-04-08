@@ -25,16 +25,16 @@ The are several key features that we hope can differentiate the valhalla project
 
 The valhalla organization is comprised of several repositories each responsible for a different function. The layout of the various projects is as follows:
 
-- [Midgard](https//github.com/valhalla/midgard) - Basic geographic and geometric algorithms for use in the various other projects
-- [Baldr](https//github.com/valhalla/baldr) - The base data structures for accessing and caching tiled route data. Depends on `midgard`
-- [Sif](https//github.com/valhalla/sif) - Library used in costing of graph nodes and edges. This can be used as input to `loki` and `thor`. Depends on `midgard` and `baldr`
-- [Mjolnir](https//github.com/valhalla/mjolnir) - Tools for turning open data into graph tiles. Depends on `midgard` and `baldr`
-- [Loki](https//github.com/valhalla/loki) - Library used to search graph tiles and correlate input locations to an entity within a tile. This correlated entity (edge or vertex) can be used as input to `thor`. Depends on `midgard`, `baldr` and `mjolnir`
-- [Thor](https//github.com/valhalla/thor) - Library used to generate a path through the graph tile hierarchy. This path can be used as input to `odin`. Depends on `midgard`, `baldr`, `loki` and `odin`
-- [Odin](https//github.com/valhalla/odin) - Library used to generate maneuvers and narrative based on a path. This set of directions information can be used as input to `tyr`. Depends on `midgard` and `baldr`
-- [Tyr](https//github.com/valhalla/tyr) - Service used to handle http requests for a route communicating with all of the other valhalla APIs. The service will format output from `odin` and support json and protocol buffer output. It will also offer an [OSRM](http://project-osrm.org) compatibility mode in which OSRM-like json output is produced. Depends on `midgard`, `baldr`, `mjolnir`, `loki`, `thor` and `odin`
-- [Demos](https//github.com/valhalla/demos) - A set of demos which allows interacting with the service and APIs
-- [Chef](https//github.com/valhalla/chef) - This cookbook for installing and running valhalla
+- [Midgard](https://github.com/valhalla/midgard) - Basic geographic and geometric algorithms for use in the various other projects
+- [Baldr](https://github.com/valhalla/baldr) - The base data structures for accessing and caching tiled route data. Depends on `midgard`
+- [Sif](https://github.com/valhalla/sif) - Library used in costing of graph nodes and edges. This can be used as input to `loki` and `thor`. Depends on `midgard` and `baldr`
+- [Mjolnir](https://github.com/valhalla/mjolnir) - Tools for turning open data into graph tiles. Depends on `midgard` and `baldr`
+- [Loki](https://github.com/valhalla/loki) - Library used to search graph tiles and correlate input locations to an entity within a tile. This correlated entity (edge or vertex) can be used as input to `thor`. Depends on `midgard`, `baldr` and `mjolnir`
+- [Thor](https://github.com/valhalla/thor) - Library used to generate a path through the graph tile hierarchy. This path can be used as input to `odin`. Depends on `midgard`, `baldr`, `loki` and `odin`
+- [Odin](https://github.com/valhalla/odin) - Library used to generate maneuvers and narrative based on a path. This set of directions information can be used as input to `tyr`. Depends on `midgard` and `baldr`
+- [Tyr](https://github.com/valhalla/tyr) - Service used to handle http requests for a route communicating with all of the other valhalla APIs. The service will format output from `odin` and support json and protocol buffer output. It will also offer an [OSRM](http://project-osrm.org) compatibility mode in which OSRM-like json output is produced. Depends on `midgard`, `baldr`, `mjolnir`, `loki`, `thor` and `odin`
+- [Demos](https://github.com/valhalla/demos) - A set of demos which allows interacting with the service and APIs
+- [Chef](https://github.com/valhalla/chef) - This cookbook for installing and running valhalla
 
 Building and Running
 --------------------
