@@ -29,9 +29,9 @@ node[:valhalla][:github][:repos].each do |repo|
     user    node[:valhalla][:user][:name]
     command './autogen.sh && ./configure CPPFLAGS="-DLOGGING_LEVEL_INFO" \
              --with-valhalla-midgard=/usr/local --with-valhalla-baldr=/usr/local \
-             --with-valhalla-mjolnir=/usr/local --with-valhalla-loki=/usr/local \
-             --with-valhalla-odin=/usr/local --with-valhalla-thor=/usr/local \
-             --with-valhalla-tyr=/usr/local'
+             --with-valhalla-sif=/usr/local --with-valhalla-mjolnir=/usr/local \
+             --with-valhalla-loki=/usr/local --with-valhalla-odin=/usr/local \
+             --with-valhalla-thor=/usr/local --with-valhalla-tyr=/usr/local'
     cwd     "#{node[:valhalla][:src_dir]}/#{repo}"
   end
 
