@@ -22,7 +22,7 @@ execute 'retile' do
 end
 
 # link the lua transforms from the checkout
-%w(vertices edges).each do |lua|
+%w(vertices edges admins).each do |lua|
   link "#{lua} config" do
     action      :nothing
     owner       node[:valhalla][:user][:name]
