@@ -34,4 +34,4 @@ default[:valhalla][:log][:tyr]                                   = "#{node[:valh
 default[:valhalla][:mjolnir][:concurrency]                       = node[:cpu][:total]
 
 # retile
-default[:valhalla][:retile][:cut_tiles_timeout]                  = 86_400 # 4 hours
+default[:valhalla][:retile][:cut_tiles_timeout]                  = 86_400 # 24 hours
