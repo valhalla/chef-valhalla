@@ -46,6 +46,8 @@
     }
   },
   "tyr": {
+    "listen_address": "<%= node[:valhalla][:tyr][:listen_address] %>",
+    "port": <%= node[:valhalla][:tyr][:port] %>,
     "logging": {
       "type": "file",
       "file_name": "<%= node[:valhalla][:log][:tyr] %>",
