@@ -33,7 +33,7 @@ default[:valhalla][:log][:thor]                                  = "#{node[:valh
 default[:valhalla][:log][:tyr]                                   = "#{node[:valhalla][:log_dir]}/tyr.log"
 default[:valhalla][:mjolnir][:concurrency]                       = node[:cpu][:total]
 default[:valhalla][:tyr][:listen_address]                        = '0.0.0.0'
-default[:valhalla][:tyr][:port]                                  = 8002
+default[:valhalla][:tyr][:port]                                  = 8080
 
 # retile
 default[:valhalla][:retile][:cut_tiles_timeout]                  = 86_400 # 24 hours
