@@ -47,7 +47,9 @@
   },
   "tyr": {
     "logging": {
-      "type": "std_out"
+      "type": "file",
+      "file_name": "<%= node[:valhalla][:log][:tyr] %>",
+      "reopen_interval": "60"
     }
   },
   "costing_options": {
