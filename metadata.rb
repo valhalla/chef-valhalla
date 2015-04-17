@@ -2,7 +2,7 @@
 
 name             'valhalla'
 maintainer       'valhalla'
-maintainer_email 'kevin@mapzen.com'
+maintainer_email 'valhalla@mapzen.com'
 license          'MIT'
 description      'Installs/Configures valhalla'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
@@ -14,6 +14,7 @@ recipe 'valhalla', 'Installs valhalla'
   apt
   git
   user
+  runit
 ).each do |dep|
   depends dep
 end
