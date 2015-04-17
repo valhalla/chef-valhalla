@@ -12,7 +12,6 @@ recipe 'valhalla', 'Installs valhalla'
 
 %w(
   apt
-  git
   user
   runit
 ).each do |dep|

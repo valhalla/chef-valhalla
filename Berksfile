@@ -3,6 +3,5 @@ metadata
 
 # opsworks
 cookbook 'apt'
-cookbook 'git'
 cookbook 'runit'
 cookbook 'user'

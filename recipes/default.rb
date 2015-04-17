@@ -4,10 +4,12 @@
 # Recipe:: default
 #
 
+include_recipe 'apt::default'
+
+package 'git'
+
 %w(
   user::default
-  apt::default
-  git::default
   runit::default
   valhalla::setup
   valhalla::install
