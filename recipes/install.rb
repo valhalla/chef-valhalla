@@ -4,8 +4,6 @@
 # Recipe:: install
 #
 
-include_recipe 'valhalla::depoly'
-
 # for each repository
 node[:valhalla][:github][:repos].each do |repo|
   # clone it
@@ -20,7 +18,7 @@ node[:valhalla][:github][:repos].each do |repo|
     notifies :run, "execute[configure #{repo}]", :immediately
     notifies :run, "execute[build #{repo}]", :immediately
     notifies :run, "execute[install #{repo}]", :immediately
-    notifies :run, 'execute[depoly]', :delayed
+    notifies :run, 'execute[deploy]', :delayed
   end
 
   # configure

@@ -70,7 +70,7 @@ bash 'update alternatives' do
   EOH
 end
 
-include_recipe 'valhalla::depoly'
+include_recipe 'valhalla::deploy'
 
 # move the config file into place
 template "#{node[:valhalla][:conf_dir]}/#{node[:valhalla][:mjolnir][:config]}" do
@@ -85,5 +85,5 @@ template "#{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]}" do
   mode   0644
   owner  node[:valhalla][:user][:name]
 
-  notifies :run, 'execute[depoly]', :delayed
+  notifies :run, 'execute[deploy]', :delayed
 end
