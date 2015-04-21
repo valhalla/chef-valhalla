@@ -4,7 +4,7 @@
 # Recipe:: install
 #
 
-include_recipe 'valhalla::retile'
+include_recipe 'valhalla::freshtiles'
 
 # for each repository
 node[:valhalla][:github][:repos].each do |repo|
@@ -20,7 +20,7 @@ node[:valhalla][:github][:repos].each do |repo|
     notifies :run, "execute[configure #{repo}]", :immediately
     notifies :run, "execute[build #{repo}]", :immediately
     notifies :run, "execute[install #{repo}]", :immediately
-    notifies :run, 'execute[retile]', :delayed
+    notifies :run, 'execute[freshtiles]', :delayed
   end
 
   # configure
