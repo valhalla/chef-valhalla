@@ -23,4 +23,3 @@ node[:valhalla][:extracts].each do |url|
     user    node[:valhalla][:user][:name]
   end
 end
-

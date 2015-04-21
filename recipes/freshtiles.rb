@@ -56,7 +56,7 @@ end
 execute 'clean up' do
   action  :nothing
   user    node[:valhalla][:user][:name]
-  command "rm -rf *.bin"
+  command 'rm -rf *.bin'
   cwd     node[:valhalla][:base_dir]
 end
 
@@ -68,7 +68,7 @@ execute 'move tiles' do
   cwd     node[:valhalla][:base_dir]
 end
 
-# move the admin log 
+# move the admin log
 execute 'move admin log' do
   action  :nothing
   user    node[:valhalla][:user][:name]
