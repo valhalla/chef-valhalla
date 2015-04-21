@@ -70,8 +70,6 @@ bash 'update alternatives' do
   EOH
 end
 
-include_recipe 'valhalla::deploy'
-
 # move the config file into place
 template "#{node[:valhalla][:conf_dir]}/#{node[:valhalla][:mjolnir][:config]}" do
   source "#{node[:valhalla][:mjolnir][:config]}.erb"
@@ -84,6 +82,4 @@ template "#{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]}" do
   source "#{node[:valhalla][:config]}.erb"
   mode   0644
   owner  node[:valhalla][:user][:name]
-
-  notifies :run, 'execute[deploy]', :delayed
 end
