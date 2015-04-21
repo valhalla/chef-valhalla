@@ -14,6 +14,8 @@ package 'git'
   valhalla::setup
   valhalla::install
   valhalla::data
+  valhalla::minutely_update
+  valhalla::freshtiles
 ).each do |r|
   include_recipe r
 end
