@@ -17,6 +17,7 @@ end
 [
   node[:valhalla][:base_dir],
   node[:valhalla][:tile_dir],
+  node[:valhalla][:mjolnir_tile_dir],
   node[:valhalla][:log_dir],
   node[:valhalla][:conf_dir],
   node[:valhalla][:src_dir],
@@ -45,6 +46,8 @@ end
   libboost-filesystem1.54-dev
   libboost-system1.54-dev
   protobuf-compiler
+  osmctools
+  osmosis
   libprotobuf-dev
   lua5.2
   liblua5.2-dev
@@ -67,7 +70,14 @@ bash 'update alternatives' do
   EOH
 end
 
-include_recipe 'valhalla::retile'
+include_recipe 'valhalla::freshtiles'
+
+# move the config file into place
+template "#{node[:valhalla][:conf_dir]}/#{node[:valhalla][:mjolnir][:config]}" do
+  source "#{node[:valhalla][:mjolnir][:config]}.erb"
+  mode   0644
+  owner  node[:valhalla][:user][:name]
+end
 
 # move the config file into place
 template "#{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]}" do
@@ -75,5 +85,5 @@ template "#{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]}" do
   mode   0644
   owner  node[:valhalla][:user][:name]
 
-  notifies :run, 'execute[retile]', :delayed
+  notifies :run, 'execute[freshtiles]', :delayed
 end
