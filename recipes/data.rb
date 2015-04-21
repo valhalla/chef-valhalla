@@ -4,7 +4,7 @@
 # Recipe:: data
 #
 
-include_recipe 'valhalla::freshtiles'
+include_recipe 'valhalla::depoly'
 
 # for each extract
 node[:valhalla][:extracts].each do |url|
@@ -21,7 +21,7 @@ node[:valhalla][:extracts].each do |url|
     notifies :run, "execute[download #{url}]", :immediately
     notifies :run, "ruby_block[verify #{file}]", :immediately
     notifies :run, "execute[minutely_initialize #{file}]", :immediately
-    notifies :run, 'execute[freshtiles]', :delayed
+    notifies :run, 'execute[depoly]', :delayed
   end
 
   # get the actual data

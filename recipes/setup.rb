@@ -70,7 +70,7 @@ bash 'update alternatives' do
   EOH
 end
 
-include_recipe 'valhalla::freshtiles'
+include_recipe 'valhalla::depoly'
 
 # move the config file into place
 template "#{node[:valhalla][:conf_dir]}/#{node[:valhalla][:mjolnir][:config]}" do
@@ -85,5 +85,5 @@ template "#{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]}" do
   mode   0644
   owner  node[:valhalla][:user][:name]
 
-  notifies :run, 'execute[freshtiles]', :delayed
+  notifies :run, 'execute[depoly]', :delayed
 end

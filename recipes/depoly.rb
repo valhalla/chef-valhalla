@@ -1,18 +1,20 @@
 # -*- coding: UTF-8 -*-
 #
 # Cookbook Name:: valhalla
-# Recipe:: freshtiles
+# Recipe:: depoly
 #
 
 include_recipe 'valhalla::serve'
+include_recipe 'valhalla::data'
 
 # create new tiles with latest pbf and restart the server
-execute 'freshtiles' do
+execute 'depoly' do
   action  :nothing
   command 'echo "Tiling with latest pbf and restarting server"'
 
   # TODO: write tiles to tmp location, then swap them in on server restart
   # notifies :create,  'execute[resource]',              'immediately'
+  notifies :run,      'execute[data]',                      :immediately
   notifies :create,   'link[vertices config]',              :immediately
   notifies :create,   'link[edges config]',                 :immediately
   notifies :create,   'link[admins config]',                :immediately
