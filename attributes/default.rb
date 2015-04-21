@@ -7,6 +7,7 @@
 # where to do some install work
 default[:valhalla][:base_dir]                                    = '/opt/valhalla'
 default[:valhalla][:tile_dir]                                    = "#{node[:valhalla][:base_dir]}/tiles"
+default[:valhalla][:mjolnir_tile_dir]                            = "#{node[:valhalla][:base_dir]}/mjolnir_tiles"
 default[:valhalla][:log_dir]                                     = "#{node[:valhalla][:base_dir]}/log"
 default[:valhalla][:conf_dir]                                    = "#{node[:valhalla][:base_dir]}/etc"
 default[:valhalla][:src_dir]                                     = "#{node[:valhalla][:base_dir]}/src"
@@ -28,6 +29,7 @@ default[:valhalla][:extracts]                                    = %w(
 
 # configuration
 default[:valhalla][:config]                                      = 'valhalla.json'
+default[:valhalla][:mjolnir][:config]                            = 'valhalla_mjolnir.json'
 default[:valhalla][:log][:mjolnir]                               = "#{node[:valhalla][:log_dir]}/mjolnir.log"
 default[:valhalla][:log][:thor]                                  = "#{node[:valhalla][:log_dir]}/thor.log"
 default[:valhalla][:log][:tyr]                                   = "#{node[:valhalla][:log_dir]}/tyr.log"
@@ -35,5 +37,5 @@ default[:valhalla][:mjolnir][:concurrency]                       = node[:cpu][:t
 default[:valhalla][:tyr][:listen_address]                        = '0.0.0.0'
 default[:valhalla][:tyr][:port]                                  = 8080
 
-# retile
-default[:valhalla][:retile][:cut_tiles_timeout]                  = 86_400 # 24 hours
+# tiles
+default[:valhalla][:tiles][:cut_tiles_timeout]                   = 86_400 # 24 hours
