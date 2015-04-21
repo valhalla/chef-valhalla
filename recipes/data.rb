@@ -4,7 +4,7 @@
 # Recipe:: data
 #
 
-include_recipe 'valhalla::retile'
+include_recipe 'valhalla::freshtiles'
 
 # for each extract
 node[:valhalla][:extracts].each do |url|
@@ -20,7 +20,8 @@ node[:valhalla][:extracts].each do |url|
 
     notifies :run, "execute[download #{url}]", :immediately
     notifies :run, "ruby_block[verify #{file}]", :immediately
-    notifies :run, 'execute[retile]', :delayed
+    notifies :run, "execute[minutely_initialize #{file}]", :immediately
+    notifies :run, 'execute[freshtiles]', :delayed
   end
 
   # get the actual data
@@ -43,4 +44,12 @@ node[:valhalla][:extracts].each do |url|
       end
     end
   end
+
+  # initialize the minutely updates
+  execute "minutely_initialize #{file}" do
+    action  :nothing
+    command "#{node[:valhalla][:src_dir]}/mjolnir/scripts/minutely_update.sh initialize #{node[:valhalla][:extracts_dir]} #{file}"
+    user    node[:valhalla][:user][:name]
+  end
+
 end
