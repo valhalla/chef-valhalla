@@ -17,6 +17,7 @@ execute 'deploy' do
   notifies :create,   'link[vertices config]',              :immediately
   notifies :create,   'link[edges config]',                 :immediately
   notifies :create,   'link[admins config]',                :immediately
+  notifies :run,      'execute[update to mjolnir_tiles]',   :immediately
   notifies :run,      'execute[clean mjolnir tiles]',       :immediately
   notifies :run,      'execute[create admins]',             :immediately
   notifies :run,      'execute[cut tiles]',                 :immediately
@@ -24,6 +25,7 @@ execute 'deploy' do
   notifies :run,      'execute[move tiles]',                :immediately
   notifies :run,      'execute[clean up]',                  :immediately
   # notifies :run,     'execute[publish data deficiencies]', :immediately
+  notifies :run,      'execute[update to tiles]',           :immediately
   notifies :restart,  'runit_service[tyr-service]',         :immediately
 end
 
@@ -67,6 +69,22 @@ execute 'move tiles' do
   user    node[:valhalla][:user][:name]
   command "mv #{node[:valhalla][:mjolnir_tile_dir]}/* #{node[:valhalla][:tile_dir]}/"
   cwd     node[:valhalla][:base_dir]
+end
+
+# update tile dir in config to tiles
+execute 'update to tiles' do
+  action  :nothing
+  user    node[:valhalla][:user][:name]
+  command "sed -i 's/mjolnir_tiles/tiles/g' #{node[:valhalla][:config]}"
+  cwd     node[:valhalla][:conf_dir]
+end
+
+# update tile dir in config to mjolnir_tiles
+execute 'update to mjolnir_tiles' do
+  action  :nothing
+  user    node[:valhalla][:user][:name]
+  command "sed -i 's/tiles/mjolnir_tiles/g' #{node[:valhalla][:config]}"
+  cwd     node[:valhalla][:conf_dir]
 end
 
 # move the admin log
