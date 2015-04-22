@@ -29,7 +29,6 @@ default[:valhalla][:extracts]                                    = %w(
 
 # configuration
 default[:valhalla][:config]                                      = 'valhalla.json'
-default[:valhalla][:mjolnir][:config]                            = 'valhalla_mjolnir.json'
 default[:valhalla][:log][:mjolnir]                               = "#{node[:valhalla][:log_dir]}/mjolnir.log"
 default[:valhalla][:log][:thor]                                  = "#{node[:valhalla][:log_dir]}/thor.log"
 default[:valhalla][:log][:tyr]                                   = "#{node[:valhalla][:log_dir]}/tyr.log"

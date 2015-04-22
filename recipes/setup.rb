@@ -71,13 +71,6 @@ bash 'update alternatives' do
 end
 
 # move the config file into place
-template "#{node[:valhalla][:conf_dir]}/#{node[:valhalla][:mjolnir][:config]}" do
-  source "#{node[:valhalla][:mjolnir][:config]}.erb"
-  mode   0644
-  owner  node[:valhalla][:user][:name]
-end
-
-# move the config file into place
 template "#{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]}" do
   source "#{node[:valhalla][:config]}.erb"
   mode   0644
