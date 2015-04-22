@@ -49,7 +49,8 @@ Vagrant.configure('2') do |config|
     chef.json = {
     }
     chef.run_list = [
-      'recipe[valhalla::default]'
+      'recipe[valhalla::default]',
+      'recipe[valhalla::data]'
     ]
   end
 end

@@ -13,7 +13,6 @@ package 'git'
   runit::default
   valhalla::setup
   valhalla::install
-  valhalla::data
 ).each do |r|
   include_recipe r
 end
