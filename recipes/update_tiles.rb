@@ -91,7 +91,7 @@ execute 'cut tiles' do
   action   :nothing
   user     node[:valhalla][:user][:name]
   command  "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib pbfgraphbuilder -c \
-           #{node[:valhalla][:conf_dir]}/#{node[:valhalla][:mjolnir][:config]} #{extracts}"
+           #{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]} #{extracts}"
   cwd      node[:valhalla][:base_dir]
   timeout  node[:valhalla][:tiles][:cut_tiles_timeout]
 end
