@@ -4,8 +4,6 @@
 # Recipe:: data
 #
 
-include_recipe 'valhalla::deploy'
-
 # for each extract
 node[:valhalla][:extracts].each do |url|
   # for the sake of brevity
@@ -21,7 +19,6 @@ node[:valhalla][:extracts].each do |url|
     notifies :run, "execute[download #{url}]", :immediately
     notifies :run, "ruby_block[verify #{file}]", :immediately
     notifies :run, "execute[minutely_initialize #{file}]", :immediately
-    notifies :run, 'execute[deploy]', :delayed
   end
 
   # get the actual data

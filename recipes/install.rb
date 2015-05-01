@@ -18,7 +18,6 @@ node[:valhalla][:github][:repos].each do |repo|
     notifies :run, "execute[configure #{repo}]", :immediately
     notifies :run, "execute[build #{repo}]", :immediately
     notifies :run, "execute[install #{repo}]", :immediately
-    notifies :run, 'execute[deploy]', :delayed
   end
 
   # configure
@@ -46,5 +45,13 @@ node[:valhalla][:github][:repos].each do |repo|
     action  :nothing
     command "make -j#{node[:cpu][:total]} install"
     cwd     "#{node[:valhalla][:src_dir]}/#{repo}"
+  end
+end
+
+# link the lua transforms from the checkout
+%w(vertices edges admins).each do |lua|
+  link "#{node[:valhalla][:conf_dir]}/#{lua}.lua" do
+    owner       node[:valhalla][:user][:name]
+    to          "#{node[:valhalla][:src_dir]}/mjolnir/conf/#{lua}.lua"
   end
 end
