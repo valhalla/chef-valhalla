@@ -50,7 +50,8 @@ Vagrant.configure('2') do |config|
     }
     chef.run_list = [
       'recipe[valhalla::default]',
-      'recipe[valhalla::data]'
+      'recipe[valhalla::data]',
+      'recipe[valhalla::deploy_no_updates]'
     ]
   end
 end
