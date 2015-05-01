@@ -47,11 +47,3 @@ node[:valhalla][:github][:repos].each do |repo|
     cwd     "#{node[:valhalla][:src_dir]}/#{repo}"
   end
 end
-
-# link the lua transforms from the checkout
-%w(vertices edges admins).each do |lua|
-  link "#{node[:valhalla][:conf_dir]}/#{lua}.lua" do
-    owner       node[:valhalla][:user][:name]
-    to          "#{node[:valhalla][:src_dir]}/mjolnir/conf/#{lua}.lua"
-  end
-end
