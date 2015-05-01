@@ -12,4 +12,3 @@ cron 'add deploy cron' do
 #{node[:valhalla][:src_dir]} #{node[:valhalla][:extracts_dir]} #{node[:valhalla][:log][:mjolnir]} \
 >> #{node[:valhalla][:log_dir]}/deploy_cron.log 2>&1"
 end
-

@@ -77,4 +77,3 @@ template "#{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]}" do
   mode   0644
   owner  node[:valhalla][:user][:name]
 end
-
