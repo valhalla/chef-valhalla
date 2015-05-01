@@ -39,6 +39,7 @@ end
   make
   gcc-4.8
   g++-4.8
+  jq
   libpython2.7-dev
   libboost1.54-dev
   libboost-python1.54-dev

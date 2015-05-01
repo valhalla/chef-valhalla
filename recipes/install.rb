@@ -18,7 +18,6 @@ node[:valhalla][:github][:repos].each do |repo|
     notifies :run, "execute[configure #{repo}]", :immediately
     notifies :run, "execute[build #{repo}]", :immediately
     notifies :run, "execute[install #{repo}]", :immediately
-    notifies :run, 'execute[deploy]', :delayed
   end
 
   # configure
