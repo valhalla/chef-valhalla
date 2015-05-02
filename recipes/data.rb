@@ -26,6 +26,7 @@ node[:valhalla][:extracts].each do |url|
     action  :nothing
     command "wget --quiet -O #{node[:valhalla][:extracts_dir]}/#{file} #{url}"
     user    node[:valhalla][:user][:name]
+    timeout 10800
   end
 
   # check the md5sum
