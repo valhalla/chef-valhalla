@@ -15,7 +15,6 @@ default[:valhalla][:extracts_dir]                                = "#{node[:valh
 
 # the repos
 default[:valhalla][:github][:base]                               = 'https://github.com/valhalla'
-default[:valhalla][:github][:repos]                              = %w(midgard baldr sif mjolnir loki odin thor tyr)
 default[:valhalla][:github][:revision]                           = 'master'
 
 # valhalla user to create
