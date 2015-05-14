@@ -48,20 +48,20 @@ end
     revision          node[:valhalla][:github][:revision]
     enable_submodules true
     depth             1
-  
+
     notifies :run, "execute[dependencies #{repo}]", :immediately
     notifies :run, "execute[configure #{repo}]", :immediately
     notifies :run, "execute[build #{repo}]", :immediately
     notifies :run, "execute[install #{repo}]", :immediately
   end
-  
+
   # dependencies
   execute "dependencies #{repo}" do
     action  :nothing
     command 'scripts/dependencies.sh'
     cwd     "#{node[:valhalla][:src_dir]}/#{repo}"
   end
-  
+
   # configure
   execute "configure #{repo}" do
     action  :nothing
@@ -74,7 +74,7 @@ end
              CPPFLAGS=-DBOOST_SPIRIT_THREADSAFE'
     cwd     "#{node[:valhalla][:src_dir]}/#{repo}"
   end
-  
+
   # build
   execute "build #{repo}" do
     action  :nothing
@@ -82,7 +82,7 @@ end
     command "make -j#{node[:cpu][:total]}"
     cwd     "#{node[:valhalla][:src_dir]}/#{repo}"
   end
-  
+
   # install
   execute "install #{repo}" do
     action  :nothing

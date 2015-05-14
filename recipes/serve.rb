@@ -12,6 +12,6 @@ runit_service 'tyr-service' do
   sv_timeout      60
   retries         3
   env(
-    'LD_LIBRARY_PATH' => '/usr/lib:/usr/local/lib',
+    'LD_LIBRARY_PATH' => '/usr/lib:/usr/local/lib'
   )
 end
