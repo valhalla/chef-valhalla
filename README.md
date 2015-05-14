@@ -52,7 +52,7 @@ To build, install and run valhalla on Ubuntu (or other Debian based systems) try
       git clone --depth=1 --recurse-submodules --single-branch --branch=master https://github.com/valhalla/$repo.git
       cd $repo
       ./autogen.sh
-      ./configure
+      ./configure CPPFLAGS=-DBOOST_SPIRIT_THREADSAFE
       make
       sudo make install
       cd ..
@@ -69,10 +69,11 @@ To build, install and run valhalla on Ubuntu (or other Debian based systems) try
 
     #grab the demos repo and open up the point and click routing sample
     git clone --depth=1 --recurse-submodules --single-branch --branch=master https://github.com/valhalla/demos.git
-    firefox demos/routing/index.html
+    firefox demos/routing/index.html &
 
     #start up the server
-    python -m tyr_simple_server mjolnir/conf/valhalla.json
+    cd tyr
+    ./tyr_simple_service conf/valhalla.json
 
     #HAVE FUN!
 
