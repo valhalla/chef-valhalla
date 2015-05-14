@@ -26,7 +26,7 @@ node[:valhalla][:extracts].each do |url|
     action  :nothing
     command "wget --quiet -O #{node[:valhalla][:extracts_dir]}/#{file} #{url}"
     user    node[:valhalla][:user][:name]
-    timeout 10800
+    timeout 10_800
   end
 
   # check the md5sum
@@ -49,5 +49,4 @@ node[:valhalla][:extracts].each do |url|
     command "#{node[:valhalla][:src_dir]}/mjolnir/scripts/minutely_update.sh initialize #{node[:valhalla][:extracts_dir]} #{file}"
     user    node[:valhalla][:user][:name]
   end
-
 end

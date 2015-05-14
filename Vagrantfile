@@ -46,12 +46,11 @@ Vagrant.configure('2') do |config|
   config.berkshelf.enabled = true
 
   config.vm.provision :chef_solo do |chef|
-    chef.json = {
-    }
-    chef.run_list = [
-      'recipe[valhalla::default]',
-      'recipe[valhalla::data]',
-      'recipe[valhalla::deploy_no_updates]'
-    ]
+    chef.json = { }
+    if ENV['CHEF_RUN_LIST'] == nil
+      chef.run_list = ['recipe[valhalla::default]']
+    else
+      chef.run_list = ENV['CHEF_RUN_LIST'].split(",")
+    end
   end
 end
