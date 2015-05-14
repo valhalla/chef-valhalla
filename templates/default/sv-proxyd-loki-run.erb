@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd <%= node[:valhalla][:config_dir] %>
+PROXY_IN=$(jq -r ".loki.service.proxy" <%= node[:valhalla][:conf_dir] %>/<%= node[:valhalla][:config] %>)_in
+PROXY_OUT=$(jq -r ".loki.service.proxy" <%= node[:valhalla][:conf_dir] %>/<%= node[:valhalla][:config] %>)_out
+exec 2>&1
+exec chpst -u <%= node[:valhalla][:user][:name] %> -e /etc/sv/proxyd-loki/env prime_proxyd $PROXY_IN $PROXY_OUT
