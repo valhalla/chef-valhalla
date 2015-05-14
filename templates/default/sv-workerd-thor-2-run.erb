@@ -2,4 +2,4 @@
 
 cd <%= node[:valhalla][:config_dir] %>
 exec 2>&1
-exec chpst -u <%= node[:valhalla][:user][:name] %> -e /etc/sv/workerd-thor-0/env thor_service <%= node[:valhalla][:conf_dir] %>/<%= node[:valhalla][:config] %>
+exec chpst -u <%= node[:valhalla][:user][:name] %> -e /etc/sv/workerd-thor-2/env thor_service <%= node[:valhalla][:conf_dir] %>/<%= node[:valhalla][:config] %>
