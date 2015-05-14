@@ -82,7 +82,7 @@
   },
   "httpd": {
     "service": {
-      "listen": "tcp://*:8002",
+      "listen": "tcp://<%= node[:valhalla][:tyr][:listen_address] %>:<%= node[:valhalla][:tyr][:port] %>",
       "loopback": "ipc://<%= node[:valhalla][:conf_dir] %>/loopback"
     }
   },
