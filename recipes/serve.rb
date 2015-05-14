@@ -5,7 +5,7 @@
 #
 
 # httpd
-ruint_service 'prime-httpd' do
+runit_service 'prime-httpd' do
   action          :enable
   log             true
   default_logger  true
