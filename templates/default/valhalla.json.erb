@@ -42,20 +42,48 @@
       "reopen_interval": "60"
     }
   },
+  "loki": {
+    "logging": {
+      "type": "std_out",
+      "color": true
+    },
+    "service": {
+      "proxy": "ipc://<%= node[:valhalla][:conf_dir] %>/loki"
+    }
+  },
   "thor": {
     "logging": {
       "type": "file",
       "file_name": "<%= node[:valhalla][:log][:thor] %>",
       "reopen_interval": "60"
+    },
+    "service": {
+      "proxy": "ipc://<%= node[:valhalla][:conf_dir] %>/thor"
+    }
+  },
+  "odin": {
+    "logging": {
+      "type": "std_out",
+      "color": true
+    },
+    "service": {
+      "proxy": "ipc://<%= node[:valhalla][:conf_dir] %>/odin"
     }
   },
   "tyr": {
-    "listen_address": "<%= node[:valhalla][:tyr][:listen_address] %>",
-    "port": <%= node[:valhalla][:tyr][:port] %>,
     "logging": {
       "type": "file",
       "file_name": "<%= node[:valhalla][:log][:tyr] %>",
       "reopen_interval": "60"
+    },
+    "service": {
+      "proxy": "ipc://<%= node[:valhalla][:conf_dir] %>/tyr"
+    }
+  },
+  "httpd": {
+    "service": {
+      "listen": "tcp://*:8002",
+      "loopback": "ipc://<%= node[:valhalla][:conf_dir] %>/loopback"
     }
   },
   "costing_options": {
