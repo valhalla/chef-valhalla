@@ -1,8 +1,8 @@
 #!/bin/bash
 
 cd <%= node[:valhalla][:config_dir] %>
-LISTEN=jq -r ".httpd.service.listen" <%= node[:valhalla][:conf_dir] %>/<%= node[:valhalla][:config] %>
+LISTEN=$(jq -r ".httpd.service.listen" <%= node[:valhalla][:conf_dir] %>/<%= node[:valhalla][:config] %>)
 PROXY=$(jq -r ".loki.service.proxy" <%= node[:valhalla][:conf_dir] %>/<%= node[:valhalla][:config] %>)_in
-LOOPBACK=jq -r ".httpd.service.loopback" <%= node[:valhalla][:conf_dir] %>/<%= node[:valhalla][:config] %>
+LOOPBACK=$(jq -r ".httpd.service.loopback" <%= node[:valhalla][:conf_dir] %>/<%= node[:valhalla][:config] %>)
 exec 2>&1
 exec chpst -u <%= node[:valhalla][:user][:name] %> -e /etc/sv/prime-httpd/env prime_httpd $LISTEN $PROXY $LOOPBACK
