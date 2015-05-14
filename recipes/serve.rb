@@ -18,7 +18,7 @@ end
 
 # cake layers
 %w(loki thor odin tyr).each do |layer|
-  #proxy
+  # proxy
   runit_service "proxyd-#{layer}" do
     action          :enable
     log             true
@@ -30,7 +30,7 @@ end
     )
   end
 
-  #workers
+  # workers
   %w(0 1 2 3 4 5 6 7).each do |n|
     runit_service "workerd-#{layer}-#{n}" do
       action          :enable
