@@ -10,7 +10,6 @@ package 'git'
 
 %w(
   user::default
-  runit::default
   valhalla::setup
 ).each do |r|
   include_recipe r

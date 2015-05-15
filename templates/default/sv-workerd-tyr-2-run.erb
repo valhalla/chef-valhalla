@@ -1,5 +1,0 @@
-#!/bin/bash
-
-cd <%= node[:valhalla][:config_dir] %>
-exec 2>&1
-exec chpst -u <%= node[:valhalla][:user][:name] %> -e /etc/sv/workerd-tyr-2/env tyr_service <%= node[:valhalla][:conf_dir] %>/<%= node[:valhalla][:config] %>
