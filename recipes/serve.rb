@@ -33,7 +33,7 @@ end
   end
 
   # workers
-  (0..7).step(1).each do |num|
+  (0..(node[:valhalla][:workers][:count] - 1)).step(1).each do |num|
     runit_service "workerd-#{layer}-#{num}" do
       action            :enable
       log               true
