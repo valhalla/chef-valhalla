@@ -39,4 +39,4 @@ default[:valhalla][:tyr][:port]                                  = 8080
 default[:valhalla][:tiles][:cut_tiles_timeout]                   = 86_400 # 24 hours
 
 # workers
-default[:valhalla][:workers][:count]                             = 8
+default[:valhalla][:workers][:count]                             = 8 # int, > 0

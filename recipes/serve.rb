@@ -41,6 +41,7 @@ end
       run_template_name 'workerd-global'
       sv_timeout        60
       retries           3
+      only_if           { node[:valhalla][:workers][:count] > 0 }
       options(layer: layer, num: num)
       env('LD_LIBRARY_PATH' => '/usr/lib:/usr/local/lib')
     end
