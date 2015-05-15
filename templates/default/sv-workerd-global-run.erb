@@ -2,4 +2,4 @@
 
 cd <%= node[:valhalla][:conf_dir] %>
 exec 2>&1
-exec chpst -u <%= node[:valhalla][:user][:name] %> -e /etc/sv/<%= @options[:layer] %>-<%= @options[:num] %>/env <%= @options[:layer] %>_service <%= node[:valhalla][:conf_dir] %>/<%= node[:valhalla][:config] %>
+exec chpst -u <%= node[:valhalla][:user][:name] %> -e /etc/sv/workerd-<%= @options[:layer] %>-<%= @options[:num] %>/env <%= @options[:layer] %>_service <%= node[:valhalla][:conf_dir] %>/<%= node[:valhalla][:config] %>

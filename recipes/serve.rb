@@ -25,7 +25,7 @@ end
     action            :enable
     log               true
     default_logger    true
-    run_template_name 'proxyd-global-run'
+    run_template_name 'proxyd-global'
     sv_timeout        60
     retries           3
     options(layer: layer)
@@ -38,7 +38,7 @@ end
       action            :enable
       log               true
       default_logger    true
-      run_template_name 'workerd-global-run'
+      run_template_name 'workerd-global'
       sv_timeout        60
       retries           3
       options(layer: layer, num: num)
