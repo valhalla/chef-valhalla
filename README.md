@@ -49,7 +49,7 @@ To build, install and run valhalla on Ubuntu (or other Debian based systems) try
 
     #build and install all valhalla includes, libraries and binaries
     for repo in midgard baldr sif mjolnir loki odin thor tyr; do
-      git clone --depth=1 --recurse-submodules --single-branch --branch=master https://github.com/valhalla/$repo.git
+      git clone --recurse-submodules https://github.com/valhalla/$repo.git
       cd $repo
       ./autogen.sh
       ./configure CPPFLAGS=-DBOOST_SPIRIT_THREADSAFE
