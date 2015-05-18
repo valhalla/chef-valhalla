@@ -46,6 +46,26 @@ To build, install and run valhalla on Ubuntu (or other Debian based systems) try
     
     update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 90
     update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
+    
+    # grab the latest zmq library:
+    rm -rf libzmq
+    git clone --depth=1 --recurse-submodules --single-branch --branch=master https://github.com/zeromq/libzmq.git
+    pushd libzmq
+    ./autogen.sh
+    ./configure --without-libsodium --without-documentation
+    make -j4
+    sudo make install
+    popd
+    
+    # grab experimental zmq-based server API:
+    rm -rf prime_server
+    git clone --depth=1 --recurse-submodules --single-branch --branch=master https://github.com/kevinkreiser/prime_server.git
+    pushd prime_server
+    ./autogen.sh
+    ./configure
+    make -j4
+    sudo make install
+    popd
 
     #build and install all valhalla includes, libraries and binaries
     for repo in midgard baldr sif mjolnir loki odin thor tyr; do
