@@ -42,7 +42,7 @@ Building and Running
 To build, install and run valhalla on Ubuntu (or other Debian based systems) try the following bash script:
 
     #grab all of the dependencies
-    sudo apt-get install autoconf automake libtool make gcc-4.8 g++-4.8 libpython2.7-dev libboost1.54-dev libboost-python1.54-dev libboost-program-options1.54-dev libboost-filesystem1.54-dev libboost-system1.54-dev  protobuf-compiler libprotobuf-dev lua5.2 liblua5.2-dev git firefox libsqlite3-dev libspatialite-dev libgeos-dev libgeos++-dev
+    sudo apt-get install autoconf automake libtool make gcc-4.8 g++-4.8 libboost1.54-dev libboost-program-options1.54-dev libboost-filesystem1.54-dev libboost-system1.54-dev libboost-thread1.54-dev  protobuf-compiler libprotobuf-dev lua5.2 liblua5.2-dev git firefox libsqlite3-dev libspatialite-dev libgeos-dev libgeos++-dev
     
     update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 90
     update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
