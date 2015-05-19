@@ -1,0 +1,23 @@
+input {
+  file {
+    type => "valhalla-thor-worker-logs"
+    path => [ "/var/log/workerd-thor*/current" ]
+    tags => [ "request", "<%= node[:mapzen][:environment] %>", "<%= node[:opsworks][:instance][:availability_zone] %>", "<%= node[:hostname] %>" ]
+  }
+}
+
+filter {
+  if [type] == "valhalla-thor-worker-logs" {
+    grok {
+      match   => [ "message", "PathCost = %{NUMBER:path_cost}  Iterations = %{NUMBER:iterations}" ]
+      add_tag => [ "thor-path_cost-iterations" ]
+    }
+  }
+}
+
+output {
+  zeromq {
+    address  => ["tcp://<%= node[:mapzen][:logstash][:host] %>:2120"]
+    topology => "pushpull"
+  }
+}
