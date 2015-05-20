@@ -1,9 +1,5 @@
 DEPENDENCIES
   apt
-  mapzen_logstash
-    git: git@github.com:mapzen/chef-mapzen_logstash
-    revision: 793cd45e9d0289e6f3289d9abca232a8bacf7176
-    tag: 0.11.0
   runit
   user
   valhalla
@@ -11,38 +7,12 @@ DEPENDENCIES
     metadata: true
 
 GRAPH
-  7-zip (1.0.2)
-    windows (>= 1.2.2)
   apt (2.7.0)
-  ark (0.9.0)
-    7-zip (>= 0.0.0)
-    windows (>= 0.0.0)
-  build-essential (2.2.3)
-  chef_handler (1.1.8)
-  java (1.31.0)
-  mapzen_logstash (0.11.0)
-    apt (>= 0.0.0)
-    ark (>= 0.0.0)
-    java (>= 0.0.0)
-    python (>= 0.0.0)
-    runit (>= 0.0.0)
-    ulimit (>= 0.0.0)
-    user (>= 0.0.0)
   packagecloud (0.0.17)
-  python (1.4.6)
-    build-essential (>= 0.0.0)
-    yum-epel (>= 0.0.0)
   runit (1.6.0)
     packagecloud (>= 0.0.0)
-  ulimit (0.3.3)
   user (0.4.2)
   valhalla (0.0.1)
     apt (>= 0.0.0)
-    mapzen_logstash (>= 0.0.0)
     runit (>= 0.0.0)
     user (>= 0.0.0)
-  windows (1.37.0)
-    chef_handler (>= 0.0.0)
-  yum (3.6.0)
-  yum-epel (0.6.0)
-    yum (~> 3.0)
