@@ -14,7 +14,6 @@ recipe 'valhalla', 'Installs valhalla'
   apt
   user
   runit
-  mapzen_logstash
 ).each do |dep|
   depends dep
 end
