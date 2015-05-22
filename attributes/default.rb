@@ -29,8 +29,6 @@ default[:valhalla][:extracts]                                    = %w(
 # configuration
 default[:valhalla][:config]                                      = 'valhalla.json'
 default[:valhalla][:log][:mjolnir]                               = "#{node[:valhalla][:log_dir]}/mjolnir.log"
-default[:valhalla][:log][:thor]                                  = "#{node[:valhalla][:log_dir]}/thor.log"
-default[:valhalla][:log][:tyr]                                   = "#{node[:valhalla][:log_dir]}/tyr.log"
 default[:valhalla][:mjolnir][:concurrency]                       = node[:cpu][:total]
 default[:valhalla][:tyr][:listen_address]                        = '0.0.0.0'
 default[:valhalla][:tyr][:port]                                  = 8080

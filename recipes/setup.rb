@@ -58,7 +58,7 @@ end
   # dependencies
   execute "dependencies #{repo}" do
     action  :nothing
-    command 'scripts/dependencies.sh'
+    command "scripts/dependencies.sh #{node[:valhalla][:src_dir]}"
     cwd     "#{node[:valhalla][:src_dir]}/#{repo}"
   end
 

@@ -45,7 +45,7 @@
   "loki": {
     "logging": {
       "type": "std_out",
-      "color": true
+      "color": false
     },
     "service": {
       "proxy": "ipc://<%= node[:valhalla][:conf_dir] %>/loki"
@@ -53,9 +53,8 @@
   },
   "thor": {
     "logging": {
-      "type": "file",
-      "file_name": "<%= node[:valhalla][:log][:thor] %>",
-      "reopen_interval": "60"
+      "type": "std_out",
+      "color": false
     },
     "service": {
       "proxy": "ipc://<%= node[:valhalla][:conf_dir] %>/thor"
@@ -64,7 +63,7 @@
   "odin": {
     "logging": {
       "type": "std_out",
-      "color": true
+      "color": false
     },
     "service": {
       "proxy": "ipc://<%= node[:valhalla][:conf_dir] %>/odin"
@@ -72,9 +71,8 @@
   },
   "tyr": {
     "logging": {
-      "type": "file",
-      "file_name": "<%= node[:valhalla][:log][:tyr] %>",
-      "reopen_interval": "60"
+      "type": "std_out",
+      "color": false
     },
     "service": {
       "proxy": "ipc://<%= node[:valhalla][:conf_dir] %>/tyr"
