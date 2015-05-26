@@ -39,13 +39,12 @@ template "#{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]}" do
 end
 
 # clone software
-execute "clone tyr" do
+execute 'clone tyr' do
   action            :run
   user              node[:valhalla][:user][:name]
   command           "rm -rf tyr && git clone --depth=1 --recurse-submodules --single-branch --branch=master \
                      #{node[:valhalla][:github][:base]}/tyr.git"
   cwd               "#{node[:valhalla][:src_dir]}"
-
 
   notifies :run, 'execute[dependencies tyr]', :immediately
   notifies :run, 'execute[configure tyr]', :immediately
@@ -54,14 +53,14 @@ execute "clone tyr" do
 end
 
 # dependencies
-execute "dependencies tyr" do
+execute 'dependencies tyr' do
   action  :nothing
   command "scripts/dependencies.sh #{node[:valhalla][:src_dir]}"
   cwd     "#{node[:valhalla][:src_dir]}/tyr"
 end
 
 # configure
-execute "configure tyr" do
+execute 'configure tyr' do
   action  :nothing
   user    node[:valhalla][:user][:name]
   command './autogen.sh && ./configure CPPFLAGS="-DLOGGING_LEVEL_INFO" \
@@ -74,7 +73,7 @@ execute "configure tyr" do
 end
 
 # build
-execute "build tyr" do
+execute 'build tyr' do
   action  :nothing
   user    node[:valhalla][:user][:name]
   command "make -j#{node[:cpu][:total]}"
@@ -82,7 +81,7 @@ execute "build tyr" do
 end
 
 # install
-execute "install tyr" do
+execute 'install tyr' do
   action  :nothing
   command "make -j#{node[:cpu][:total]} install"
   cwd     "#{node[:valhalla][:src_dir]}/tyr"
