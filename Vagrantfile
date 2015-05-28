@@ -45,6 +45,7 @@ Vagrant.configure('2') do |config|
   config.berkshelf.berksfile_path = 'Berksfile'
   config.berkshelf.enabled = true
 
+  # can run like: CHEF_RUN_LIST="recipe[valhalla::default],recipe[valhalla::serve]" vagrant provision
   config.vm.provision :chef_solo do |chef|
     chef.json = { }
     if ENV['CHEF_RUN_LIST'] == nil

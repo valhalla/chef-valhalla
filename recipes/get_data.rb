@@ -1,13 +1,15 @@
 # -*- coding: UTF-8 -*-
 #
 # Cookbook Name:: valhalla
-# Recipe:: data
+# Recipe:: get_data
 #
 
 # for each extract
 node[:valhalla][:extracts].each do |url|
   # for the sake of brevity
   file = url.split('/').last
+
+  # TODO: should kill any running update is running and clear crontab first
 
   # get the checksum for the data
   remote_file "#{node[:valhalla][:extracts_dir]}/#{file}.md5" do
@@ -46,7 +48,7 @@ node[:valhalla][:extracts].each do |url|
   # initialize the minutely updates
   execute "minutely_initialize #{file}" do
     action  :nothing
-    command "#{node[:valhalla][:src_dir]}/mjolnir/scripts/minutely_update.sh initialize #{node[:valhalla][:extracts_dir]} #{file}"
+    command "#{node[:valhalla][:conf_dir]}/minutely_update.sh initialize #{node[:valhalla][:extracts_dir]} #{file}"
     user    node[:valhalla][:user][:name]
   end
 end

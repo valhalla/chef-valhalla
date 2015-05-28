@@ -1,0 +1,57 @@
+#!/bin/bash
+set -e
+
+# make sure only one is running at any time...
+LOCK_FILE="<%= node[:valhalla][:lock_dir] %>/update.lock"
+(set -C; : > ${LOCK_FILE}) 2> /dev/null
+if [ $? != "0" ]; then
+   echo "Lock file exists"
+   exit 0
+fi
+trap 'rm $LOCK_FILE' EXIT 1 2 3 6
+
+export PATH=$PATH:/usr/local/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+
+# only if they want updates will we update the pbfs
+if [ "<%= node[:valhalla][:with_updates] %>" == "yes" ]; then
+  files=`find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf" -printf '%f '`
+  for file in ${files}; do
+    <%= node[:valhalla][:conf_dir] %>/minutely_update.sh update <%= node[:valhalla][:extracts_dir] %> ${file}
+  done
+fi
+
+# get all the lua programs for data import
+cp -rp ${src_dir}/mjolnir/conf/*.lua $(dirname <%= node[:valhalla][:config] %>)
+
+# make the dir where this will go
+tile_dir=$(jq -r '.mjolnir.hierarchy.tile_dir' <%= node[:valhalla][:config] %>)
+rm -rf $(dirname <%= node[:valhalla][:tile_dir] %>)/tiles_*
+cur_tile_dir=$(dirname <%= node[:valhalla][:tile_dir] %>)/tiles_$(date +%Y_%m_%d-%H_%M_%S)/
+
+# if we dont have admins we must create them
+extracts=$(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
+admin_file=$(jq -r '.mjolnir.admin.admin_dir' <%= node[:valhalla][:config] %>)/$(jq -r '.mjolnir.admin.db_name' <%= node[:valhalla][:config] %>)
+if [ ! -e $admin_file ]; then
+  pbfadminbuilder -c <%= node[:valhalla][:config] %> <%= node[:valhalla][:extracts_dir] %>
+fi
+
+# cut tiles from the data
+pbfgraphbuilder -c <%= node[:valhalla][:config] %> $(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
+rm -rf *.bin
+
+# generate connectivity map geojson, tile dir is as good a place as any
+# we can ship the whole tile dir to s3 anyway, admin connectivity and all
+pushd ${tile_dir}
+connectivitymap -c <%= node[:valhalla][:config] %>
+popd
+
+# backup files and tile dirs, keep the admin stuff though
+mkdir -p ${cur_tile_dir}
+mv <%= node[:valhalla][:tile_dir] %>/* ${cur_tile_dir}
+cp -rp ${cur_tile_dir}/$(basename ${admin_file}) <%= node[:valhalla][:tile_dir] %>
+
+# do we want to send this update to s3
+if [ "<%= node[:valhalla][:with_updates] %>" == "yes" ]; then
+  <%= node[:valhalla][:conf_dir] %>/push_tiles.py
+fi

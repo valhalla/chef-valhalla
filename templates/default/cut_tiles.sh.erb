@@ -1,0 +1,26 @@
+#!/bin/bash
+set -e
+
+# make sure only one is running at any time...
+LOCK_FILE="<%= node[:valhalla][:lock_dir] %>/cut.lock"
+(set -C; : > ${LOCK_FILE}) 2> /dev/null
+if [ $? != "0" ]; then
+   echo "Lock file exists"
+   exit 1
+fi
+trap 'rm $LOCK_FILE' EXIT 1 2 3 6
+
+# if they want updates then we need to install crontabs
+if [ "<%= node[:valhalla][:with_updates] %>" == "yes" ]; then
+  # remove cron jobs.
+  crontab -r
+
+  # add new cron job for updates.
+  (crontab -l 2>/dev/null; echo "*/5 * * * * cd <%= node[:valhalla][:base_dir] %>; <%= node[:valhalla][:conf_dir] %>/update_tiles.sh >> ${log_dir}/update.log 2>&1") | crontab -
+
+  # add new cron job for log clean up.
+  (crontab -l 2>/dev/null; echo "0 0 * * 0 rm <%= node[:valhalla][:log_dir] %>/*.log") | crontab -
+# they just want us to cut tiles once
+else
+  <%= node[:valhalla][:conf_dir] %>/update_tiles.sh >> ${log_dir}/update.log 2>&1
+fi

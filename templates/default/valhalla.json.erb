@@ -37,9 +37,8 @@
       "db_name": "transit.sqlite"
     },
     "logging": {
-      "type": "file",
-      "file_name": "<%= node[:valhalla][:log][:mjolnir] %>",
-      "reopen_interval": "60"
+      "type": "std_out",
+      "color": false
     }
   },
   "loki": {
@@ -80,7 +79,7 @@
   },
   "httpd": {
     "service": {
-      "listen": "tcp://<%= node[:valhalla][:tyr][:listen_address] %>:<%= node[:valhalla][:tyr][:port] %>",
+      "listen": "tcp://<%= node[:valhalla][:httpd][:listen_address] %>:<%= node[:valhalla][:httpd][:port] %>",
       "loopback": "ipc://<%= node[:valhalla][:conf_dir] %>/loopback"
     }
   },

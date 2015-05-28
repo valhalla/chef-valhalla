@@ -1,5 +1,5 @@
 #!/bin/bash
 
-cd <%= node[:valhalla][:src_dir] %>/tyr
+cd <%= node[:valhalla][:base_dir] %>/tyr
 exec 2>&1
-exec chpst -u <%= node[:valhalla][:user][:name] %> -e /etc/sv/tyr-service/env tyr_simple_service <%= node[:valhalla][:conf_dir] %>/<%= node[:valhalla][:config] %>
+exec chpst -u <%= node[:valhalla][:user][:name] %> -e /etc/sv/tyr-service/env tyr_simple_service <%= node[:valhalla][:config] %>

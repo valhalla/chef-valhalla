@@ -7,10 +7,10 @@
 # where to do some install work
 default[:valhalla][:base_dir]                                    = '/opt/valhalla'
 default[:valhalla][:tile_dir]                                    = "#{node[:valhalla][:base_dir]}/tiles"
-default[:valhalla][:mjolnir_tile_dir]                            = "#{node[:valhalla][:base_dir]}/mjolnir_tiles"
 default[:valhalla][:log_dir]                                     = "#{node[:valhalla][:base_dir]}/log"
 default[:valhalla][:conf_dir]                                    = "#{node[:valhalla][:base_dir]}/etc"
 default[:valhalla][:src_dir]                                     = "#{node[:valhalla][:base_dir]}/src"
+default[:valhalla][:lock_dir]                                    = "#{node[:valhalla][:base_dir]}/lock"
 default[:valhalla][:extracts_dir]                                = "#{node[:valhalla][:base_dir]}/extracts"
 
 # the repos
@@ -25,16 +25,20 @@ default[:valhalla][:user][:home]                                 = '/home/valhal
 default[:valhalla][:extracts]                                    = %w(
   http://download.geofabrik.de/europe/liechtenstein-latest.osm.pbf
 )
+default[:valhalla][:with_updates]                                = 'no'
+
+# where to put fresh tiles and who wants them
+default[:valhalla][:bucket]                                      = 'mapzen.valhalla'
+dafault[:valhalla][:bucket_dir]                                  = 'dev'
+default[:valhalla][:service_stack]                               = '978e7e69-0c63-46da-9e12-39a25a1f6078'
+default[:valhalla][:service_layer]                               = 'c39b1588-3824-464e-9fbc-99d9882e39cc'
+default[:valhalla][:service_recipes]                             = '[\'fresh_tiles\']' #this is a python list
 
 # configuration
-default[:valhalla][:config]                                      = 'valhalla.json'
-default[:valhalla][:log][:mjolnir]                               = "#{node[:valhalla][:log_dir]}/mjolnir.log"
+default[:valhalla][:config]                                      = "#{node[:valhalla][:conf_dir]}/valhalla.json"
 default[:valhalla][:mjolnir][:concurrency]                       = node[:cpu][:total]
-default[:valhalla][:tyr][:listen_address]                        = '0.0.0.0'
-default[:valhalla][:tyr][:port]                                  = 8080
-
-# tiles
-default[:valhalla][:tiles][:cut_tiles_timeout]                   = 86_400 # 24 hours
+default[:valhalla][:httpd][:listen_address]                      = '0.0.0.0'
+default[:valhalla][:httpd][:port]                                = 8080
 
 # workers
 default[:valhalla][:workers][:count]                             = 8 # int, > 0

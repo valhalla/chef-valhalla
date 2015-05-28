@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 #
 # Cookbook Name:: valhalla
-# Recipe:: setup
+# Recipe:: install
 #
 
 # make the valhalla user
@@ -17,10 +17,10 @@ end
 [
   node[:valhalla][:base_dir],
   node[:valhalla][:tile_dir],
-  node[:valhalla][:mjolnir_tile_dir],
   node[:valhalla][:log_dir],
   node[:valhalla][:conf_dir],
   node[:valhalla][:src_dir],
+  node[:valhalla][:lock_dir],
   node[:valhalla][:extracts_dir]
 ].each do |dir|
   directory dir do
@@ -36,6 +36,27 @@ template "#{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]}" do
   source "#{node[:valhalla][:config]}.erb"
   mode   0644
   owner  node[:valhalla][:user][:name]
+end
+
+# install all of the scripts for data motion
+%w(cut_tiles.sh update_tiles.sh minutely_update.sh push_tiles.py pull_tiles.py).each do |script|
+  template "#{node[:valhalla][:conf_dir]}/#{script}" do
+    source "#{script}.erb"
+    mode   0755
+    owner  node[:valhalla][:user][:name]
+  end
+end
+
+# need a few more deps for data stuff
+%w(
+  jq
+  osmosis
+  osmctools
+).each do |p|
+  package p do
+    options '--force-yes'
+    action :install
+  end
 end
 
 # clone software
