@@ -17,10 +17,10 @@ end
 [
   node[:valhalla][:base_dir],
   node[:valhalla][:tile_dir],
-  node[:valhalla][:mjolnir_tile_dir],
   node[:valhalla][:log_dir],
   node[:valhalla][:conf_dir],
   node[:valhalla][:src_dir],
+  node[:valhalla][:lock_dir],
   node[:valhalla][:extracts_dir]
 ].each do |dir|
   directory dir do
@@ -32,57 +32,42 @@ end
 end
 
 # move the config file into place
-template "#{node[:valhalla][:conf_dir]}/#{node[:valhalla][:config]}" do
-  source "#{node[:valhalla][:config]}.erb"
+conf_file = File.basename(node[:valhalla][:config])
+template "#{node[:valhalla][:config]}" do
+  source "#{conf_file}.erb"
   mode   0644
   owner  node[:valhalla][:user][:name]
 end
 
-# clone software
-execute 'clone tyr' do
-  action            :run
-  user              node[:valhalla][:user][:name]
-  command           "rm -rf tyr && git clone --depth=1 --recurse-submodules --single-branch --branch=master \
-                     #{node[:valhalla][:github][:base]}/tyr.git"
-  cwd               "#{node[:valhalla][:src_dir]}"
-
-  notifies :run, 'execute[dependencies tyr]', :immediately
-  notifies :run, 'execute[configure tyr]', :immediately
-  notifies :run, 'execute[build tyr]', :immediately
-  notifies :run, 'execute[install tyr]', :immediately
+# install all of the scripts for data motion
+%w(cut_tiles.sh update_tiles.sh minutely_update.sh push_tiles.py pull_tiles.py).each do |script|
+  template "#{node[:valhalla][:conf_dir]}/#{script}" do
+    source "#{script}.erb"
+    mode   0755
+    owner  node[:valhalla][:user][:name]
+  end
 end
 
-# dependencies
-execute 'dependencies tyr' do
-  action  :nothing
-  command "scripts/dependencies.sh #{node[:valhalla][:src_dir]}"
-  cwd     "#{node[:valhalla][:src_dir]}/tyr"
+# need a few more deps for data stuff
+%w(
+  git
+  python-pip
+  jq
+  osmosis
+  osmctools
+).each do |p|
+  package p do
+    options '--force-yes'
+    action :install
+  end
 end
 
-# configure
-execute 'configure tyr' do
-  action  :nothing
-  user    node[:valhalla][:user][:name]
-  command './autogen.sh && ./configure CPPFLAGS="-DLOGGING_LEVEL_INFO" \
-           --with-valhalla-midgard=/usr/local --with-valhalla-baldr=/usr/local \
-           --with-valhalla-sif=/usr/local --with-valhalla-mjolnir=/usr/local \
-           --with-valhalla-loki=/usr/local --with-valhalla-odin=/usr/local \
-           --with-valhalla-thor=/usr/local --with-valhalla-tyr=/usr/local \
-           CPPFLAGS=-DBOOST_SPIRIT_THREADSAFE'
-  cwd     "#{node[:valhalla][:src_dir]}/tyr"
-end
-
-# build
-execute 'build tyr' do
-  action  :nothing
-  user    node[:valhalla][:user][:name]
-  command "make -j#{node[:cpu][:total]}"
-  cwd     "#{node[:valhalla][:src_dir]}/tyr"
-end
-
-# install
-execute 'install tyr' do
-  action  :nothing
-  command "make -j#{node[:cpu][:total]} install"
-  cwd     "#{node[:valhalla][:src_dir]}/tyr"
+# need some python deps
+%w(
+  boto
+).each do |p|
+  execute p do
+    action   :run
+    command  "pip install #{p}"
+  end
 end

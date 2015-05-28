@@ -11,6 +11,7 @@ package 'git'
 %w(
   user::default
   valhalla::setup
+  valhalla::install
 ).each do |r|
   include_recipe r
 end
