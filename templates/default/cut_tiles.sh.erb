@@ -22,5 +22,5 @@ if [ "<%= node[:valhalla][:with_updates] %>" == "yes" ]; then
   (crontab -l 2>/dev/null; echo "0 0 * * 0 rm <%= node[:valhalla][:log_dir] %>/*.log") | crontab -
 # they just want us to cut tiles once
 else
-  <%= node[:valhalla][:conf_dir] %>/update_tiles.sh >> ${log_dir}/update.log 2>&1
+  <%= node[:valhalla][:conf_dir] %>/update_tiles.sh >> <%= node[:valhalla][:log_dir] %>/update.log 2>&1
 fi
