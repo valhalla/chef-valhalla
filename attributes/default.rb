@@ -32,7 +32,7 @@ default[:valhalla][:bucket]                                      = 'mapzen.valha
 dafault[:valhalla][:bucket_dir]                                  = 'dev'
 default[:valhalla][:service_stack]                               = '978e7e69-0c63-46da-9e12-39a25a1f6078'
 default[:valhalla][:service_layer]                               = 'c39b1588-3824-464e-9fbc-99d9882e39cc'
-default[:valhalla][:service_recipes]                             = '[\'fresh_tiles\']' #this is a python list
+default[:valhalla][:service_recipes]                             = '[\'fresh_tiles\']'
 
 # configuration
 default[:valhalla][:config]                                      = "#{node[:valhalla][:conf_dir]}/valhalla.json"
