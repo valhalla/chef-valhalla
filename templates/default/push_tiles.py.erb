@@ -20,7 +20,7 @@ def push_to_s3(file_name, bucket_name = '<%= node[:valhalla][:bucket] %>', bucke
     bucket.delete_key(key)
 
   #get ready for multi part
-  source_size = s.stat(filename).st_size
+  source_size = os.stat(file_name).st_size
   multipart = bucket.initiate_multipart_upload(bucket_dir + '/' + file_name)
   chunk_size = 536870912
   chunk_count = int(math.ceil(float(source_size) / float(chunk_size)))
@@ -29,9 +29,10 @@ def push_to_s3(file_name, bucket_name = '<%= node[:valhalla][:bucket] %>', bucke
   for i in range(chunk_count):
     offset = chunk_size * i
     bytes = min(chunk_size, source_size - offset)
-    with FileChunkIO(source_path, 'r', offset=offset, bytes=bytes) as fp:
-      mp.upload_part_from_file(fp, part_num=i + 1)
-  mp.complete_upload()
+    with FileChunkIO(file_name, 'r', offset=offset, bytes=bytes) as fp:
+      multipart.upload_part_from_file(fp, part_num=i + 1)
+      print("Part uploaded")
+  multipart.complete_upload()
 
   #check its ok and make it public
   key = bucket.get_key(bucket_dir + '/' + file_name)
