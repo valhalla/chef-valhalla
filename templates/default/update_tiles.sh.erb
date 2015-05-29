@@ -14,7 +14,7 @@ export PATH=$PATH:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
 # only if they want updates will we update the pbfs
-if [ "<%= node[:valhalla][:with_updates] %>" == "yes" ]; then
+if [ "<%= node[:valhalla][:with_updates] %>" == true ]; then
   files=`find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf" -printf '%f '`
   for file in ${files}; do
     <%= node[:valhalla][:conf_dir] %>/minutely_update.sh update <%= node[:valhalla][:extracts_dir] %> ${file}
@@ -52,7 +52,7 @@ mv <%= node[:valhalla][:tile_dir] %>/* ${cur_tile_dir}/
 cp -rp ${cur_tile_dir}/$(basename ${admin_file}) <%= node[:valhalla][:tile_dir] %>
 
 # do we want to send this update to s3
-if [ "<%= node[:valhalla][:with_updates] %>" == "yes" ]; then
+if [ "<%= node[:valhalla][:with_updates] %>" == true ]; then
   tar pcf - -C ${cur_tile_dir} . | pigz -9 > ${cur_tile_dir}.tgz
   <%= node[:valhalla][:conf_dir] %>/push_tiles.py ${cur_tile_dir}.tgz
 fi
