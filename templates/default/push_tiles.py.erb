@@ -57,9 +57,8 @@ def update_instances(stack = '<%= node[:valhalla][:service_stack] %>', layer = '
 
   #for each one
   for instance in instances:
-    for recipe in recipes:
-      #deploy task or something..
-      status = opsworks.create_deployment(stack, '{"Name": "execute_recipes", "Args": {"recipes": ["%s"]}}' % recipe, instance_ids=[instance['InstanceId']])
+    #deploy task or something..
+    deployment_id = opsworks.create_deployment(stack, {'Name': 'execute_recipes', 'Args': {'recipes': recipes}}, instance_ids=[instance['InstanceId']])
       #TODO: check that its status is all good
 
 #entry point for script
