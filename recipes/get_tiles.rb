@@ -19,7 +19,7 @@ end
 execute 'extract tiles' do
   action      :run
   user        node[:valhalla][:user][:name]
-  command     "rm -rf tmp_tiles; mkdir tmp_tiles; tar pxvf $(basename $(cat latest_tiles.txt)) -C tmp_tiles; rm $(basename $(cat latest_tiles.txt))"
+  command     'rm -rf tmp_tiles; mkdir tmp_tiles; tar pxvf $(basename $(cat latest_tiles.txt)) -C tmp_tiles; rm $(basename $(cat latest_tiles.txt))'
   cwd         node[:valhalla][:base_dir]
 end
 
