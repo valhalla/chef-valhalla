@@ -33,7 +33,7 @@ cur_tile_dir=$(dirname <%= node[:valhalla][:tile_dir] %>)/tiles_$(date +%Y_%m_%d
 extracts=$(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
 admin_file=$(jq -r '.mjolnir.admin.admin_dir' <%= node[:valhalla][:config] %>)/$(jq -r '.mjolnir.admin.db_name' <%= node[:valhalla][:config] %>)
 if [ ! -e $admin_file ]; then
-  pbfadminbuilder -c <%= node[:valhalla][:config] %> <%= node[:valhalla][:extracts_dir] %>/${admin_file}
+  pbfadminbuilder -c <%= node[:valhalla][:config] %> $(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
 fi
 
 # cut tiles from the data
