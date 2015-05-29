@@ -53,6 +53,6 @@ cp -rp ${cur_tile_dir}/$(basename ${admin_file}) <%= node[:valhalla][:tile_dir] 
 
 # do we want to send this update to s3
 if [ "<%= node[:valhalla][:with_updates] %>" == "yes" ]; then
-  tar pcf - ${cur_tile_dir} | pigz -9 > ${cur_tile_dir}.tgz
+  tar pcf - -C ${cur_tile_dir} . | pigz -9 > ${cur_tile_dir}.tgz
   <%= node[:valhalla][:conf_dir] %>/push_tiles.py ${cur_tile_dir}.tgz
 fi
