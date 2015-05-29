@@ -63,14 +63,10 @@ end
   end
 end
 
-# need ruby aws sdk
-gem_package 'aws-sdk' do
-  version '1.61.0'
-end
-
 # need some python deps
 %w(
   boto
+  filechunkio
 ).each do |p|
   execute p do
     action   :run
