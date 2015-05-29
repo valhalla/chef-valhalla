@@ -47,11 +47,11 @@ Vagrant.configure('2') do |config|
 
   # can run like: CHEF_RUN_LIST="recipe[valhalla::default],recipe[valhalla::serve]" vagrant provision
   config.vm.provision :chef_solo do |chef|
-    chef.json = { }
-    if ENV['CHEF_RUN_LIST'] == nil
+    chef.json = {}
+    if ENV['CHEF_RUN_LIST'].nil?
       chef.run_list = ['recipe[valhalla::default]']
     else
-      chef.run_list = ENV['CHEF_RUN_LIST'].split(",")
+      chef.run_list = ENV['CHEF_RUN_LIST'].split(',')
     end
   end
 end
