@@ -11,6 +11,7 @@ execute       'cut tiles' do
   command <<-EOH
     #{node[:valhalla][:conf_dir]}/cut_tiles.sh >> #{node[:valhalla][:log_dir]}/cut_tiles.log 2>&1
   EOH
+  only_if { node[:valhalla][:with_updates] == false }
 end
 
 cron 'cut tiles' do
