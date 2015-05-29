@@ -1,15 +1,9 @@
 #!/usr/bin/env python
 from __future__ import print_function
-import tarfile
 import hashlib
 import sys
 import os
 import boto
-
-#tar a directory
-def targzip(dst_file, src_dir):
-  with tarfile.open(dst_file, mode = 'w:gz', compresslevel = 9) as tgz:
-    tgz.add(src_dir, arcname=os.path.basename(src_dir))
 
 #do some maintainance on s3, including pushing the new data up there
 def push_to_s3(file_name, bucket_name = '<%= node[:valhalla][:bucket] %>', bucket_dir = '<%= node[:valhalla][:bucket_dir] %>'):
@@ -18,11 +12,6 @@ def push_to_s3(file_name, bucket_name = '<%= node[:valhalla][:bucket] %>', bucke
   bucket = s3.get_bucket(bucket_name)
   keys = sorted([ k.key for k in bucket.get_all_keys() if k.key.startswith(bucket_dir + '/tiles_') if k.key.endswith('.tgz') ])
   keys.reverse()
-
-  #remove it if its there
-  if tgz_file in keys:
-    bucket.delete_key(file_name)
-    keys.remove(file_name)
 
   #lets keep it to a managable amount of previous ones
   while len(keys) > 50:
@@ -66,12 +55,10 @@ def update_instances(stack = '<%= node[:valhalla][:service_stack] %>', layer = '
 
   #for each one
   for instance in instances:
-    print(instance)
     for recipe in recipes:
       #deploy task or something..
-      opsworks.create_deployment(stack,
-        '{"Name": "execute_recipes", "Args": {"recipes": ["%s"]}}' % recipe,
-        instance_ids=[instance['InstanceId']])
+      status = opsworks.create_deployment(stack, '{"Name": "execute_recipes", "Args": {"recipes": ["%s"]}}' % recipe, instance_ids=[instance['InstanceId']])
+      #TODO: check that its status is all good
 
 #entry point for script
 if __name__ == "__main__":
@@ -79,12 +66,8 @@ if __name__ == "__main__":
     print('Wrong arguments', file=sys.stderr)
     sys.exit(1)
 
-  #zip up the tiles
-  tgz_file = os.path.basename(sys.argv[1]) + '.tgz'
-  targzip(tgz_file, sys.argv[1])
-
   #push them to s3
-  push_to_s3(tgz_file, '<%= node[:valhalla][:bucket] %>', '<%= node[:valhalla][:bucket_dir] %>')
+  push_to_s3(sys.argv[1], '<%= node[:valhalla][:bucket] %>', '<%= node[:valhalla][:bucket_dir] %>')
 
   #update the service instances
   update_instances('<%= node[:valhalla][:service_stack] %>', '<%= node[:valhalla][:service_layer] %>', list('<%= node[:valhalla][:service_recipes] %>'.split(',')))

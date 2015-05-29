@@ -51,6 +51,7 @@ end
 # need a few more deps for data stuff
 %w(
   git
+  pigz
   python-pip
   jq
   osmosis
