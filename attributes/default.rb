@@ -32,7 +32,7 @@ default[:valhalla][:bucket]                                      = 'YOUR_BUCKET'
 default[:valhalla][:bucket_dir]                                  = 'YOUR_DIR'
 default[:valhalla][:service_stack]                               = 'YOUR_STACK_ID'
 default[:valhalla][:service_layer]                               = 'YOUR_LAYER_ID'
-default[:valhalla][:service_recipes]                             = 'fresh_tiles'
+default[:valhalla][:service_recipes]                             = 'get_tiles'
 
 # configuration
 default[:valhalla][:config]                                      = "#{node[:valhalla][:conf_dir]}/valhalla.json"
