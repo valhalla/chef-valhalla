@@ -6,16 +6,16 @@
 
 # clone software
 execute 'clone tyr' do
-  action            :run
-  user              node[:valhalla][:user][:name]
-  command           "rm -rf tyr && git clone --depth=1 --recurse-submodules --single-branch --branch=master \
-                     #{node[:valhalla][:github][:base]}/tyr.git"
-  cwd               "#{node[:valhalla][:src_dir]}"
+  action    :run
+  user      node[:valhalla][:user][:name]
+  command   "rm -rf tyr && git clone --depth=1 --recurse-submodules --single-branch --branch=master \
+            #{node[:valhalla][:github][:base]}/tyr.git"
+  cwd       node[:valhalla][:src_dir]
 
-  notifies :run, 'execute[dependencies tyr]', :immediately
-  notifies :run, 'execute[configure tyr]', :immediately
-  notifies :run, 'execute[build tyr]', :immediately
-  notifies :run, 'execute[install tyr]', :immediately
+  notifies  :run, 'execute[dependencies tyr]',  :immediately
+  notifies  :run, 'execute[configure tyr]',     :immediately
+  notifies  :run, 'execute[build tyr]',         :immediately
+  notifies  :run, 'execute[install tyr]',       :immediately
 end
 
 # dependencies

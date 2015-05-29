@@ -33,7 +33,7 @@ end
 
 # move the config file into place
 conf_file = File.basename(node[:valhalla][:config])
-template "#{node[:valhalla][:config]}" do
+template node[:valhalla][:config] do
   source "#{conf_file}.erb"
   mode   0644
   owner  node[:valhalla][:user][:name]
