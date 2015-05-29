@@ -73,3 +73,11 @@ end
     command  "pip install #{p}"
   end
 end
+
+# logrotate
+template '/etc/logrotate.d/valhalla' do
+  source  'logrotate.erb'
+  owner   'root'
+  group   'root'
+  mode    0644
+end
