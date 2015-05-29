@@ -10,15 +10,4 @@ if [ $? != "0" ]; then
 fi
 trap 'rm $LOCK_FILE' EXIT 1 2 3 6
 
-# if they want updates then we need to install crontabs
-if [ "<%= node[:valhalla][:with_updates] %>" == "yes" ]; then
-  # remove cron jobs.
-  crontab -r 2>/dev/null || true
-
-  # updates and log cleanup
-  (echo "*/5 * * * * cd <%= node[:valhalla][:base_dir] %>; <%= node[:valhalla][:conf_dir] %>/update_tiles.sh >> <%= node[:valhalla][:log_dir] %>/update.log 2>&1";
-   echo "0 0 * * 0 rm <%= node[:valhalla][:log_dir] %>/*.log") | crontab -
-# they just want us to cut tiles once
-else
-  <%= node[:valhalla][:conf_dir] %>/update_tiles.sh >> <%= node[:valhalla][:log_dir] %>/update.log 2>&1
-fi
+<%= node[:valhalla][:conf_dir] %>/update_tiles.sh >> <%= node[:valhalla][:log_dir] %>/update.log 2>&1
