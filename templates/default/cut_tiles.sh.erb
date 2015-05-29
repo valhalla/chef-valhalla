@@ -16,7 +16,7 @@ if [ "<%= node[:valhalla][:with_updates] %>" == "yes" ]; then
   crontab -r || true
 
   # add new cron job for updates.
-  (crontab -l 2>/dev/null; echo "*/5 * * * * cd <%= node[:valhalla][:base_dir] %>; <%= node[:valhalla][:conf_dir] %>/update_tiles.sh >> ${log_dir}/update.log 2>&1") | crontab -
+  (crontab -l 2>/dev/null; echo "*/5 * * * * cd <%= node[:valhalla][:base_dir] %>; <%= node[:valhalla][:conf_dir] %>/update_tiles.sh >> <%= node[:valhalla][:log_dir] %>/update.log 2>&1") | crontab -
 
   # add new cron job for log clean up.
   (crontab -l 2>/dev/null; echo "0 0 * * 0 rm <%= node[:valhalla][:log_dir] %>/*.log") | crontab -
