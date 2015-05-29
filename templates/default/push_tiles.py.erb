@@ -32,7 +32,7 @@ def push_to_s3(file_name, bucket_name = '<%= node[:valhalla][:bucket] %>', bucke
     bytes = min(chunk_size, source_size - offset)
     with FileChunkIO(file_name, 'r', offset=offset, bytes=bytes) as fp:
       multipart.upload_part_from_file(fp, part_num=i + 1)
-      print('Part pushed to s3 %%%f' % (100*float(offset)/float(source_size)))
+      print('Part pushed to s3 %%%f' % (100 * float(offset + chunk_size) / float(source_size)))
   multipart.complete_upload()
 
   #check its ok and make it public
