@@ -25,7 +25,7 @@ execute 'extract tiles' do
   command <<-EOH
     rm -rf tmp_tiles &&
     mkdir tmp_tiles &&
-    curl $(basename $(cat latest_tiles.txt)) | tar pxf -C tmp_tiles
+    curl $(basename $(cat latest_tiles.txt)) | tar xzp -C tmp_tiles
   EOH
 end
 
