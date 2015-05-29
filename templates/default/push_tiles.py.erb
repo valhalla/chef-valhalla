@@ -21,7 +21,8 @@ def push_to_s3(file_name, bucket_name = '<%= node[:valhalla][:bucket] %>', bucke
 
   #get ready for multi part
   source_size = os.stat(file_name).st_size
-  multipart = bucket.initiate_multipart_upload(bucket_dir + '/' + file_name)
+  key_name = bucket_dir + '/' + os.path.basename(file_name)
+  multipart = bucket.initiate_multipart_upload(key_name)
   chunk_size = 536870912
   chunk_count = int(math.ceil(float(source_size) / float(chunk_size)))
 
@@ -35,7 +36,7 @@ def push_to_s3(file_name, bucket_name = '<%= node[:valhalla][:bucket] %>', bucke
   multipart.complete_upload()
 
   #check its ok and make it public
-  key = bucket.get_key(bucket_dir + '/' + file_name)
+  key = bucket.get_key(key_name)
   if key is None:
     raise Exception('Failed to push file to s3')
   key.make_public()
