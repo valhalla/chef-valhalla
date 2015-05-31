@@ -18,7 +18,7 @@ cron 'cut tiles' do
   user    node[:valhalla][:user][:name]
   minute  '*/5'
   command <<-EOH
-    cd #{node[:valhalla][:base_dir]}; #{node[:valhalla][:conf_dir]}/cut_tiles.sh >>#{node[:valhalla][:log_dir]}/cut_tiles.log 2>&1
+    cd #{node[:valhalla][:base_dir]} && #{node[:valhalla][:conf_dir]}/cut_tiles.sh >>#{node[:valhalla][:log_dir]}/cut_tiles.log 2>&1
   EOH
   only_if { node[:valhalla][:with_updates] == true }
 end
