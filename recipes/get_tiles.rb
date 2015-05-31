@@ -34,7 +34,7 @@ execute 'stop workers' do
   command     <<-EOH
     count=$((#{node[:valhalla][:workers][:count]} - 1))
     for i in loki thor odin tyr; do
-      for j in {0..${count}}; do
+      for j in $(seq 0 ${count}); do
         service stop workerd-${i}-${j}
       done
     done
@@ -55,7 +55,7 @@ execute 'start workers' do
   command <<-EOH
     count=$((#{node[:valhalla][:workers][:count]} - 1))
     for i in loki thor odin tyr; do
-      for j in {0..${count}}; do
+      for j in $(seq 0 ${count}); do
         service start workerd-${i}-${j}
       done
     done
