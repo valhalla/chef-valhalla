@@ -3,6 +3,7 @@ from __future__ import print_function
 import sys
 import os
 import math
+import time
 import boto
 from filechunkio import FileChunkIO
 
@@ -50,6 +51,7 @@ def update_instances(stack = '<%= node[:valhalla][:service_stack] %>', layer = '
   instances = opsworks.describe_instances(layer_id=layer)
 
   #TODO: make this more robust of a heuristic
+  #TODO: sort by instance name so that we always try the same one first
   #if we dont have enough machines to feel safe we give up
   instances = [ instance for instance in instances['Instances'] if instance.get('Status') == 'online' ]
   if len(instances) < 3:
@@ -58,8 +60,16 @@ def update_instances(stack = '<%= node[:valhalla][:service_stack] %>', layer = '
   #for each one
   for instance in instances:
     #deploy task or something..
-    deployment_id = opsworks.create_deployment(stack, {'Name': 'execute_recipes', 'Args': {'recipes': recipes}}, instance_ids=[instance['InstanceId']])
-      #TODO: check that its status is all good
+    deployment_id = opsworks.create_deployment(stack, {'Name': 'execute_recipes', 'Args': {'recipes': recipes}}, instance_ids=[instance['InstanceId']])['DeploymentId']
+    #wait until it ends
+    while True:
+      if opsworks.describe_commands(deployment_id=deployment_id)['Status'] != 'pending':
+        break
+      time.sleep(5)
+    #check that its status is all good
+    if opsworks.describe_commands(deployment_id=deployment_id)['Status'] != 'successful':
+      print('Deployment %s to Instance %s failed' % (deployment_id, instance['InstanceId']), file=sys.stderr) 
+      sys.exit(1)
 
 #entry point for script
 if __name__ == "__main__":

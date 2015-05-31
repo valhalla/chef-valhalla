@@ -9,7 +9,7 @@ execute 'pull_tiles' do
   user    node[:valhalla][:user][:name]
   cwd     node[:valhalla][:base_dir]
   command <<-EOH
-    $(#{node[:valhalla][:conf_dir]}/pull_tiles.py) > latest_tiles.txt
+    #{node[:valhalla][:conf_dir]}/pull_tiles.py > latest_tiles.txt
   EOH
 
   notifies :run, 'execute[extract tiles]', :immediately
