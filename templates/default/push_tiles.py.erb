@@ -55,7 +55,7 @@ def update_instances(stack = '<%= node[:valhalla][:service_stack] %>', layer = '
   #TODO: sort by instance name so that we always try the same one first
   #if we dont have enough machines to feel safe we give up
   instances = [ instance for instance in instances['Instances'] if instance.get('Status') == 'online' ]
-  if len(instances) < 3:
+  if len(instances) < <%= node[:valhalla][:min_service_update_instances] %>:
     raise Exception('Not enough instances in layer to risk the update')
 
   #for each one
