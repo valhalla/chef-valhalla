@@ -19,8 +19,8 @@ osmosis_fetch_changeset() {
     echo "Osmosis state file not found - has the state been correctly initialized?"
     exit 1
   fi
-  STATE_TIMESTAMP=`grep '^timestamp=' $WORKDIR_OSM/state.txt | tail -n1 | cut -c 11-`
-  CURRENT_TIMESTAMP=`date -u "+%Y-%m-%d_%H:%M:%S"`
+  STATE_TIMESTAMP=$(grep '^timestamp=' $WORKDIR_OSM/state.txt | tail -n1 | cut -c 11-)
+  CURRENT_TIMESTAMP=$(date -u "+%Y-%m-%d_%H:%M:%S")
   CHANGESET_FILE=$CHANGESET_DIR/changeset-$STATE_TIMESTAMP.ocs.gz
 
   echo "$CURRENT_TIMESTAMP:Downloading changeset $STATE_TIMESTAMP"
@@ -84,7 +84,7 @@ initialize() {
   sed -i "s/^\(maxInterval\s*=\s*\).*\$/\10/" $WORKDIR_OSM/configuration.txt
   
   echo "obtaining planet timestamp."
-  planet_timestamp=`osmconvert $PLANET --out-timestamp`
+  planet_timestamp=$(osmconvert $PLANET --out-timestamp)
 
   #https://github.com/MaZderMind/replicate-sequences
   wget "http://osm.personalwerk.de/replicate-sequences/?$planet_timestamp" -O $WORKDIR_OSM/state.txt;
