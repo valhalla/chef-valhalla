@@ -28,6 +28,7 @@ def push_to_s3(file_name, bucket_name = '<%= node[:valhalla][:bucket] %>', bucke
   chunk_count = int(math.ceil(float(source_size) / float(chunk_size)))
 
   #send them
+  print('Pushing %s to s3' % file_name)
   for i in range(chunk_count):
     offset = chunk_size * i
     bytes = min(chunk_size, source_size - offset)
