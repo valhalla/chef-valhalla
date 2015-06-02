@@ -54,4 +54,4 @@ execute 'install tyr' do
 end
 
 # restart the services if they are present
-include_recipe '_restart'
+include_recipe 'valhalla::_restart'
