@@ -131,3 +131,4 @@ And generate an HTML coverage report in the `coverage/` directory:
     make coverage-report
 
 Note also that, because calculating the coverage requires compiler support, you will need to clean any object files from a non-coverage build by running `make clean` before `make coverage-report`.
+
