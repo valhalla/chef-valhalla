@@ -52,3 +52,6 @@ execute 'install tyr' do
   command "make -j#{node[:cpu][:total]} install"
   cwd     "#{node[:valhalla][:src_dir]}/tyr"
 end
+
+# restart the services if they are present
+include_recipe '_restart'
