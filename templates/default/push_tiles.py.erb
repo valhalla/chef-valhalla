@@ -64,11 +64,11 @@ def update_instances(stack = '<%= node[:valhalla][:service_stack] %>', layer = '
     deployment_id = opsworks.create_deployment(stack, {'Name': 'execute_recipes', 'Args': {'recipes': recipes}}, instance_ids=[instance['InstanceId']])['DeploymentId']
     #wait until it ends
     while True:
-      if opsworks.describe_commands(deployment_id=deployment_id)['Status'] != 'pending':
+      if opsworks.describe_commands(deployment_id=deployment_id)['Commands'][0]['Status'] != 'pending':
         break
       time.sleep(5)
     #check that its status is all good
-    if opsworks.describe_commands(deployment_id=deployment_id)['Status'] != 'successful':
+    if opsworks.describe_commands(deployment_id=deployment_id)['Commands'][0]['Status'] != 'successful':
       print('Deployment %s to Instance %s failed' % (deployment_id, instance['InstanceId']), file=sys.stderr) 
       sys.exit(1)
 
