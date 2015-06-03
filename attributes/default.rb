@@ -42,4 +42,4 @@ default[:valhalla][:httpd][:listen_address]                      = '0.0.0.0'
 default[:valhalla][:httpd][:port]                                = 8080
 
 # workers
-default[:valhalla][:workers][:count]                             = 8 # int, > 0
+default[:valhalla][:workers][:count]                             = node[:cpu][:total]
