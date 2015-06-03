@@ -83,6 +83,17 @@
       "loopback": "ipc://<%= node[:valhalla][:conf_dir] %>/loopback"
     }
   },
+  "service_limits": {
+    "max_distance": {
+      "auto": 5000000.0,
+      "auto_shorter": 5000000.0,
+      "bus": 5000000.0,
+      "pedestrian": 100000.0,
+      "bicycle": 500000.0,
+      "multimodal": 500000.0
+    },
+    "max_route_locations": 8
+  },
   "costing_options": {
     "auto": {
       "maneuver_penalty": 5.0,
