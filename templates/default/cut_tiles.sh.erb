@@ -13,14 +13,6 @@ trap 'rm $LOCK_FILE' EXIT 1 2 3
 export PATH=$PATH:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
-# only if they want updates will we update the pbfs
-if [ "<%= node[:valhalla][:with_updates] %>" == true ]; then
-  files=$(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf" -printf '%f ')
-  for file in ${files}; do
-    <%= node[:valhalla][:conf_dir] %>/minutely_update.sh update <%= node[:valhalla][:extracts_dir] %> ${file}
-  done
-fi
-
 # get all the lua programs for data import
 cp -rp <%= node[:valhalla][:src_dir] %>/mjolnir/conf/*.lua <%= node[:valhalla][:conf_dir] %>
 
@@ -57,8 +49,10 @@ if [ -e ${cur_tile_dir}/$(basename ${transit_file}) ]; then
   cp -rp ${cur_tile_dir}/$(basename ${transit_file}) <%= node[:valhalla][:tile_dir] %>
 fi
 
-# do we want to send this update to s3
+# do we want to send this update to s3 (do so in the background)
 if [ "<%= node[:valhalla][:with_updates] %>" == true ]; then
-  tar pcf - -C ${cur_tile_dir} . | pigz -9 > ${cur_tile_dir}.tgz
-  <%= node[:valhalla][:conf_dir] %>/push_tiles.py ${cur_tile_dir}.tgz
+  {
+    tar pcf - -C ${cur_tile_dir} . | pigz -9 > ${cur_tile_dir}.tgz
+    <%= node[:valhalla][:conf_dir] %>/push_tiles.py ${cur_tile_dir}.tgz
+  }&
 fi

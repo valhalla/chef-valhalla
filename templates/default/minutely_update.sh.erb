@@ -68,7 +68,7 @@ initialize() {
 
   if [ -e $WORKDIR_OSM/state.txt ]; then
     echo "Osmosis state file found - has this already been initialized?"
-    exit 1
+    exit 0
   fi
   PLANET=$BASE_DIR/$1
   if [ ! -e $PLANET ]; then
