@@ -1,6 +1,10 @@
 valhalla changelog
 ==================
 
+0.4.2
+-----
+* fix for faster restarts of services
+
 0.4.1
 -----
 * worker count
