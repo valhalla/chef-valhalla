@@ -24,7 +24,6 @@ cron 'cut tiles' do
   only_if { node[:valhalla][:with_updates] == true }
 end
 
-
 # make sure to keep the data up to date if we are constantly cutting tiles
 node[:valhalla][:extracts].each do |file|
   cron "apply changeset #{file}" do
