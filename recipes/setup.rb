@@ -21,7 +21,8 @@ end
   node[:valhalla][:conf_dir],
   node[:valhalla][:src_dir],
   node[:valhalla][:lock_dir],
-  node[:valhalla][:extracts_dir]
+  node[:valhalla][:extracts_dir],
+  node[:valhalla][:temp_dir]
 ].each do |dir|
   directory dir do
     action    :create

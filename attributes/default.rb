@@ -9,6 +9,7 @@ default[:valhalla][:base_dir]                                    = '/opt/valhall
 default[:valhalla][:tile_dir]                                    = "#{node[:valhalla][:base_dir]}/tiles"
 default[:valhalla][:log_dir]                                     = "#{node[:valhalla][:base_dir]}/log"
 default[:valhalla][:conf_dir]                                    = "#{node[:valhalla][:base_dir]}/etc"
+default[:valhalla][:temp_dir]                                    = "#{node[:valhalla][:base_dir]}/temp"
 default[:valhalla][:src_dir]                                     = "#{node[:valhalla][:base_dir]}/src"
 default[:valhalla][:lock_dir]                                    = "#{node[:valhalla][:base_dir]}/lock"
 default[:valhalla][:extracts_dir]                                = "#{node[:valhalla][:base_dir]}/extracts"
