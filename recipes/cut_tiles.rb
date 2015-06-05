@@ -27,7 +27,7 @@ end
 # make sure to keep the data up to date if we are constantly cutting tiles
 node[:valhalla][:extracts].each do |extract|
   filename = extract.split('/').last
-  cron "apply changeset #{extract}" do
+  cron "apply changeset #{filename}" do
     user    node[:valhalla][:user][:name]
     minute  '*/5'
     command <<-EOH
