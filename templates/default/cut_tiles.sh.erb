@@ -16,9 +16,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 # get all the lua programs for data import
 cp -rp <%= node[:valhalla][:src_dir] %>/mjolnir/conf/*.lua <%= node[:valhalla][:conf_dir] %>
 
-# make the dir where this will go
-tile_dir=$(jq -r '.mjolnir.hierarchy.tile_dir' <%= node[:valhalla][:config] %>)
-rm -rf $(dirname <%= node[:valhalla][:tile_dir] %>)/tiles_*
+# name the dir where this will go
 cur_tile_dir=$(dirname <%= node[:valhalla][:tile_dir] %>)/tiles_$(date +%Y_%m_%d-%H_%M_%S)
 
 # if we dont have admins we must create them
@@ -54,5 +52,6 @@ if [ "<%= node[:valhalla][:with_updates] %>" == true ]; then
   {
     tar pcf - -C ${cur_tile_dir} . | pigz -9 > ${cur_tile_dir}.tgz
     <%= node[:valhalla][:conf_dir] %>/push_tiles.py ${cur_tile_dir}.tgz
+    rm -rf ${cur_tile_dir} ${cur_tile_dir}.tgz
   }&
 fi
