@@ -50,8 +50,8 @@ fi
 # do we want to send this update to s3 (do so in the background)
 if [ "<%= node[:valhalla][:with_updates] %>" == true ]; then
   {
-    tar pcf - -C ${cur_tile_dir} . | pigz -9 > ${cur_tile_dir}.tgz
-    <%= node[:valhalla][:conf_dir] %>/push_tiles.py ${cur_tile_dir}.tgz
+    tar pcf - -C ${cur_tile_dir} . | pigz -9 > ${cur_tile_dir}.tgz && \
+    <%= node[:valhalla][:conf_dir] %>/push_tiles.py ${cur_tile_dir}.tgz || \
     rm -rf ${cur_tile_dir} ${cur_tile_dir}.tgz
   }&
 fi
