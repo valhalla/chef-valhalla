@@ -28,6 +28,10 @@
       "relation_script": "<%= node[:valhalla][:conf_dir] %>/admins.lua",
       "relation_function": "rels_proc"
     },
+    "statistics": {
+      "statistics_dir": "<%= node[:valhalla][:tile_dir] %>",
+      "db_name": "statistics.sqlite"
+    },
     "admin": {
       "admin_dir": "<%= node[:valhalla][:tile_dir] %>",
       "db_name": "admin.sqlite"
