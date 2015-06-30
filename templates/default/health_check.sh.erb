@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#keep checking while we havent run out of time
+start=$(date +%s)
+while [ $[$(date +%s) - $start] -lt <% node[:valhalla][:health_check_timeout] %> ]; do
+	curl localhost:<% node[:valhalla][:httpd][:port] %>/route --max-time 1 --fail --data '{"locations":[{"lat":40.402918,"lon":-76.535017},{"lat":40.403654,"lon": -76.529846}],"costing":"auto"}'
+	if [ $? -eq 0 ]; then
+		exit 0
+	fi
+	sleep 5
+done
+
+#never got a decent response try one last time
+curl localhost:<% node[:valhalla][:httpd][:port] %>/route --max-time 1 --fail --data '{"locations":[{"lat":40.402918,"lon":-76.535017},{"lat":40.403654,"lon": -76.529846}],"costing":"auto"}'
+exit $?

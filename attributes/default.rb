@@ -35,6 +35,7 @@ default[:valhalla][:service_stack]                               = 'YOUR_STACK_I
 default[:valhalla][:service_layer]                               = 'YOUR_LAYER_ID'
 default[:valhalla][:service_recipes]                             = 'valhalla::get_tiles'
 default[:valhalla][:min_service_update_instances]                = 2
+default[:valhalla][:health_check_timeout]                        = 300
 
 # configuration
 default[:valhalla][:config]                                      = "#{node[:valhalla][:conf_dir]}/valhalla.json"
