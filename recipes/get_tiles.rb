@@ -4,6 +4,7 @@
 # Recipe:: get_tiles
 #
 
+# stop everything from running
 execute 'stop service' do
   action      :run
   command     <<-EOH
@@ -21,10 +22,9 @@ execute 'stop service' do
   notifies :run, 'execute[pull tiles]', :immediately
   notifies :run, 'execute[extract tiles]', :immediately
   notifies :run, 'execute[move tiles]', :immediately
-  notifies :run, 'execute[start service]', :immediately
-  notifies :run, 'execute[test service]', :immediately
 end
 
+# go get the tiles
 execute 'pull tiles' do
   action  :run
   user    node[:valhalla][:user][:name]
@@ -32,13 +32,9 @@ execute 'pull tiles' do
   command <<-EOH
     #{node[:valhalla][:conf_dir]}/pull_tiles.py > latest_tiles.txt
   EOH
-
-  notifies :run, 'execute[extract tiles]', :immediately
-  notifies :run, 'execute[stop workers]', :immediately
-  notifies :run, 'execute[move tiles]', :immediately
-  notifies :run, 'execute[start workers]', :immediately
 end
 
+# open them up
 execute 'extract tiles' do
   action  :run
   user    node[:valhalla][:user][:name]
@@ -50,6 +46,7 @@ execute 'extract tiles' do
   EOH
 end
 
+# move them into place
 execute 'move tiles' do
   action  :run
   user    node[:valhalla][:user][:name]
@@ -57,24 +54,5 @@ execute 'move tiles' do
   cwd     node[:valhalla][:base_dir]
 end
 
-execute 'start service' do
-  action  :run
-  cwd     node[:valhalla][:base_dir]
-  command <<-EOH
-    service prime-httpd start
-    count=$((#{node[:valhalla][:workers][:count]} - 1))
-    for i in loki thor odin tyr; do
-      service proxyd-${i} start
-      for j in $(seq 0 ${count}); do
-        service workerd-${i}-${j} start
-      done
-    done
-  EOH
-end
-
-execute 'test service' do
-  action  :run
-  user    node[:valhalla][:user][:name]
-  command 'curl localhost:8080/route --fail --data \'{"locations":[{"lat":40.402918,"lon":-76.535017},{"lat":40.403654,"lon": -76.529846}],"costing":"auto"}\''
-  cwd     node[:valhalla][:base_dir]
-end
+# turn everything back on
+include_recipe 'valhalla::_restart'

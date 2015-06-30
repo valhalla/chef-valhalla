@@ -28,3 +28,11 @@ end
     end
   end
 end
+
+# make sure everything is working by issuing a request
+execute 'test service' do
+  action  :run
+  user    node[:valhalla][:user][:name]
+  command "#{node[:valhalla][:conf_dir]}/health_check.sh"
+  cwd     node[:valhalla][:base_dir]
+end
