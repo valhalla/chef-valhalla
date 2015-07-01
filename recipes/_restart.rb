@@ -34,5 +34,5 @@ execute 'test service' do
   action  :run
   user    node[:valhalla][:user][:name]
   command "#{node[:valhalla][:conf_dir]}/health_check.sh"
-  cwd     node[:valhalla][:base_dir]
+  only_if "test -h #{node[:runit][:service_dir]}/prime-httpd"
 end
