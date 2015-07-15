@@ -44,7 +44,7 @@ def push_to_s3(file_name, bucket_name = '<%= node[:valhalla][:bucket] %>', bucke
   key.make_public()
 
 #get all the instances of a layer and run some recipes on each
-def update_instances(stack = '<%= node[:valhalla][:service_stack] %>', layer = '<%= node[:valhalla][:service_layer] %>', recipes = list('<%= node[:valhalla][:service_recipes] %>'.split(','))):
+def update_instances(elb_name = '<%= node[:valhalla][:service_elb] %>', stack = '<%= node[:valhalla][:service_stack] %>', layer = '<%= node[:valhalla][:service_layer] %>', recipes = list('<%= node[:valhalla][:service_recipes] %>'.split(','))):
   #connect to opsworks
   opsworks = boto.connect_opsworks()
 
@@ -54,13 +54,24 @@ def update_instances(stack = '<%= node[:valhalla][:service_stack] %>', layer = '
   #TODO: make this more robust of a heuristic
   #TODO: sort by instance name so that we always try the same one first
   #if we dont have enough machines to feel safe we give up
-  instances = [ instance for instance in instances['Instances'] if instance.get('Status') == 'online' ]
+  instances = [ i for i in instances['Instances'] if i.get('Status') == 'online' ]
   if len(instances) < <%= node[:valhalla][:min_service_update_instances] %>:
     raise Exception('Not enough instances in layer to risk the update')
 
+  #connect to the elb and check which are in it
+  elb = boto.connect_elb(elb_name)
+  instances = [ i for i in instances if elb.describe_instance_health(elb_name, [i['Ec2InstanceId']][0].state == 'InService') ]
+  if len(instances) < <%= node[:valhalla][:min_service_update_instances] %>:
+    raise Exception('Not enough instances in elb to risk the update')
+
   #for each one
   for instance in instances:
-    #deploy task or something..
+    #take this instance out of the elb
+    registered = elb.deregister_instances(elb_name, [instance['Ec2InstanceId']])
+    if instance['Ec2InstanceId'] in registered:
+      raise Exception('Instance was still registered with the elb')
+
+    #deployment task of running a recipe
     deployment_id = opsworks.create_deployment(stack, {'Name': 'execute_recipes', 'Args': {'recipes': recipes}}, instance_ids=[instance['InstanceId']])['DeploymentId']
     #wait until it ends
     while True:
@@ -72,6 +83,22 @@ def update_instances(stack = '<%= node[:valhalla][:service_stack] %>', layer = '
       print('Deployment %s to Instance %s failed' % (deployment_id, instance['InstanceId']), file=sys.stderr) 
       sys.exit(1)
 
+    #put the instance back in the elb
+    elb.register_instances(elb_name, [instance['Ec2InstanceId']])
+    if instance['Ec2InstanceId'] not in registered:
+       raise Exception('Instance was not registered with the elb')
+
+    #check its status
+    wait = 60
+    While wait > 0:
+      if elb.describe_instance_health(elb_name, [instance['Ec2InstanceId']][0].state == 'InService')
+        break
+      wait -= 5
+      time.sleep(5)
+    if wait < 1:
+      raise Exception('Re-registered instance was not InService')
+    
+
 #entry point for script
 if __name__ == "__main__":
   if len(sys.argv) < 2:
@@ -82,4 +109,4 @@ if __name__ == "__main__":
   push_to_s3(sys.argv[1], '<%= node[:valhalla][:bucket] %>', '<%= node[:valhalla][:bucket_dir] %>')
 
   #update the service instances
-  update_instances('<%= node[:valhalla][:service_stack] %>', '<%= node[:valhalla][:service_layer] %>', list('<%= node[:valhalla][:service_recipes] %>'.split(',')))
+  update_instances('<%= node[:valhalla][:service_elb] %>', '<%= node[:valhalla][:service_stack] %>', '<%= node[:valhalla][:service_layer] %>', list('<%= node[:valhalla][:service_recipes] %>'.split(',')))

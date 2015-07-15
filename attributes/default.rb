@@ -33,6 +33,7 @@ default[:valhalla][:bucket]                                      = 'YOUR_BUCKET'
 default[:valhalla][:bucket_dir]                                  = 'YOUR_DIR'
 default[:valhalla][:service_stack]                               = 'YOUR_STACK_ID'
 default[:valhalla][:service_layer]                               = 'YOUR_LAYER_ID'
+default[:valhalla][:service_elb]                                 = 'YOUR_ELB_NAME'
 default[:valhalla][:service_recipes]                             = 'valhalla::get_tiles'
 default[:valhalla][:min_service_update_instances]                = 2
 default[:valhalla][:health_check_timeout]                        = 300
