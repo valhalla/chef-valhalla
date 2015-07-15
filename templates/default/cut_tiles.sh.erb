@@ -17,12 +17,14 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 cp -rp <%= node[:valhalla][:src_dir] %>/mjolnir/conf/*.lua <%= node[:valhalla][:conf_dir] %>
 
 # name the dir where this will go
-cur_tile_dir=$(dirname <%= node[:valhalla][:tile_dir] %>)/tiles_$(date +%Y_%m_%d-%H_%M_%S)
+stamp=$(date +%Y_%m_%d-%H_%M_%S)
+cur_tile_dir=$(dirname <%= node[:valhalla][:tile_dir] %>)/tiles_${stamp}
 
 # if we dont have admins we must create them
 extracts=$(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
 admin_file=$(jq -r '.mjolnir.admin.admin_dir' <%= node[:valhalla][:config] %>)/$(jq -r '.mjolnir.admin.db_name' <%= node[:valhalla][:config] %>)
 transit_file=$(jq -r '.mjolnir.transit.transit_dir' <%= node[:valhalla][:config] %>)/$(jq -r '.mjolnir.transit.db_name' <%= node[:valhalla][:config] %>)
+stats_file=$(jq -r '.mjolnir.statistics.statistics_dir' <%= node[:valhalla][:config] %>)/$(jq -r '.mjolnir.statistics.db_name' <%= node[:valhalla][:config] %>)
 if [ ! -e $admin_file ]; then
   pbfadminbuilder -c <%= node[:valhalla][:config] %> $(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
 fi
@@ -35,6 +37,9 @@ rm -rf *.bin
 # we can ship the whole tile dir to s3 anyway, admin connectivity and all
 pushd <%= node[:valhalla][:tile_dir] %>
 connectivitymap -c <%= node[:valhalla][:config] %>
+mv ${stats_file} $(basename ${stats_file} | sed -e "s/\(\.[^.]\+$\)/_${stamp}\1/g")
+stats_file=$(basename ${stats_file} | sed -e "s/\(\.[^.]\+$\)/_${stamp}\1/g")
+mv connectivity.json connectivity_${stamp}.json
 popd
 
 # backup files and tile dirs, keep the admin stuff though
@@ -52,7 +57,7 @@ if [ "<%= node[:valhalla][:with_updates] %>" == true ]; then
   {
     set +e
     tar pcf - -C ${cur_tile_dir} . | pigz -9 > ${cur_tile_dir}.tgz
-    <%= node[:valhalla][:conf_dir] %>/push_tiles.py ${cur_tile_dir}.tgz
+    <%= node[:valhalla][:conf_dir] %>/push_tiles.py connectivity_${stamp}.json ${stats_file} ${cur_tile_dir}.tgz
     rm -rf ${cur_tile_dir} ${cur_tile_dir}.tgz
   }&
 fi
