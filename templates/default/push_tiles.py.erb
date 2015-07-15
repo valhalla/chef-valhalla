@@ -60,16 +60,27 @@ def update_instances(elb_name = '<%= node[:valhalla][:service_elb] %>', stack = 
 
   #connect to the elb and check which are in it
   elb = boto.connect_elb(elb_name)
-  instances = [ i for i in instances if elb.describe_instance_health(elb_name, [i['Ec2InstanceId']][0].state == 'InService') ]
+  instances = [ i for i in instances if elb.describe_instance_health(elb_name, [i['Ec2InstanceId']])[0].state == 'InService' ]
   if len(instances) < <%= node[:valhalla][:min_service_update_instances] %>:
     raise Exception('Not enough instances in elb to risk the update')
 
   #for each one
   for instance in instances:
     #take this instance out of the elb
-    registered = elb.deregister_instances(elb_name, [instance['Ec2InstanceId']])
+    registered = [ i.id for i in elb.deregister_instances(elb_name, [instance['Ec2InstanceId']]) ]
     if instance['Ec2InstanceId'] in registered:
       raise Exception('Instance was still registered with the elb')
+
+    #check its status
+    wait = 60
+    while wait > 0:
+      if elb.describe_instance_health(elb_name, [instance['Ec2InstanceId']])[0].state == 'OutOfService':
+        break
+      wait -= 5
+      time.sleep(5)
+    if wait < 1:
+      elb.register_instances(elb_name, [instance['Ec2InstanceId']])
+      raise Exception('Deregistered instance was not OutOfService')
 
     #deployment task of running a recipe
     deployment_id = opsworks.create_deployment(stack, {'Name': 'execute_recipes', 'Args': {'recipes': recipes}}, instance_ids=[instance['InstanceId']])['DeploymentId']
@@ -84,14 +95,14 @@ def update_instances(elb_name = '<%= node[:valhalla][:service_elb] %>', stack = 
       sys.exit(1)
 
     #put the instance back in the elb
-    elb.register_instances(elb_name, [instance['Ec2InstanceId']])
+    registered = [ i.id for i in elb.register_instances(elb_name, [instance['Ec2InstanceId']]) ]
     if instance['Ec2InstanceId'] not in registered:
        raise Exception('Instance was not registered with the elb')
 
     #check its status
     wait = 60
-    While wait > 0:
-      if elb.describe_instance_health(elb_name, [instance['Ec2InstanceId']][0].state == 'InService')
+    while wait > 0:
+      if elb.describe_instance_health(elb_name, [instance['Ec2InstanceId']])[0].state == 'InService':
         break
       wait -= 5
       time.sleep(5)
