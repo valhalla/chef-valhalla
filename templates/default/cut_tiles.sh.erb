@@ -32,6 +32,7 @@ fi
 # cut tiles from the data
 pbfgraphbuilder -c <%= node[:valhalla][:config] %> $(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
 rm -rf *.bin
+set +e
 
 # generate connectivity map geojson, tile dir is as good a place as any
 # we can ship the whole tile dir to s3 anyway, admin connectivity and all
@@ -45,19 +46,15 @@ popd
 # backup files and tile dirs, keep the admin stuff though
 mkdir -p ${cur_tile_dir}
 mv <%= node[:valhalla][:tile_dir] %>/* ${cur_tile_dir}/
-if [ -e ${cur_tile_dir}/$(basename ${admin_file}) ]; then
-  cp -rp ${cur_tile_dir}/$(basename ${admin_file}) <%= node[:valhalla][:tile_dir] %>
-fi
-if [ -e ${cur_tile_dir}/$(basename ${transit_file}) ]; then
-  cp -rp ${cur_tile_dir}/$(basename ${transit_file}) <%= node[:valhalla][:tile_dir] %>
-fi
+cp -rp ${cur_tile_dir}/$(basename ${admin_file}) <%= node[:valhalla][:tile_dir] %>
+cp -rp ${cur_tile_dir}/$(basename ${transit_file}) <%= node[:valhalla][:tile_dir] %>
 
 # do we want to send this update to s3 (do so in the background)
 if [ "<%= node[:valhalla][:with_updates] %>" == true ]; then
   {
-    set +e
+    <%= node[:valhalla][:conf_dir] %>/push_tiles.py ${cur_tile_dir}/connectivity_${stamp}.json ${cur_tile_dir}/${stats_file}
     tar pcf - -C ${cur_tile_dir} . | pigz -9 > ${cur_tile_dir}.tgz
-    <%= node[:valhalla][:conf_dir] %>/push_tiles.py connectivity_${stamp}.json ${stats_file} ${cur_tile_dir}.tgz
+    <%= node[:valhalla][:conf_dir] %>/push_tiles.py ${cur_tile_dir}.tgz
     rm -rf ${cur_tile_dir} ${cur_tile_dir}.tgz
   }&
 fi
