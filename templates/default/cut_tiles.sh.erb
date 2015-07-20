@@ -57,7 +57,7 @@ if [ "<%= node[:valhalla][:with_updates] %>" == true ]; then
   {
     set +e
     tar pcf - -C ${cur_tile_dir} . | pigz -9 > ${cur_tile_dir}.tgz
-    <%= node[:valhalla][:conf_dir] %>/push_tiles.py connectivity_${stamp}.json ${stats_file} ${cur_tile_dir}.tgz
+    <%= node[:valhalla][:conf_dir] %>/push_tiles.py ${cur_tile_dir}/connectivity_${stamp}.json ${cur_tile_dir}/${stats_file} ${cur_tile_dir}.tgz
     rm -rf ${cur_tile_dir} ${cur_tile_dir}.tgz
   }&
 fi
