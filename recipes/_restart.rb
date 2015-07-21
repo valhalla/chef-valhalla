@@ -13,7 +13,7 @@ runit_service 'prime-httpd' do
 end
 
 # cake layers
-%w(loki thor odin tyr).each do |layer|
+%w(skadi loki thor odin tyr).each do |layer|
   # proxy
   runit_service "proxyd-#{layer}" do
     action  :restart
@@ -29,10 +29,18 @@ end
   end
 end
 
-# make sure everything is working by issuing a request
-execute 'test service' do
+# make sure everything is working in routing by issuing a request
+execute 'test routing service' do
   action  :run
   user    node[:valhalla][:user][:name]
-  command "#{node[:valhalla][:conf_dir]}/health_check.sh"
-  only_if "test -h #{node[:runit][:service_dir]}/prime-httpd"
+  command "#{node[:valhalla][:conf_dir]}/health_check.sh '{\"locations\":[{\"lat\":40.402918,\"lon\":-76.535017},{\"lat\":40.403654,\"lon\": -76.529846}],\"costing\":\"auto\"}'"
+  only_if "test -h #{node[:runit][:service_dir]}/proxyd-loki"
+end
+
+# make sure everything is working in elevation by issuing a request
+execute 'test elevation service' do
+  action  :run
+  user    node[:valhalla][:user][:name]
+  command "#{node[:valhalla][:conf_dir]}/health_check.sh '{\"shape\":[{\"lat\":40.712431, \"lon\":-76.504916}]}'"
+  only_if "test -h #{node[:runit][:service_dir]}/proxyd-skadi"
 end

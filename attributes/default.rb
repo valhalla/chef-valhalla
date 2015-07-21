@@ -40,6 +40,7 @@ default[:valhalla][:health_check_timeout]                        = 300
 
 # elevation data sources
 default[:valhalla][:elevation_url]                               = 'https://s3.amazonaws.com/mapzen.valhalla/elevation/elevation_tiles.tgz'
+default[:valhalla][:elevation_vrt]                               = "#{node[:valhalla][:base_dir]}/elevation/world.vrt"
 
 # configuration
 default[:valhalla][:config]                                      = "#{node[:valhalla][:conf_dir]}/valhalla.json"
