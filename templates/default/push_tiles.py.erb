@@ -127,11 +127,14 @@ if __name__ == "__main__":
   #for each arg
   for f in sys.argv[1:]:
     #check all the files are there
-    if stat.S_ISREG(os.stat(f).st_mode) == False:
-      print('%s is not a regular file') % f
-    #push them to s3
-    else:
-      push_to_s3(f, '<%= node[:valhalla][:bucket] %>', '<%= node[:valhalla][:bucket_dir] %>')
+    try:
+      if stat.S_ISREG(os.stat(f).st_mode) == False:
+        raise
+      #push them to s3
+      else:
+        push_to_s3(f, '<%= node[:valhalla][:bucket] %>', '<%= node[:valhalla][:bucket_dir] %>')
+    except:
+      print('%s is not a regular file' % f)
 
   #update the service instances
   update_instances('<%= node[:valhalla][:service_elb] %>', '<%= node[:valhalla][:service_stack] %>', '<%= node[:valhalla][:service_layer] %>', list('<%= node[:valhalla][:service_recipes] %>'.split(',')))
