@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 #
 # Cookbook Name:: valhalla
-# Recipe:: serve
+# Recipe:: routing_service
 #
 
 include_recipe 'runit::default'
