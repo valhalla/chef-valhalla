@@ -5,7 +5,6 @@
 #
 
 %w(skadi tyr).each do |layer|
-
   # clone software
   execute "clone #{layer}" do
     action    :run
@@ -13,7 +12,7 @@
     command   "rm -rf tyr && git clone --depth=1 --recurse-submodules --single-branch --branch=master \
               #{node[:valhalla][:github][:base]}/#{layer}.git"
     cwd       node[:valhalla][:src_dir]
-  
+
     notifies  :run, "execute[dependencies #{layer}]",  :immediately
     notifies  :run, "execute[configure #{layer}]",     :immediately
     notifies  :run, "execute[build #{layer}]",         :immediately
@@ -54,7 +53,6 @@
     command "make -j#{node[:cpu][:total]} install"
     cwd     "#{node[:valhalla][:src_dir]}/#{layer}"
   end
-
 end
 
 # restart the services if they are present
