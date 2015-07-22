@@ -93,7 +93,7 @@ To build, install and run valhalla on Ubuntu (or other Debian based systems) try
 
     #start up the server
     cd tyr
-    ./tyr_simple_service conf/valhalla.json
+    LD_LIBRARY_PATH=/usr/lib:/usr/local/lib ./tyr_simple_service conf/valhalla.json
 
     #HAVE FUN!
 
