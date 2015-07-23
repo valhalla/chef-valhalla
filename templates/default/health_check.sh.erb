@@ -1,14 +1,14 @@
 #!/bin/bash
 
-if [ -z $1 ]; then
-	echo "No request provided"
+if [ -z $2 ]; then
+	echo "Path and request are required"
 	exit 1
 fi
 
 #keep checking while we havent run out of time
 start=$(date +%s)
 while [ $[$(date +%s) - $start] -lt <%= node[:valhalla][:health_check_timeout] %> ]; do
-	curl localhost:<%= node[:valhalla][:httpd][:port] %>/route --max-time 1 --fail --data "${1}"
+	curl localhost:<%= node[:valhalla][:httpd][:port] %>/$1 --max-time 1 --fail --data "${2}"
 	if [ $? -eq 0 ]; then
 		exit 0
 	fi
@@ -16,5 +16,5 @@ while [ $[$(date +%s) - $start] -lt <%= node[:valhalla][:health_check_timeout] %
 done
 
 #never got a decent response try one last time
-curl localhost:<%= node[:valhalla][:httpd][:port] %>/route --max-time 1 --fail --data "${1}"
+curl localhost:<%= node[:valhalla][:httpd][:port] %>/$1 --max-time 1 --fail --data "${2}"
 exit $?
