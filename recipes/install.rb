@@ -9,7 +9,7 @@
   execute "clone #{layer}" do
     action    :run
     user      node[:valhalla][:user][:name]
-    command   "rm -rf tyr && git clone --depth=1 --recurse-submodules --single-branch --branch=master \
+    command   "rm -rf #{layer}.git && git clone --depth=1 --recurse-submodules --single-branch --branch=master \
               #{node[:valhalla][:github][:base]}/#{layer}.git"
     cwd       node[:valhalla][:src_dir]
 
