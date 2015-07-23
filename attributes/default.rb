@@ -31,12 +31,16 @@ default[:valhalla][:with_updates]                                = false  # bool
 # where to put fresh tiles and who wants them
 default[:valhalla][:bucket]                                      = 'YOUR_BUCKET'
 default[:valhalla][:bucket_dir]                                  = 'YOUR_DIR'
-default[:valhalla][:service_stack]                               = 'YOUR_STACK_ID'
-default[:valhalla][:service_layer]                               = 'YOUR_LAYER_ID'
-default[:valhalla][:service_elb]                                 = 'YOUR_ELB_NAME'
-default[:valhalla][:service_recipes]                             = 'valhalla::get_tiles'
-default[:valhalla][:min_service_update_instances]                = 2
+default[:valhalla][:routing_service_stack]                       = 'YOUR_STACK_ID'
+default[:valhalla][:routing_service_layer]                       = 'YOUR_LAYER_ID'
+default[:valhalla][:routing_service_elb]                         = 'YOUR_ELB_NAME'
+default[:valhalla][:routing_service_recipes]                     = 'valhalla::get_routing_tiles'
+default[:valhalla][:min_routing_service_update_instances]        = 2
 default[:valhalla][:health_check_timeout]                        = 300
+
+# elevation data sources
+default[:valhalla][:elevation_url]                               = 'https://s3.amazonaws.com/mapzen.valhalla/elevation/elevation_tiles.tgz'
+default[:valhalla][:elevation_vrt]                               = "#{node[:valhalla][:base_dir]}/elevation/world.vrt"
 
 # configuration
 default[:valhalla][:config]                                      = "#{node[:valhalla][:conf_dir]}/valhalla.json"

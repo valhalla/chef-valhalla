@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 #
 # Cookbook Name:: valhalla
-# Recipe:: serve
+# Recipe:: elevation_service
 #
 
 include_recipe 'runit::default'
@@ -19,7 +19,7 @@ runit_service 'prime-httpd' do
 end
 
 # cake layers
-%w(loki thor odin tyr).each do |layer|
+%w(skadi).each do |layer|
   # proxy
   runit_service "proxyd-#{layer}" do
     action            :enable

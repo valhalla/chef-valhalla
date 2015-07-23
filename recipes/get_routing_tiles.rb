@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 #
 # Cookbook Name:: valhalla
-# Recipe:: get_tiles
+# Recipe:: get_routing_tiles
 #
 
 # stop everything from running
