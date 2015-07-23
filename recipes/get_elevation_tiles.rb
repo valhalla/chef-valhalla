@@ -27,7 +27,7 @@ execute 'extract tiles' do
   cwd     node[:valhalla][:base_dir]
   command <<-EOH
     rm -rf elevation &&
-    mkdir /mnt/valhalla &&
+    mkdir elevation &&
     curl #{node[:valhalla][:elevation_url]} | tar xzp -C elevation
   EOH
 end
