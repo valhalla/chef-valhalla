@@ -30,6 +30,7 @@ execute 'extract tiles' do
     mkdir elevation &&
     curl #{node[:valhalla][:elevation_url]} | tar xzp -C elevation
   EOH
+  timeout 32000
 end
 
 # turn everything back on
