@@ -28,7 +28,7 @@ execute 'extract tiles' do
   command <<-EOH
     rm -rf elevation &&
     mkdir elevation &&
-    curl -s #{node[:valhalla][:elevation_url]} | tar xzp -C elevation
+    curl #{node[:valhalla][:elevation_url]} 2>#{node[:valhalla][:log_dir]}/download.log | tar xzp -C elevation
   EOH
   timeout 32_000
 end
