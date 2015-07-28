@@ -46,6 +46,9 @@ if __name__ == "__main__":
   try:
     for dir,subdirs,files in os.walk(sys.argv[1]):
       for file in files:
-        push_to_s3(os.path.join(dir, file), '<%= node[:valhalla][:bucket] %>')
+        try:
+          push_to_s3(os.path.join(dir, file), '<%= node[:valhalla][:bucket] %>')
+        except:
+          print('%s could not be pushed to s3')
   except:
     print('%s is not a directory' % sys.argv[1])
