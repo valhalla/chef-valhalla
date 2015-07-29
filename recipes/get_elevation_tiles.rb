@@ -28,7 +28,7 @@ execute 'extract tiles' do
   command <<-EOH
     rm -rf elevation &&
     mkdir elevation &&
-    wget -O - #{node[:valhalla][:elevation_url]} 2>#{node[:valhalla][:log_dir]}/download.log | tar xzp -C elevation
+    aws --region us-east-1 s3 cp s3://#{node[:valhalla][:bucket]}/elevation ./elevation --recursive
   EOH
   timeout 32_000
 end
