@@ -55,6 +55,7 @@ end
   pigz
   python-pip
   jq
+  awscli
   osmosis
   osmctools
 ).each do |p|
