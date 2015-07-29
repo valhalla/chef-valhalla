@@ -27,7 +27,7 @@ execute 'extract tiles' do
   cwd     node[:valhalla][:base_dir]
   command <<-EOH
     mkdir -p elevation &&
-    aws --region us-east-1 s3 sync s3://#{node[:valhalla][:bucket]}/elevation ./elevation --exclude "*" --include "elevation/*" &> log/download.log
+    aws --region us-east-1 s3 sync s3://#{node[:valhalla][:bucket]}/elevation ./elevation --exclude "*" --include "elevation/*" --delete &> log/download.log
   EOH
   timeout 32_000
 end
