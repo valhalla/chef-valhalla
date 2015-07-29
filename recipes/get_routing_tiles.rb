@@ -30,8 +30,8 @@ execute 'pull tiles' do
   user    node[:valhalla][:user][:name]
   cwd     node[:valhalla][:base_dir]
   command <<-EOH
-    echo -n https://s3.amazonaws.com/#{node[:valhalla][:bucket]}/#{node[:valhalla][:service_stack]}/ > latest_tiles.txt &&
-    aws --region us-east-1 s3 ls s3://#{node[:valhalla][:bucket]}/#{node[:valhalla][:service_stack]}/ | grep -F tiles_ | awk '{print $4}' | sort | tail -n 1 >> latest_tiles.txt
+    echo -n https://s3.amazonaws.com/#{node[:valhalla][:bucket]}/#{node[:valhalla][:bucket_dir]}/ > latest_tiles.txt &&
+    aws --region us-east-1 s3 ls s3://#{node[:valhalla][:bucket]}/#{node[:valhalla][:bucket_dir]}/ | grep -F tiles_ | awk '{print $4}' | sort | tail -n 1 >> latest_tiles.txt
   EOH
 end
 
