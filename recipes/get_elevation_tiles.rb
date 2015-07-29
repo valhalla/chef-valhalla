@@ -26,8 +26,7 @@ execute 'extract tiles' do
   user    node[:valhalla][:user][:name]
   cwd     node[:valhalla][:base_dir]
   command <<-EOH
-    rm -rf elevation &&
-    mkdir elevation &&
+    mkdir -p elevation &&
     aws --region us-east-1 s3 sync s3://#{node[:valhalla][:bucket]}/elevation ./elevation --exclude "*" --include "elevation/*" &> log/download.log
   EOH
   timeout 32_000
