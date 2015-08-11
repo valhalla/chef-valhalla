@@ -86,11 +86,11 @@ To build, install and run valhalla on Ubuntu (or other Debian based systems) try
 
     #download some data and make tiles out of it
     #note: you can feed multiple extracts into pbfgraphbuilder
+    pushd mjolnir
     wget http://download.geofabrik.de/europe/switzerland-latest.osm.pbf http://download.geofabrik.de/europe/liechtenstein-latest.osm.pbf
     sudo mkdir -p /data/valhalla
     sudo chown `whoami` /data/valhalla
     rm -rf /data/valhalla/*
-    pushd mjolnir
     #TODO: run pbfadminbuilder?
     pbfgraphbuilder -c conf/valhalla.json switzerland-latest.osm.pbf liechtenstein-latest.osm.pbf
     popd
