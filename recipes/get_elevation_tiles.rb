@@ -17,20 +17,28 @@ execute 'stop service' do
   EOH
   cwd node[:valhalla][:base_dir]
 
-  notifies :run, 'execute[extract tiles]', :immediately
+  notifies :run, 'execute[sync tiles]', :immediately
+  notifies :run, 'execute[inflate tiles]', :immediately
 end
 
-# open them up
-execute 'extract tiles' do
+# get them from s3
+execute 'sync tiles' do
   action  :run
   user    node[:valhalla][:user][:name]
   cwd     node[:valhalla][:base_dir]
-  command <<-EOH
-    mkdir -p elevation &&
-    aws --region us-east-1 s3 sync s3://#{node[:valhalla][:bucket]}/elevation ./elevation --exclude "*" --include "elevation/*" --delete &> log/download.log
-  EOH
+  command "aws --region us-east-1 s3 sync s3://#{node[:valhalla][:bucket]}/elevation ./elevation --exclude "*" --include "elevation/*" --delete &> log/download.log"
   timeout 32_000
 end
+
+# inflate the tiles
+execute 'inflate tiles' do
+  action :run
+  user    node[:valhalla][:user][:name]
+  cwd     node[:valhalla][:base_dir]
+  command 'find elevation | grep -F .gz | xargs -P $(nproc) gunzip'
+  timeout 32_000
+end
+
 
 # turn everything back on
 include_recipe 'valhalla::_restart'
