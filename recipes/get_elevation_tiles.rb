@@ -33,7 +33,7 @@ execute 'sync tiles' do
         dir=$(echo $file | sed "s/^\([NS][0-9]\{2\}\).*/\1/g")
 	echo "--retry 3 --retry-delay 0 --max-time 100 -s --create-dirs -o elevation/${dir}/${file} #{node[:valhalla][:elevation_url]}/${dir}/${file}"
       done
-    done | parallel -C ' ' -P $(nproc) "curl {}" 
+    done | parallel -C ' ' -P $(nproc) "curl {}"
   EOH
   timeout 8_000
 end
