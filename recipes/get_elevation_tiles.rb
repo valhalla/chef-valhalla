@@ -26,7 +26,7 @@ execute 'sync tiles' do
   action  :run
   user    node[:valhalla][:user][:name]
   cwd     node[:valhalla][:base_dir]
-  command "aws --region us-east-1 s3 sync s3://#{node[:valhalla][:bucket]}/elevation ./elevation --exclude "*" --include "elevation/*" --delete &> log/download.log"
+  command "aws --region us-east-1 s3 sync s3://#{node[:valhalla][:bucket]}/elevation ./elevation --exclude \"*\" --include \"elevation/*\" --delete &> log/download.log"
   timeout 32_000
 end
 
@@ -38,7 +38,6 @@ execute 'inflate tiles' do
   command 'find elevation | grep -F .gz | xargs -P $(nproc) gunzip'
   timeout 32_000
 end
-
 
 # turn everything back on
 include_recipe 'valhalla::_restart'

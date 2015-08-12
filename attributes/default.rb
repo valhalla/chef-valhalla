@@ -13,6 +13,7 @@ default[:valhalla][:temp_dir]                                    = "#{node[:valh
 default[:valhalla][:src_dir]                                     = "#{node[:valhalla][:base_dir]}/src"
 default[:valhalla][:lock_dir]                                    = "#{node[:valhalla][:base_dir]}/lock"
 default[:valhalla][:extracts_dir]                                = "#{node[:valhalla][:base_dir]}/extracts"
+default[:valhalla][:elevation_dir]                               = "#{node[:valhalla][:base_dir]}/elevation"
 
 # the repos
 default[:valhalla][:github][:base]                               = 'https://github.com/valhalla'
@@ -39,8 +40,7 @@ default[:valhalla][:min_routing_service_update_instances]        = 2
 default[:valhalla][:health_check_timeout]                        = 300
 
 # elevation data sources
-default[:valhalla][:elevation_url]                               = 'http://s3.amazonaws.com/mapzen.valhalla/elevation/elevation_tiles.tgz'
-default[:valhalla][:elevation_vrt]                               = "#{node[:valhalla][:base_dir]}/elevation/world.vrt"
+default[:valhalla][:elevation_url]                               = 'http://s3.amazonaws.com/mapzen.valhalla/elevation'
 
 # configuration
 default[:valhalla][:config]                                      = "#{node[:valhalla][:conf_dir]}/valhalla.json"
