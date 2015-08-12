@@ -43,7 +43,7 @@ execute 'extract tiles' do
   command <<-EOH
     rm -rf tmp_tiles &&
     mkdir tmp_tiles &&
-    curl $(cat latest_tiles.txt) | tar xzp -C tmp_tiles
+    curl --retry 3 --retry-delay 0 $(cat latest_tiles.txt) | tar xzp -C tmp_tiles
   EOH
 end
 
@@ -51,7 +51,7 @@ end
 execute 'move tiles' do
   action  :run
   user    node[:valhalla][:user][:name]
-  command "rm -rf #{node[:valhalla][:tile_dir]}; mv tmp_tiles #{node[:valhalla][:tile_dir]}"
+  command "rm -rf old_tiles; mv #{node[:valhalla][:tile_dir]} old_tiles; mv tmp_tiles #{node[:valhalla][:tile_dir]}"
   cwd     node[:valhalla][:base_dir]
 end
 
