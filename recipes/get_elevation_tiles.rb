@@ -27,11 +27,12 @@ execute 'sync tiles' do
   user    node[:valhalla][:user][:name]
   cwd     node[:valhalla][:base_dir]
   command <<-EOH
+    set -e
     for x in $(seq -180 1 180); do
       for y in $(seq -90 1 90); do
         file=$(python -c "print '%s%02d%s%03d.hgt.gz' % ('S' if $y < 0 else 'N', abs($y), 'W' if $x < 0 else 'E', abs($x))")
-        dir=$(echo $file | sed "s/^\([NS][0-9]\{2\}\).*/\1/g")
-        echo "--retry 3 --retry-delay 0 --max-time 100 -s --create-dirs -o elevation/${dir}/${file} #{node[:valhalla][:elevation_url]}/${dir}/${file}"
+        dir=$(echo $file | sed "s/^\\([NS][0-9]\\{2\\}\\).*/\1/g")
+        echo "--retry 3 --retry-delay 0 --max-time 100 -s --create-dirs -o #{node[:valhalla][:elevation_dir]}/${dir}/${file} #{node[:valhalla][:elevation_url]}/${dir}/${file}"
       done
     done | parallel -C ' ' -P $(nproc) "curl {}"
   EOH
@@ -42,8 +43,8 @@ end
 execute 'inflate tiles' do
   action :run
   user    node[:valhalla][:user][:name]
-  cwd     node[:valhalla][:base_dir]
-  command 'find elevation | grep -F .gz | xargs -P $(nproc) gunzip'
+  cwd     node[:valhalla][:elevation_dir]
+  command 'find . | grep -F .gz | xargs -P $(nproc) gunzip'
   timeout 8_000
 end
 
