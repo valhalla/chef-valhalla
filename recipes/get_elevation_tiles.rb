@@ -27,14 +27,13 @@ execute 'sync tiles' do
   user    node[:valhalla][:user][:name]
   cwd     node[:valhalla][:base_dir]
   command <<-EOH
-    set -e
-    for x in $(seq -180 1 180); do
-      for y in $(seq -90 1 90); do
-        file=$(python -c "print '%s%02d%s%03d.hgt.gz' % ('S' if $y < 0 else 'N', abs($y), 'W' if $x < 0 else 'E', abs($x))")
-        dir=$(echo $file | sed "s/^\\([NS][0-9]\\{2\\}\\).*/\1/g")
-        echo "--retry 3 --retry-delay 0 --max-time 100 -s --create-dirs -o #{node[:valhalla][:elevation_dir]}/${dir}/${file} #{node[:valhalla][:elevation_url]}/${dir}/${file}"
+    for x in {-180..179}; do
+      for y in {-90..89}; do
+        file=\$(python -c "print '%s%02d%s%03d.hgt.gz' % ('S' if \$y < 0 else 'N', abs(\$y), 'W' if \$x < 0 else 'E', abs(\$x))")
+        dir=\$(echo \$file | sed "s/^\\([NS][0-9]\\{2\\}\\).*/\1/g")
+        echo "--retry 3 --retry-delay 0 --max-time 100 -s --create-dirs -o #{node[:valhalla][:elevation_dir]}/\$dir/\$file #{node[:valhalla][:elevation_url]}/\$dir/\$file"
       done
-    done | parallel -C ' ' -P $(nproc) "curl {}"
+    done | parallel -C ' ' -P \$(nproc) "echo {}"
   EOH
   timeout 8_000
 end
