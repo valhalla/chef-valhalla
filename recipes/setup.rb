@@ -55,6 +55,7 @@ end
   pigz
   python-pip
   jq
+  parallel
   awscli
   osmosis
   osmctools
