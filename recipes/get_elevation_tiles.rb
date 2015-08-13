@@ -26,7 +26,7 @@ execute 'sync tiles' do
   user    node[:valhalla][:user][:name]
   cwd     node[:valhalla][:src_dir]
   command "skadi/scripts/elevation_extract.sh -180 180 -90 90 #{node[:valhalla][:elevation_dir]} $(($(nproc)*2))"
-  timeout 16_000
+  timeout 32_000
 end
 
 # turn everything back on
