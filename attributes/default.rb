@@ -39,9 +39,6 @@ default[:valhalla][:routing_service_recipes]                     = 'valhalla::ge
 default[:valhalla][:min_routing_service_update_instances]        = 2
 default[:valhalla][:health_check_timeout]                        = 300
 
-# elevation data sources
-default[:valhalla][:elevation_url]                               = 'http://s3.amazonaws.com/mapzen.valhalla/elevation'
-
 # configuration
 default[:valhalla][:config]                                      = "#{node[:valhalla][:conf_dir]}/valhalla.json"
 default[:valhalla][:mjolnir][:concurrency]                       = node[:cpu][:total]
