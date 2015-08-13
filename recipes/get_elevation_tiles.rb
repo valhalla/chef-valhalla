@@ -25,7 +25,7 @@ execute 'sync tiles' do
   action  :run
   user    node[:valhalla][:user][:name]
   cwd     node[:valhalla][:src_dir]
-  command "skadi/scripts/elevation_extract.sh -180 -90 180 90 #{node[:valhalla][:elevation_dir]}"
+  command "skadi/scripts/elevation_extract.sh -180 180 -90 90 #{node[:valhalla][:elevation_dir]}"
   timeout 8_000
 end
 
