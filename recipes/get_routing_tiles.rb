@@ -43,8 +43,9 @@ execute 'extract tiles' do
   command <<-EOH
     rm -rf tmp_tiles old_tiles &&
     mkdir tmp_tiles &&
-    curl --retry 3 --retry-delay 0 $(cat latest_tiles.txt) | tar xzp -C tmp_tiles
+    curl $(cat latest_tiles.txt) 2>#{node[:valhalla][:log_dir]}/curl_tiles.log | tar xzp -C tmp_tiles 2>#{node[:valhalla][:log_dir]}/untar_tiles.log
   EOH
+  retries 3
 end
 
 # move them into place
