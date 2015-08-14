@@ -52,6 +52,7 @@ end
 
 # need a few more deps for data stuff
 %w(
+  software-properties-common
   git
   pigz
   python-pip
