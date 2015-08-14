@@ -31,4 +31,5 @@ execute 'sync tiles' do
 end
 
 # turn everything back on
+node.run_state[:seen_recipes].delete('valhalla::_restart')
 include_recipe 'valhalla::_restart'
