@@ -31,5 +31,6 @@ execute 'sync tiles' do
 end
 
 # turn everything back on
-run_context.loaded_recipes.delete('valhalla::_restart')
-include_recipe 'valhalla::_restart'
+include_recipe 'runit::default'
+restart_service do
+end

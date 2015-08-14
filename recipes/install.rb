@@ -56,4 +56,6 @@
 end
 
 # restart the services if they are present
-include_recipe 'valhalla::_restart'
+include_recipe 'runit::default'
+restart_service do
+end
