@@ -9,9 +9,11 @@ default[:valhalla][:base_dir]                                    = '/opt/valhall
 default[:valhalla][:tile_dir]                                    = "#{node[:valhalla][:base_dir]}/tiles"
 default[:valhalla][:log_dir]                                     = "#{node[:valhalla][:base_dir]}/log"
 default[:valhalla][:conf_dir]                                    = "#{node[:valhalla][:base_dir]}/etc"
+default[:valhalla][:temp_dir]                                    = "#{node[:valhalla][:base_dir]}/temp"
 default[:valhalla][:src_dir]                                     = "#{node[:valhalla][:base_dir]}/src"
 default[:valhalla][:lock_dir]                                    = "#{node[:valhalla][:base_dir]}/lock"
 default[:valhalla][:extracts_dir]                                = "#{node[:valhalla][:base_dir]}/extracts"
+default[:valhalla][:elevation_dir]                               = "#{node[:valhalla][:base_dir]}/elevation"
 
 # the repos
 default[:valhalla][:github][:base]                               = 'https://github.com/valhalla'
@@ -30,10 +32,12 @@ default[:valhalla][:with_updates]                                = false  # bool
 # where to put fresh tiles and who wants them
 default[:valhalla][:bucket]                                      = 'YOUR_BUCKET'
 default[:valhalla][:bucket_dir]                                  = 'YOUR_DIR'
-default[:valhalla][:service_stack]                               = 'YOUR_STACK_ID'
-default[:valhalla][:service_layer]                               = 'YOUR_LAYER_ID'
-default[:valhalla][:service_recipes]                             = 'valhalla::get_tiles'
-default[:valhalla][:min_service_update_instances]                = 2
+default[:valhalla][:routing_service_stack]                       = 'YOUR_STACK_ID'
+default[:valhalla][:routing_service_layer]                       = 'YOUR_LAYER_ID'
+default[:valhalla][:routing_service_elb]                         = 'YOUR_ELB_NAME'
+default[:valhalla][:routing_service_recipes]                     = 'valhalla::get_routing_tiles'
+default[:valhalla][:min_routing_service_update_instances]        = 2
+default[:valhalla][:health_check_timeout]                        = 300
 
 # configuration
 default[:valhalla][:config]                                      = "#{node[:valhalla][:conf_dir]}/valhalla.json"
@@ -42,4 +46,4 @@ default[:valhalla][:httpd][:listen_address]                      = '0.0.0.0'
 default[:valhalla][:httpd][:port]                                = 8080
 
 # workers
-default[:valhalla][:workers][:count]                             = 8 # int, > 0
+default[:valhalla][:workers][:count]                             = node[:cpu][:total]

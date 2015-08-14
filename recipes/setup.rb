@@ -21,7 +21,9 @@ end
   node[:valhalla][:conf_dir],
   node[:valhalla][:src_dir],
   node[:valhalla][:lock_dir],
-  node[:valhalla][:extracts_dir]
+  node[:valhalla][:extracts_dir],
+  node[:valhalla][:temp_dir],
+  node[:valhalla][:elevation_dir]
 ].each do |dir|
   directory dir do
     action    :create
@@ -40,7 +42,7 @@ template node[:valhalla][:config] do
 end
 
 # install all of the scripts for data motion
-%w(cut_tiles.sh minutely_update.sh push_tiles.py pull_tiles.py).each do |script|
+%w(cut_tiles.sh minutely_update.sh push_tiles.py health_check.sh).each do |script|
   template "#{node[:valhalla][:conf_dir]}/#{script}" do
     source "#{script}.erb"
     mode   0755
@@ -54,6 +56,8 @@ end
   pigz
   python-pip
   jq
+  parallel
+  awscli
   osmosis
   osmctools
 ).each do |p|

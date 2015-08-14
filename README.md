@@ -28,72 +28,80 @@ The valhalla organization is comprised of several repositories each responsible 
 - [Midgard](https://github.com/valhalla/midgard) - Basic geographic and geometric algorithms for use in the various other projects
 - [Baldr](https://github.com/valhalla/baldr) - The base data structures for accessing and caching tiled route data. Depends on `midgard`
 - [Sif](https://github.com/valhalla/sif) - Library used in costing of graph nodes and edges. This can be used as input to `loki` and `thor`. Depends on `midgard` and `baldr`
-- [Mjolnir](https://github.com/valhalla/mjolnir) - Tools for turning open data into graph tiles. Depends on `midgard` and `baldr`
-- [Loki](https://github.com/valhalla/loki) - Library used to search graph tiles and correlate input locations to an entity within a tile. This correlated entity (edge or vertex) can be used as input to `thor`. Depends on `midgard`, `baldr` and `mjolnir`
-- [Thor](https://github.com/valhalla/thor) - Library used to generate a path through the graph tile hierarchy. This path can be used as input to `odin`. Depends on `midgard`, `baldr`, `loki` and `odin`
+- [Skadi](https://github.com/valhalla/skadi) - Library and service for accessing elevation data. This can be used as input to `mjolnir` or as a standalone service. Depends on `midgard` and `baldr`
+- [Mjolnir](https://github.com/valhalla/mjolnir) - Tools for turning open data into graph tiles. Depends on `midgard`, `baldr` and `skadi`
+- [Loki](https://github.com/valhalla/loki) - Library used to search graph tiles and correlate input locations to an entity within a tile. This correlated entity (edge or vertex) can be used as input to `thor`. Depends on `midgard`, `baldr`, `sif` and `mjolnir`
+- [Thor](https://github.com/valhalla/thor) - Library used to generate a path through the graph tile hierarchy. This path can be used as input to `odin`. Depends on `midgard`, `baldr`, `sif`, `loki` and `odin`
 - [Odin](https://github.com/valhalla/odin) - Library used to generate maneuvers and narrative based on a path. This set of directions information can be used as input to `tyr`. Depends on `midgard` and `baldr`
-- [Tyr](https://github.com/valhalla/tyr) - Service used to handle http requests for a route communicating with all of the other valhalla APIs. The service will format output from `odin` and support json and protocol buffer output. It will also offer an [OSRM](http://project-osrm.org) compatibility mode in which OSRM-like json output is produced. Depends on `midgard`, `baldr`, `mjolnir`, `loki`, `thor` and `odin`
+- [Tyr](https://github.com/valhalla/tyr) - Service used to handle http requests for a route communicating with all of the other valhalla APIs. The service will format output from `odin` and support json (and eventually protocol buffer) output. Depends on `midgard`, `baldr`, `sif`, `mjolnir`, `loki`, `thor` and `odin`
 - [Demos](https://github.com/valhalla/demos) - A set of demos which allows interacting with the service and APIs
-- [Chef](https://github.com/valhalla/chef) - This cookbook for installing and running valhalla
+- [Chef](https://github.com/valhalla/chef-valhalla) - This cookbook for installing and running valhalla
 
 Building and Running
 --------------------
 
 To build, install and run valhalla on Ubuntu (or other Debian based systems) try the following bash script:
 
+    #add ppa for newer compiler
+    sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+    sudo apt-get update -o Dir::Etc::sourcelist="sources.list.d/ubuntu-toolchain-r-test-$(lsb_release -c -s).list" -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"
+    
     #grab all of the dependencies
-    sudo apt-get install autoconf automake libtool make gcc-4.8 g++-4.8 libboost1.54-dev libboost-program-options1.54-dev libboost-filesystem1.54-dev libboost-system1.54-dev libboost-thread1.54-dev  protobuf-compiler libprotobuf-dev lua5.2 liblua5.2-dev git firefox libsqlite3-dev libspatialite-dev libgeos-dev libgeos++-dev libcurl4-openssl-dev
+    sudo apt-get install autoconf automake libtool make gcc-4.9 g++-4.9 libboost1.54-dev libboost-program-options1.54-dev libboost-filesystem1.54-dev libboost-system1.54-dev libboost-thread1.54-dev  protobuf-compiler libprotobuf-dev lua5.2 liblua5.2-dev git firefox libsqlite3-dev libspatialite-dev libgeos-dev libgeos++-dev libcurl4-openssl-dev
     
-    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 90
-    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
+    #use newer compiler
+    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 90
+    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 90
     
-    # grab the latest zmq library:
+    #grab the latest zmq library:
     rm -rf libzmq
     git clone --depth=1 --recurse-submodules --single-branch --branch=master https://github.com/zeromq/libzmq.git
     pushd libzmq
     ./autogen.sh
     ./configure --without-libsodium --without-documentation
-    make -j4
+    make -j
     sudo make install
     popd
     
-    # grab experimental zmq-based server API:
+    #grab prime_server API:
     rm -rf prime_server
     git clone --depth=1 --recurse-submodules --single-branch --branch=master https://github.com/kevinkreiser/prime_server.git
     pushd prime_server
     ./autogen.sh
     ./configure
-    make -j4
+    make -j
     sudo make install
     popd
 
     #build and install all valhalla includes, libraries and binaries
-    for repo in midgard baldr sif mjolnir loki odin thor tyr; do
+    for repo in midgard baldr sif skadi mjolnir loki odin thor tyr; do
       git clone --recurse-submodules https://github.com/valhalla/$repo.git
-      cd $repo
+      pushd $repo
       ./autogen.sh
       ./configure CPPFLAGS=-DBOOST_SPIRIT_THREADSAFE
-      make
+      make -j
       sudo make install
-      cd ..
+      popd
     done
 
     #download some data and make tiles out of it
     #note: you can feed multiple extracts into pbfgraphbuilder
+    pushd mjolnir
     wget http://download.geofabrik.de/europe/switzerland-latest.osm.pbf http://download.geofabrik.de/europe/liechtenstein-latest.osm.pbf
-    sudo mkdir /data
-    sudo chown `whoami` /data
-    cd mjolnir
+    sudo mkdir -p /data/valhalla
+    sudo chown `whoami` /data/valhalla
+    rm -rf /data/valhalla/*
+    #TODO: run pbfadminbuilder?
     pbfgraphbuilder -c conf/valhalla.json switzerland-latest.osm.pbf liechtenstein-latest.osm.pbf
-    cd ..
+    popd
 
     #grab the demos repo and open up the point and click routing sample
     git clone --depth=1 --recurse-submodules --single-branch --branch=master https://github.com/valhalla/demos.git
     firefox demos/routing/index.html &
+    #NOTE: set the environment pulldown to 'localhost' to point it at your own server
 
     #start up the server
-    cd tyr
-    ./tyr_simple_service conf/valhalla.json
+    LD_LIBRARY_PATH=/usr/lib:/usr/local/lib tyr/tyr_simple_service conf/valhalla.json
 
     #HAVE FUN!
 

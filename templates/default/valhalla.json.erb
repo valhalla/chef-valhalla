@@ -28,6 +28,10 @@
       "relation_script": "<%= node[:valhalla][:conf_dir] %>/admins.lua",
       "relation_function": "rels_proc"
     },
+    "statistics": {
+      "statistics_dir": "<%= node[:valhalla][:tile_dir] %>",
+      "db_name": "statistics.sqlite"
+    },
     "admin": {
       "admin_dir": "<%= node[:valhalla][:tile_dir] %>",
       "db_name": "admin.sqlite"
@@ -39,6 +43,18 @@
     "logging": {
       "type": "std_out",
       "color": false
+    }
+  },
+  "additional_data": {
+    "elevation": "<%= node[:valhalla][:elevation_dir] %>"
+  },
+  "skadi": {
+    "logging": {
+      "type": "std_out",
+      "color": true
+    },
+    "service": {
+      "proxy": "ipc://<%= node[:valhalla][:conf_dir] %>/skadi"
     }
   },
   "loki": {
@@ -83,6 +99,17 @@
       "loopback": "ipc://<%= node[:valhalla][:conf_dir] %>/loopback"
     }
   },
+  "service_limits": {
+    "max_distance": {
+      "auto": 5000000.0,
+      "auto_shorter": 5000000.0,
+      "bus": 5000000.0,
+      "pedestrian": 250000.0,
+      "bicycle": 500000.0,
+      "multimodal": 500000.0
+    },
+    "max_route_locations": 8
+  },
   "costing_options": {
     "auto": {
       "maneuver_penalty": 5.0,
@@ -92,28 +119,22 @@
       "toll_booth_cost": 15.0,
       "toll_booth_penalty": 0.0,
       "country_crossing_cost": 600.0,
-      "country_crossing_penalty": 0.0,
-      "max_distance": 5000000.0
+      "country_crossing_penalty": 0.0
     },
     "auto_shorter": {
-      "max_distance": 5000000.0
     },
     "bus": {
-      "max_distance": 5000000.0
     },
     "pedestrian": {
       "walking_speed": 5.1,
       "walkway_factor": 0.9,
       "alley_factor": 2.0,
       "driveway_factor": 2.0,
-      "step_penalty": 30.0,
-      "max_distance": 100000.0
+      "step_penalty": 30.0
     },
     "bicycle": {
-      "max_distance": 500000.0
     },
     "multimodal": {
-      "max_distance": 500000.0
     },
     "transit": {
     }

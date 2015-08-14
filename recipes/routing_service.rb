@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 #
 # Cookbook Name:: valhalla
-# Recipe:: serve
+# Recipe:: routing_service
 #
 
 include_recipe 'runit::default'
@@ -13,6 +13,7 @@ runit_service 'prime-httpd' do
   default_logger  true
   sv_timeout      60
   retries         3
+  options(first_layer: 'loki')
   env(
     'LD_LIBRARY_PATH' => '/usr/lib:/usr/local/lib'
   )
