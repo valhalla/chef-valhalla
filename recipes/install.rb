@@ -8,7 +8,6 @@
   # clone software
   execute "clone #{layer}" do
     action    :run
-    user      node[:valhalla][:user][:name]
     command   "rm -rf #{layer} && git clone --depth=1 --recurse-submodules --single-branch --branch=master \
               #{node[:valhalla][:github][:base]}/#{layer}.git"
     cwd       node[:valhalla][:src_dir]
@@ -29,7 +28,6 @@
   # configure
   execute "configure #{layer}" do
     action  :nothing
-    user    node[:valhalla][:user][:name]
     command './autogen.sh && ./configure CPPFLAGS="-DLOGGING_LEVEL_INFO" \
              --with-valhalla-midgard=/usr/local --with-valhalla-baldr=/usr/local \
              --with-valhalla-skadi=/usr/local --with-valhalla-sif=/usr/local \
@@ -42,7 +40,6 @@
   # build
   execute "build #{layer}" do
     action  :nothing
-    user    node[:valhalla][:user][:name]
     command "make -j#{node[:cpu][:total]}"
     cwd     "#{node[:valhalla][:src_dir]}/#{layer}"
   end
