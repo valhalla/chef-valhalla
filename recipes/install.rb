@@ -4,7 +4,7 @@
 # Recipe:: install
 #
 
-%w(skadi tyr).each do |layer|
+%w(tyr).each do |layer|
   # clone software
   execute "clone #{layer}" do
     action    :run
