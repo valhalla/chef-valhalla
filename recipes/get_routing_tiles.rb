@@ -5,20 +5,8 @@
 #
 
 # stop everything from running
-execute 'stop service' do
-  action      :run
-  command     <<-EOH
-    service prime-httpd stop
-    count=$((#{node[:valhalla][:workers][:count]} - 1))
-    for i in loki thor odin tyr; do
-      service proxyd-${i} stop
-      for j in $(seq 0 ${count}); do
-        service workerd-${i}-${j} stop
-      done
-    done
-  EOH
-  cwd node[:valhalla][:base_dir]
-
+include_recipe 'runit::default'
+stop_service do
   notifies :run, 'execute[pull tiles]', :immediately
   notifies :run, 'execute[extract tiles]', :immediately
   notifies :run, 'execute[move tiles]', :immediately
@@ -57,6 +45,5 @@ execute 'move tiles' do
 end
 
 # turn everything back on
-include_recipe 'runit::default'
-restart_service do
+start_service do
 end

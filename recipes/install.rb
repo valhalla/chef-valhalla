@@ -57,5 +57,7 @@ end
 
 # restart the services if they are present
 include_recipe 'runit::default'
-restart_service do
+stop_service do
+end
+start_service do
 end
