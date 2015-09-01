@@ -40,7 +40,7 @@ define :start_service do
   execute 'test elevation service' do
     action  :run
     user    node[:valhalla][:user][:name]
-    command "#{node[:valhalla][:conf_dir]}/health_check.sh 'elevation' '{\"shape\":[{\"lat\":40.712431, \"lon\":-76.504916}]}'"
+    command "#{node[:valhalla][:conf_dir]}/health_check.sh 'height' '{\"shape\":[{\"lat\":40.712431, \"lon\":-76.504916}]}'"
     only_if "test -h #{node[:runit][:service_dir]}/proxyd-skadi"
   end
 end
