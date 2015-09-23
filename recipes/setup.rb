@@ -58,7 +58,6 @@ end
   python-pip
   jq
   parallel
-  awscli
   osmosis
   osmctools
 ).each do |p|
@@ -72,6 +71,7 @@ end
 %w(
   boto
   filechunkio
+  awscli==1.6.9
 ).each do |p|
   execute p do
     action   :run
