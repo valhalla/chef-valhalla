@@ -4,7 +4,7 @@
 # Recipe:: _restart
 #
 
-#stop everything from running
+# stop everything from running
 include_recipe 'runit::default'
 stop_service do
 end
