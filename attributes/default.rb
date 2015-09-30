@@ -41,6 +41,7 @@ default[:valhalla][:health_check_timeout]                        = 300
 
 # configuration
 default[:valhalla][:config]                                      = "#{node[:valhalla][:conf_dir]}/valhalla.json"
+default[:valhalla][:max_cache_size]                              = "#{((node.memory.total.to_f / (node.cpu.total.to_f * 2)) * 0.9).floor}"
 default[:valhalla][:mjolnir][:concurrency]                       = node[:cpu][:total]
 default[:valhalla][:httpd][:listen_address]                      = '0.0.0.0'
 default[:valhalla][:httpd][:port]                                = 8080
