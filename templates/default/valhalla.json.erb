@@ -5,6 +5,7 @@
       "type": "protocolbuffer"
     },
     "hierarchy": {
+      "max_cache_size": <%= node[:valhalla][:max_cache_size] %>,
       "tile_dir": "<%= node[:valhalla][:tile_dir] %>",
       "levels": [
         {"name": "local", "level": 2, "size": 0.25},
