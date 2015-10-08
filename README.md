@@ -92,7 +92,7 @@ To build, install and run valhalla on Ubuntu (or other Debian based systems) try
     sudo chown `whoami` /data/valhalla
     rm -rf /data/valhalla/*
     #TODO: run pbfadminbuilder?
-    pbfgraphbuilder -c conf/valhalla.json switzerland-latest.osm.pbf liechtenstein-latest.osm.pbf
+    LD_LIBRARY_PATH=/usr/lib:/usr/local/lib pbfgraphbuilder -c conf/valhalla.json switzerland-latest.osm.pbf liechtenstein-latest.osm.pbf
     popd
 
     #grab the demos repo and open up the point and click routing sample
