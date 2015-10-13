@@ -101,17 +101,44 @@
     }
   },
   "service_limits": {
-    "max_distance": {
-      "auto": 5000000.0,
-      "auto_shorter": 5000000.0,
-      "bus": 5000000.0,
-      "pedestrian": 250000.0,
-      "bicycle": 500000.0,
-      "multimodal": 500000.0
+    "auto": {
+      "max_distance": 5000000.0,
+      "max_locations": 20
     },
-    "max_route_locations": 8,
+    "auto_shorter": {
+      "max_distance": 5000000.0,
+      "max_locations": 20
+    },
+    "bus": {
+      "max_distance": 5000000.0,
+      "max_locations": 20
+    },
+    "pedestrian": {
+      "max_distance": 250000.0,
+      "max_locations": 50
+    },
+    "bicycle": {
+      "max_distance": 500000.0,
+      "max_locations": 50
+    },
+    "multimodal": {
+      "max_distance": 500000.0,
+      "max_locations": 50
+    },
+    "one_to_many": {
+      "max_area": 5000000.0,
+      "max_locations": 20
+    },
+    "many_to_one": {
+      "max_area": 5000000.0,
+      "max_locations": 20
+    },
+    "many_to_many": {
+      "max_area": 5000000.0,
+      "max_locations": 20
+    },
     "max_shape": 750000,
-    "min_resample": 10.0
+    "min_resample": 10.0 
   },
   "costing_options": {
     "auto": {
