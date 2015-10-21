@@ -47,10 +47,11 @@ else
   default[:valhalla][:max_cache_size]                            = "#{((node.memory.total.to_f / (node.cpu.total.to_f * 2)) * 0.9).floor * 1024}"
 end
 if node[:opsworks][:layers][:'route_analytics'] && node[:opsworks][:instance][:layers].include?('route_analytics')
-  default[:valhalla][:route_actions]   = '["one_to_many","many_to_one","many_to_many"]'
+  default[:valhalla][:actions]   = '["one_to_many","many_to_one","many_to_many"]'
 else
-  default[:valhalla][:route_actions]   = '["locate","route"]'
+  default[:valhalla][:actions]   = '["locate","route"]'
 end
+default[:valhalla][:elevation][:actions] = '["height"]'
 default[:valhalla][:mjolnir][:concurrency]                       = node[:cpu][:total]
 default[:valhalla][:httpd][:listen_address]                      = '0.0.0.0'
 default[:valhalla][:httpd][:port]                                = 8080
