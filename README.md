@@ -96,12 +96,12 @@ To build, install and run valhalla on Ubuntu (or other Debian based systems) try
     popd
 
     #grab the demos repo and open up the point and click routing sample
-    git clone --depth=1 --recurse-submodules --single-branch --branch=master https://github.com/valhalla/demos.git
+    git clone --depth=1 --recurse-submodules --single-branch --branch=gh-pages https://github.com/valhalla/demos.git
     firefox demos/routing/index.html &
     #NOTE: set the environment pulldown to 'localhost' to point it at your own server
 
     #start up the server
-    LD_LIBRARY_PATH=/usr/lib:/usr/local/lib tyr/tyr_simple_service conf/valhalla.json
+    LD_LIBRARY_PATH=/usr/lib:/usr/local/lib tyr/tyr_simple_service tyr/conf/valhalla.json
 
     #HAVE FUN!
 
