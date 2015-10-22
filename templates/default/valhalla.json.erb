@@ -50,6 +50,7 @@
     "elevation": "<%= node[:valhalla][:elevation_dir] %>"
   },
   "skadi": {
+    "actions": "<%= node[:valhalla][:elevation][:actions] %>",
     "logging": {
       "type": "std_out",
       "color": true
@@ -59,6 +60,7 @@
     }
   },
   "loki": {
+    "actions": "<%= node[:valhalla][:actions] %>",
     "logging": {
       "type": "std_out",
       "color": false
