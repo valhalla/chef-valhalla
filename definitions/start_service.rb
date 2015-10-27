@@ -32,7 +32,7 @@ define :start_service do
   execute 'test routing service' do
     action  :run
     user    node[:valhalla][:user][:name]
-    command "#{node[:valhalla][:conf_dir]}/health_check.sh 'route' '{\"locations\":[{\"lat\":40.402918,\"lon\":-76.535017},{\"lat\":40.403654,\"lon\": -76.529846}],\"costing\":\"auto\"}'"
+    command "#{node[:valhalla][:conf_dir]}/health_check.sh '#{node[:valhalla][:health_check][:route_action]}' '#{node[:valhalla][:health_check][:route_request]}'"
     only_if "test -h #{node[:runit][:service_dir]}/proxyd-loki"
   end
 
