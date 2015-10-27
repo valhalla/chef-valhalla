@@ -40,10 +40,10 @@ default[:valhalla][:min_routing_service_update_instances]        = 2
 default[:valhalla][:health_check_timeout]                        = 300
 if node[:opsworks][:layers][:'matrix'] && node[:opsworks][:instance][:layers].include?('matrix')
   default[:valhalla][:health_check][:route_action]                 = 'one_to_many'
-  default[:valhalla][:health_check][:route_request]                = '{\"locations\":[{\"lat\":40.755713,\"lon\":-73.984010},{\"lat\":40.756522,\"lon\":-73.983978},{\"lat\":40.757448,\"lon\":-73.984187}],\"costing\":\"pedestrian\"}'
+  default[:valhalla][:health_check][:route_request]                = '{"locations":[{"lat":40.755713,"lon":-73.984010},{"lat":40.756522,"lon":-73.983978},{"lat":40.757448,"lon":-73.984187}],"costing":"pedestrian"}'
 else
   default[:valhalla][:health_check][:route_action]                 = 'route'
-  default[:valhalla][:health_check][:route_request]                = '{\"locations\":[{\"lat\":40.402918,\"lon\":-76.535017},{\"lat\":40.403654,\"lon\": -76.529846}],\"costing\":\"auto\"}'
+  default[:valhalla][:health_check][:route_request]                = '{"locations":[{"lat":40.402918,"lon":-76.535017},{"lat":40.403654,"lon": -76.529846}],"costing":"auto"}'
 end
 
 # configuration
