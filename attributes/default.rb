@@ -4,7 +4,7 @@
 # Attributes:: default
 #
 
-# where to do some install work
+# where do some things belong
 default[:valhalla][:base_dir]                                    = '/opt/valhalla'
 default[:valhalla][:tile_dir]                                    = "#{node[:valhalla][:base_dir]}/tiles"
 default[:valhalla][:log_dir]                                     = "#{node[:valhalla][:base_dir]}/log"
@@ -14,6 +14,8 @@ default[:valhalla][:src_dir]                                     = "#{node[:valh
 default[:valhalla][:lock_dir]                                    = "#{node[:valhalla][:base_dir]}/lock"
 default[:valhalla][:extracts_dir]                                = "#{node[:valhalla][:base_dir]}/extracts"
 default[:valhalla][:elevation_dir]                               = "#{node[:valhalla][:base_dir]}/elevation"
+default[:valhalla][:transit_dir]                                 = "#{node[:valhalla][:base_dir]}/transit"
+default[:
 
 # the repos
 default[:valhalla][:github][:base]                               = 'https://github.com/valhalla'
