@@ -20,13 +20,15 @@ cp -rp <%= node[:valhalla][:src_dir] %>/mjolnir/conf/*.lua <%= node[:valhalla][:
 stamp=$(date +%Y_%m_%d-%H_%M_%S)
 cur_tile_dir=$(dirname <%= node[:valhalla][:tile_dir] %>)/tiles_${stamp}
 
-# if we dont have admins we must create them
+# things we need to make if we dont have them
 extracts=$(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
-admin_file=$(jq -r '.mjolnir.admin.admin_dir' <%= node[:valhalla][:config] %>)/$(jq -r '.mjolnir.admin.db_name' <%= node[:valhalla][:config] %>)
-transit_file=$(jq -r '.mjolnir.transit.transit_dir' <%= node[:valhalla][:config] %>)/$(jq -r '.mjolnir.transit.db_name' <%= node[:valhalla][:config] %>)
-stats_file=$(jq -r '.mjolnir.statistics.statistics_dir' <%= node[:valhalla][:config] %>)/$(jq -r '.mjolnir.statistics.db_name' <%= node[:valhalla][:config] %>)
+admin_file=$(jq -r '.mjolnir.admin' <%= node[:valhalla][:config] %>)
+timezone_file=$(jq -r '.mjolnir.timezone' <%= node[:valhalla][:config] %>)
 if [ ! -e $admin_file ]; then
   pbfadminbuilder -c <%= node[:valhalla][:config] %> $(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
+fi
+if [ ! -e $timezone_file ]; then
+  <%= node[:valhalla][:src_dir] %>/mjolnir/scripts/create_tz_db.sh <%= node[:valhalla][:config] %>
 fi
 
 # cut tiles from the data
@@ -38,6 +40,7 @@ set +e
 # we can ship the whole tile dir to s3 anyway, admin connectivity and all
 pushd <%= node[:valhalla][:tile_dir] %>
 connectivitymap -c <%= node[:valhalla][:config] %>
+stats_file=$(jq -r '.mjolnir.statistics' <%= node[:valhalla][:config] %>)
 mv ${stats_file} $(basename ${stats_file} | sed -e "s/\(\.[^.]\+$\)/_${stamp}\1/g")
 stats_file=$(basename ${stats_file} | sed -e "s/\(\.[^.]\+$\)/_${stamp}\1/g")
 mv connectivity.geojson connectivity_${stamp}.geojson
@@ -47,7 +50,7 @@ popd
 mkdir -p ${cur_tile_dir}
 mv <%= node[:valhalla][:tile_dir] %>/* ${cur_tile_dir}/
 cp -rp ${cur_tile_dir}/$(basename ${admin_file}) <%= node[:valhalla][:tile_dir] %>
-cp -rp ${cur_tile_dir}/$(basename ${transit_file}) <%= node[:valhalla][:tile_dir] %>
+cp -rp ${cur_tile_dir}/$(basename ${timezone_file}) <%= node[:valhalla][:tile_dir] %>
 
 # do we want to send this update to s3 (do so in the background)
 if [ "<%= node[:valhalla][:with_updates] %>" == true ]; then
