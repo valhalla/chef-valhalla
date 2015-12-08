@@ -12,7 +12,7 @@ GRAPH
   runit (1.6.0)
     packagecloud (>= 0.0.0)
   user (0.4.2)
-  valhalla (0.7.0)
+  valhalla (0.8.0)
     apt (>= 0.0.0)
     runit (>= 0.0.0)
     user (>= 0.0.0)

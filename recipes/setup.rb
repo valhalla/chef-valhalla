@@ -60,6 +60,7 @@ end
   parallel
   osmosis
   osmctools
+  spatialite-bin
 ).each do |p|
   package p do
     options '--force-yes'
