@@ -15,7 +15,6 @@ default[:valhalla][:lock_dir]                                    = "#{node[:valh
 default[:valhalla][:extracts_dir]                                = "#{node[:valhalla][:base_dir]}/extracts"
 default[:valhalla][:elevation_dir]                               = "#{node[:valhalla][:base_dir]}/elevation"
 default[:valhalla][:transit_dir]                                 = "#{node[:valhalla][:base_dir]}/transit"
-default[:
 
 # the repos
 default[:valhalla][:github][:base]                               = 'https://github.com/valhalla'
