@@ -9,7 +9,7 @@ execute 'get transit tiles' do
   user    node[:valhalla][:user][:name]
   cwd     node[:valhalla][:base_dir]
   command <<-EOH
-    #{node[:valhalla][:conf_dir]}/cut_transit_tiles.sh >>#{node[:valhalla][:log_dir]}/cut_transit_tiles.log 2>&1
+    #{node[:valhalla][:conf_dir]}/get_transit_tiles.sh >>#{node[:valhalla][:log_dir]}/transit.log 2>&1
   EOH
   only_if { node[:valhalla][:with_updates] == false && node[:valhalla][:with_transit] == true }
 end
@@ -19,7 +19,7 @@ cron 'get transit tiles' do
   user    node[:valhalla][:user][:name]
   day     '*'
   command <<-EOH
-    cd #{node[:valhalla][:base_dir]} && #{node[:valhalla][:conf_dir]}/cut_transit_tiles.sh >> #{node[:valhalla][:log_dir]}/cut_transit_tiles.log 2>&1
+    cd #{node[:valhalla][:base_dir]} && #{node[:valhalla][:conf_dir]}/get_transit_tiles.sh >> #{node[:valhalla][:log_dir]}/transit.log 2>&1
   EOH
   only_if { node[:valhalla][:with_updates] == true && node[:valhalla][:with_transit] == true }
 end
