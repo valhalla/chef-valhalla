@@ -31,6 +31,12 @@ if [ ! -e $timezone_file ]; then
   <%= node[:valhalla][:src_dir] %>/mjolnir/scripts/create_tz_db.sh <%= node[:valhalla][:config] %>
 fi
 
+#transit data
+if [ -f <%= node[:valhalla][:transit_dir] %>.tgz ]; then
+  rm -rf <%= node[:valhalla][:transit_dir] %>
+  tar pxvf -C <%= node[:valhalla][:transit_dir] %> <%= node[:valhalla][:transit_dir] %>.tgz
+fi
+
 # cut tiles from the data
 pbfgraphbuilder -c <%= node[:valhalla][:config] %> $(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
 rm -rf *.bin
