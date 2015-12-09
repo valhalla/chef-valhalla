@@ -4,7 +4,7 @@
 # Recipe:: get_transit_tiles
 #
 
-# cut tiles as a one-off
+# get transit tiles as a one-off
 execute 'get transit tiles' do
   user    node[:valhalla][:user][:name]
   cwd     node[:valhalla][:base_dir]
@@ -14,7 +14,7 @@ execute 'get transit tiles' do
   only_if { node[:valhalla][:with_updates] == false && node[:valhalla][:with_transit] == true }
 end
 
-# or install crontab to cut tiles all the time
+# or install crontab to get transit tiles all the time
 cron 'get transit tiles' do
   user    node[:valhalla][:user][:name]
   day     '*'
