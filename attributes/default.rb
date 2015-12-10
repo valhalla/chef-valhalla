@@ -28,7 +28,8 @@ default[:valhalla][:user][:home]                                 = '/home/valhal
 default[:valhalla][:extracts]                                    = %w(
   http://download.geofabrik.de/europe/liechtenstein-latest.osm.pbf
 )
-default[:valhalla][:with_updates]                                = false  # boolean
+default[:valhalla][:with_updates]                                = false
+default[:valhalla][:with_transit]                                = false
 
 # where to put fresh tiles and who wants them
 default[:valhalla][:bucket]                                      = 'YOUR_BUCKET'
