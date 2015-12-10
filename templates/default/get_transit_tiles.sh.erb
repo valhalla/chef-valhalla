@@ -1,0 +1,30 @@
+#!/bin/bash
+set -e
+
+# make sure only one is running at any time...
+LOCK_FILE="<%= node[:valhalla][:lock_dir] %>/cut_transit_tiles.lock"
+(set -C; : > ${LOCK_FILE}) 2> /dev/null
+if [ $? != "0" ]; then
+   echo "Lock file exists"
+   exit 0
+fi
+trap 'rm $LOCK_FILE' EXIT 1 2 3
+
+export PATH=$PATH:/usr/local/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+
+# TODO: for incremental updates we'll want to first get a copy of the previous stuff
+#if [ -f <%= node[:valhalla][:transit_dir] %>.tgz ]; then
+#  rm -rf <%= node[:valhalla][:transit_dir] %>_temp
+#  mkdir <%= node[:valhalla][:transit_dir] %>_temp
+#  tar pxvf <%= node[:valhalla][:transit_dir] %>.tgz -C <%= node[:valhalla][:transit_dir] %>_temp
+#fi
+
+# fetch the latest data
+transit_fetcher <%= node[:valhalla][:conf_dir] %> <%= node[:valhalla][:transitland_url] %> 5000 <%= node[:valhalla][:transit_dir] %>_temp <%= node[:valhalla][:transitland_api_key] %>
+
+# tar it up
+tar pcf - -C <%= node[:valhalla][:transit_dir] %>_temp . | pigz -9 > <%= node[:valhalla][:transit_dir] %>_temp.tgz
+
+# and move it into place
+mv <%= node[:valhalla][:transit_dir] %>_temp.tgz <%= node[:valhalla][:transit_dir] %>.tgz

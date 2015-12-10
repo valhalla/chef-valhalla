@@ -42,7 +42,7 @@ template node[:valhalla][:config] do
 end
 
 # install all of the scripts for data motion
-%w(cut_tiles.sh minutely_update.sh push_tiles.py health_check.sh).each do |script|
+%w(cut_tiles.sh get_transit_tiles.sh minutely_update.sh push_tiles.py health_check.sh).each do |script|
   template "#{node[:valhalla][:conf_dir]}/#{script}" do
     source "#{script}.erb"
     mode   0755
