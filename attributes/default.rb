@@ -30,6 +30,7 @@ default[:valhalla][:extracts]                                    = %w(
 )
 default[:valhalla][:with_updates]                                = false
 default[:valhalla][:with_transit]                                = false
+default[:valhalla][:transit_api_key]                             = ''
 
 # where to put fresh tiles and who wants them
 default[:valhalla][:bucket]                                      = 'YOUR_BUCKET'
