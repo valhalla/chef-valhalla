@@ -14,6 +14,12 @@ export PATH=$PATH:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
 # TODO: for incremental updates we'll want to first get a copy of the previous stuff
+#if [ -f <%= node[:valhalla][:transit_dir] %>.tgz ]; then
+#  rm -rf <%= node[:valhalla][:transit_dir] %>_temp
+#  mkdir <%= node[:valhalla][:transit_dir] %>_temp
+#  tar pxvf <%= node[:valhalla][:transit_dir] %>.tgz -C <%= node[:valhalla][:transit_dir] %>_temp
+#fi
+
 #tar pxvf -C <%= node[:valhalla][:transit_dir] %>_temp <%= node[:valhalla][:transit_dir] %>.tgz
 
 # fetch the latest data

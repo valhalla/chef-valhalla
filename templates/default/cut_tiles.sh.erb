@@ -34,7 +34,8 @@ fi
 #transit data
 if [ -f <%= node[:valhalla][:transit_dir] %>.tgz ]; then
   rm -rf <%= node[:valhalla][:transit_dir] %>
-  tar pxvf -C <%= node[:valhalla][:transit_dir] %> <%= node[:valhalla][:transit_dir] %>.tgz
+  mkdir <%= node[:valhalla][:transit_dir] %>
+  tar pxvf <%= node[:valhalla][:transit_dir] %>.tgz -C <%= node[:valhalla][:transit_dir] %>
 fi
 
 # cut tiles from the data
