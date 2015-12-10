@@ -21,7 +21,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 #fi
 
 # fetch the latest data
-transit_fetcher <%= node[:valhalla][:conf_dir] %> <%= node[:valhalla][:transitland_url] %> 5000 <%= node[:valhalla][:transit_dir] %>_temp <%= node[:valhalla][:transitland_api_key] %>
+transit_fetcher <%= node[:valhalla][:config] %> <%= node[:valhalla][:transitland_url] %> 5000 <%= node[:valhalla][:transit_dir] %>_temp <%= node[:valhalla][:transitland_api_key] %>
 
 # tar it up
 tar pcf - -C <%= node[:valhalla][:transit_dir] %>_temp . | pigz -9 > <%= node[:valhalla][:transit_dir] %>_temp.tgz
