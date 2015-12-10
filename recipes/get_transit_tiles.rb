@@ -17,7 +17,9 @@ end
 # or install crontab to get transit tiles all the time
 cron 'get transit tiles' do
   user    node[:valhalla][:user][:name]
-  day     '*'
+  minute  '0'
+  hour    '3'
+  weekday '6'
   command <<-EOH
     cd #{node[:valhalla][:base_dir]} && #{node[:valhalla][:conf_dir]}/get_transit_tiles.sh >> #{node[:valhalla][:log_dir]}/transit.log 2>&1
   EOH
