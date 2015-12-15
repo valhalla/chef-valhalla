@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 #
 # Cookbook Name:: valhalla
-# Recipe:: get_data
+# Recipe:: get_osm_data
 #
 
 # for each extract
@@ -9,14 +9,13 @@ node[:valhalla][:extracts].each do |url|
   # for the sake of brevity
   file = url.split('/').last
 
-  # TODO: should kill any running update is running and clear crontab first
-
   # get the checksum for the data
   remote_file "#{node[:valhalla][:extracts_dir]}/#{file}.md5" do
     action   :create
     backup   false
     source   "#{url}.md5"
     mode     0644
+    not_if   { File.exist?("#{node[:valhalla][:extracts_dir]}/#{file}") && node[:valhalla][:with_updates] }
 
     notifies :run, "execute[download #{url}]", :immediately
     notifies :run, "ruby_block[verify #{file}]", :immediately
