@@ -15,7 +15,7 @@ node[:valhalla][:extracts].each do |url|
     backup   false
     source   "#{url}.md5"
     mode     0644
-    only_if  { node[:valhalla][:with_updates] == false or File.exist?("#{node[:valhalla][:extracts_dir]}/#{file}") == false }
+    only_if  { node[:valhalla][:with_updates] == false || File.exist?("#{node[:valhalla][:extracts_dir]}/#{file}") == false }
 
     notifies :run, "execute[download #{url}]", :immediately
     notifies :run, "ruby_block[verify #{file}]", :immediately
