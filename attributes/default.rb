@@ -40,7 +40,7 @@ default[:valhalla][:routing_service_stack]                       = 'YOUR_STACK_I
 default[:valhalla][:routing_service_layers]                      = 'YOUR_LAYER_IDS'
 default[:valhalla][:routing_service_elb]                         = 'YOUR_ELB_NAME'
 default[:valhalla][:routing_service_recipes]                     = 'valhalla::get_routing_tiles'
-default[:valhalla][:min_routing_service_update_instances]        = 2
+default[:valhalla][:min_layers_instances]                        = '1'
 default[:valhalla][:health_check_timeout]                        = 300
 if node[:opsworks] && node[:opsworks][:layers][:'matrix'] && node[:opsworks][:instance][:layers].include?('matrix')
   default[:valhalla][:health_check][:route_action]                 = 'one_to_many'
