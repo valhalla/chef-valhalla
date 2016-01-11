@@ -45,7 +45,8 @@
     "actions": <%= node[:valhalla][:elevation][:actions] %>,
     "logging": {
       "type": "std_out",
-      "color": true
+      "color": true,
+      "long_request": 5.0
     },
     "service": {
       "proxy": "ipc://<%= node[:valhalla][:conf_dir] %>/skadi"
@@ -55,7 +56,8 @@
     "actions": <%= node[:valhalla][:actions] %>,
     "logging": {
       "type": "std_out",
-      "color": false
+      "color": false,
+      "long_request": 100.0
     },
     "service": {
       "proxy": "ipc://<%= node[:valhalla][:conf_dir] %>/loki"
@@ -64,7 +66,8 @@
   "thor": {
     "logging": {
       "type": "std_out",
-      "color": false
+      "color": false,
+      "long_request": 110.0
     },
     "service": {
       "proxy": "ipc://<%= node[:valhalla][:conf_dir] %>/thor"
@@ -82,7 +85,8 @@
   "tyr": {
     "logging": {
       "type": "std_out",
-      "color": false
+      "color": false,
+      "long_request": 100.0
     },
     "service": {
       "proxy": "ipc://<%= node[:valhalla][:conf_dir] %>/tyr"
