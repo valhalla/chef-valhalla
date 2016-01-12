@@ -30,17 +30,18 @@ The valhalla organization is comprised of several repositories each responsible 
 - [Sif](https://github.com/valhalla/sif) - Library used in costing of graph nodes and edges. This can be used as input to `loki` and `thor`. Depends on `midgard` and `baldr`
 - [Skadi](https://github.com/valhalla/skadi) - Library and service for accessing elevation data. This can be used as input to `mjolnir` or as a standalone service. Depends on `midgard` and `baldr`
 - [Mjolnir](https://github.com/valhalla/mjolnir) - Tools for turning open data into graph tiles. Depends on `midgard`, `baldr` and `skadi`
-- [Loki](https://github.com/valhalla/loki) - Library used to search graph tiles and correlate input locations to an entity within a tile. This correlated entity (edge or vertex) can be used as input to `thor`. Depends on `midgard`, `baldr`, `sif` and `mjolnir`
-- [Thor](https://github.com/valhalla/thor) - Library used to generate a path through the graph tile hierarchy. This path can be used as input to `odin`. Depends on `midgard`, `baldr`, `sif`, `loki` and `odin`
+- [Loki](https://github.com/valhalla/loki) - Library used to search graph tiles and correlate input locations to an entity within a tile. This correlated entity (edge or vertex) can be used as input to `thor`. Depends on `midgard`, `baldr` and `sif`
+- [Thor](https://github.com/valhalla/thor) - Library used to generate a path through the graph tile hierarchy. This path can be used as input to `odin`. Depends on `midgard`, `baldr`, `sif` and `odin`
 - [Odin](https://github.com/valhalla/odin) - Library used to generate maneuvers and narrative based on a path. This set of directions information can be used as input to `tyr`. Depends on `midgard` and `baldr`
-- [Tyr](https://github.com/valhalla/tyr) - Service used to handle http requests for a route communicating with all of the other valhalla APIs. The service will format output from `odin` and support json (and eventually protocol buffer) output. Depends on `midgard`, `baldr`, `sif`, `mjolnir`, `loki`, `thor` and `odin`
+- [Tyr](https://github.com/valhalla/tyr) - Service used to handle http requests for a route communicating with all of the other valhalla APIs. The service will format output from `odin` and support json (and eventually protocol buffer) output. Depends on `midgard`, `baldr` and `odin`
+- [Tools](https://github.com/valhalla/tools) - A set command line tools that exercise bits of functionality from the libraries above
 - [Demos](https://github.com/valhalla/demos) - A set of demos which allows interacting with the service and APIs
 - [Chef](https://github.com/valhalla/chef-valhalla) - This cookbook for installing and running valhalla
 
 Building and Running
 --------------------
 
-To build, install and run valhalla on Ubuntu (or other Debian based systems) try the following bash script:
+To build, install and run valhalla on Ubuntu (or other Debian based systems) try the following bash commands:
 
     #add ppa for newer compiler
     sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
@@ -74,7 +75,7 @@ To build, install and run valhalla on Ubuntu (or other Debian based systems) try
     popd
 
     #build and install all valhalla includes, libraries and binaries
-    for repo in midgard baldr sif skadi mjolnir loki odin thor tyr; do
+    for repo in midgard baldr sif skadi mjolnir loki odin thor tyr tools; do
       git clone --recurse-submodules https://github.com/valhalla/$repo.git
       pushd $repo
       ./autogen.sh
@@ -101,7 +102,7 @@ To build, install and run valhalla on Ubuntu (or other Debian based systems) try
     #NOTE: set the environment pulldown to 'localhost' to point it at your own server
 
     #start up the server
-    LD_LIBRARY_PATH=/usr/lib:/usr/local/lib tyr/tyr_simple_service tyr/conf/valhalla.json
+    LD_LIBRARY_PATH=/usr/lib:/usr/local/lib tools/tyr_simple_service tools/conf/valhalla.json
 
     #HAVE FUN!
 
