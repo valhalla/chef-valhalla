@@ -4,7 +4,7 @@
 # Recipe:: install
 #
 
-%w(tyr).each do |layer|
+%w(tools).each do |layer|
   # clone software
   execute "clone #{layer}" do
     action    :run
