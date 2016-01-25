@@ -13,6 +13,13 @@ trap 'rm $LOCK_FILE' EXIT 1 2 3
 export PATH=$PATH:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
+tile_dir=$(jq -r '.mjolnir.hierarchy.tile_dir' <%= node[:valhalla][:config] %>)
+
+#remove the hierarchy dirs.  if we crashed they are left around.
+rm -rf ${tile_dir}/0
+rm -rf ${tile_dir}/1
+rm -rf ${tile_dir}/2
+
 # get all the lua programs for data import
 cp -rp <%= node[:valhalla][:src_dir] %>/mjolnir/conf/*.lua <%= node[:valhalla][:conf_dir] %>
 
