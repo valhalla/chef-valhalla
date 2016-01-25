@@ -52,7 +52,7 @@ end
 
 # configuration
 default[:valhalla][:config]                                      = "#{node[:valhalla][:conf_dir]}/valhalla.json"
-if !node[:opsworks] || (node[:opsworks][:layers][:'data-producer'] && node[:opsworks][:instance][:layers].include?('data-producer'))
+if !node[:opsworks]
   default[:valhalla][:max_cache_size]                            = 1024 * 1024 * 1024
 else
   default[:valhalla][:max_cache_size]                            = "#{((node.memory.total.to_f / (node.cpu.total.to_f * 2)) * 0.9).floor * 1024}"
