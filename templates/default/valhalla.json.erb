@@ -67,7 +67,8 @@
     "logging": {
       "type": "std_out",
       "color": false,
-      "long_request": 110.0
+      "long_request_route": 110.0,
+      "long_request_manytomany": 15000.0
     },
     "service": {
       "proxy": "ipc://<%= node[:valhalla][:conf_dir] %>/thor"
