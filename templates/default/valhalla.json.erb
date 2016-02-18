@@ -1,9 +1,6 @@
 {
   "mjolnir": {
     "concurrency": <%= node[:valhalla][:mjolnir][:concurrency] %>,
-    "input": {
-      "type": "protocolbuffer"
-    },
     "hierarchy": {
       "max_cache_size": <%= node[:valhalla][:max_cache_size] %>,
       "tile_dir": "<%= node[:valhalla][:tile_dir] %>",
@@ -12,22 +9,6 @@
         {"name": "arterial", "level": 1, "size": 1, "importance_cutoff": "Tertiary"},
         {"name": "highway", "level": 0, "size": 4, "importance_cutoff": "Primary"}
       ]
-    },
-    "tagtransform": {
-      "node_script": "<%= node[:valhalla][:conf_dir] %>/vertices.lua",
-      "node_function": "nodes_proc",
-      "way_script": "<%= node[:valhalla][:conf_dir] %>/edges.lua",
-      "way_function": "ways_proc",
-      "relation_script": "<%= node[:valhalla][:conf_dir] %>/edges.lua",
-      "relation_function": "rels_proc"
-    },
-    "admintagtransform": {
-      "node_script": "<%= node[:valhalla][:conf_dir] %>/admins.lua",
-      "node_function": "nodes_proc",
-      "way_script": "<%= node[:valhalla][:conf_dir] %>/admins.lua",
-      "way_function": "ways_proc",
-      "relation_script": "<%= node[:valhalla][:conf_dir] %>/admins.lua",
-      "relation_function": "rels_proc"
     },
     "statistics": "<%= node[:valhalla][:tile_dir] %>/statistics.sqlite",
     "admin": "<%= node[:valhalla][:tile_dir] %>/admin.sqlite",

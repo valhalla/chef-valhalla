@@ -20,9 +20,6 @@ rm -rf ${tile_dir}/0
 rm -rf ${tile_dir}/1
 rm -rf ${tile_dir}/2
 
-# get all the lua programs for data import
-cp -rp <%= node[:valhalla][:src_dir] %>/mjolnir/conf/*.lua <%= node[:valhalla][:conf_dir] %>
-
 # name the dir where this will go
 stamp=$(date +%Y_%m_%d-%H_%M_%S)
 cur_tile_dir=$(dirname <%= node[:valhalla][:tile_dir] %>)/tiles_${stamp}
