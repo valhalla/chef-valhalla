@@ -64,13 +64,13 @@ def update_instances(elb_name, stack, layer, min_instances, recipes):
   #if we dont have enough machines to feel safe we give up
   instances = [ i for i in instances['Instances'] if i.get('Status') == 'online' ]
   if len(instances) < min_instances:
-    raise Exception('Not enough instances in layer to risk the update')
+    raise Exception('Not enough instances (%d < %d) in layer %s to risk the update' % (len(instances), min_instances, layer))
 
   #connect to the elb and check which are in it
   elb = boto.connect_elb(elb_name)
   instances = [ i for i in instances if elb.describe_instance_health(elb_name, [i['Ec2InstanceId']])[0].state == 'InService' ]
   if len(instances) < min_instances:
-    raise Exception('Not enough instances in elb to risk the update')
+    raise Exception('Not enough instances (%d < %d) in elb %s to risk the update' % (len(instances), min_instances, layer))
 
   #for each one
   for instance in instances:
@@ -138,8 +138,9 @@ if __name__ == "__main__":
       print('%s is not a regular file' % f)
 
   #update the service instances
+  elbs = '<%= node[:valhalla][:routing_service_elbs] %>'.split(',')
   layers = '<%= node[:valhalla][:routing_service_layers] %>'.split(',')
   min_layers_instances = '<%= node[:valhalla][:min_layers_instances] %>'.split(',')
   recipes = '<%= node[:valhalla][:routing_service_recipes] %>'.split(',')
-  for layer, min_instances in zip(layers, min_layers_instances):
-    update_instances('<%= node[:valhalla][:routing_service_elb] %>', '<%= node[:valhalla][:routing_service_stack] %>', layer, int(min_instances), recipes)
+  for elb, layer, min_instances in zip(elbs, layers, min_layers_instances):
+    update_instances(elb, '<%= node[:valhalla][:routing_service_stack] %>', layer, int(min_instances), recipes)
