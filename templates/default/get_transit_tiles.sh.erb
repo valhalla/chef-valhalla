@@ -21,7 +21,7 @@ if [ -f <%= node[:valhalla][:transit_dir] %>.tgz ]; then
 fi
 
 # fetch the latest data
-transit_fetcher <%= node[:valhalla][:config] %> <%= node[:valhalla][:transitland_url] %> 5000 <%= node[:valhalla][:transit_dir] %>_temp <%= node[:valhalla][:transitland_api_key] %>
+transit_fetcher <%= node[:valhalla][:config] %> <%= node[:valhalla][:transitland_url] %> 5000 <%= node[:valhalla][:transit_dir] %>_temp <%= node[:valhalla][:transitland_api_key] %> <%= node[:valhalla][:transitland_import_level] %>
 
 # tar it up
 tar pcf - -C <%= node[:valhalla][:transit_dir] %>_temp . | pigz -9 > <%= node[:valhalla][:transit_dir] %>_temp.tgz
