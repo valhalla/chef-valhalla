@@ -14,13 +14,10 @@ def push_to_s3(file_name, bucket_name = '<%= node[:valhalla][:bucket] %>', bucke
   s3 = boto.connect_s3()
   bucket = s3.get_bucket(bucket_name)
   basename = os.path.basename(file_name)
-  basename, extension = os.path.splitext(basename)
-  if basename == '' or extension == '':
-    raise Exception('Sending extension-less or extension-only files is not allowed')
   prefix = basename[:basename.find('_') + 1]
-  if prefix == basename[:-1]:
+  if not prefix.endswith('_'):
     raise Exception('No prefix detected for freshness culling, when naming use: prefix_$(date +%Y_%m_%d-%H_%M_%S).ext')
-  keys = sorted([ k.key for k in bucket.get_all_keys() if k.key.startswith(bucket_dir + '/' + prefix) if k.key.endswith(extension) ])
+  keys = sorted([ k.key for k in bucket.get_all_keys(None, prefix=bucket_dir + '/' + prefix) ])
   keys.reverse()
 
   #lets keep it to a managable amount of previous ones
