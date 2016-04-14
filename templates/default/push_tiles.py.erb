@@ -28,6 +28,8 @@ def push_to_s3(file_name, bucket_name = '<%= node[:valhalla][:bucket] %>', bucke
     key = keys.pop()
     bucket.delete_key(key)
 
+  #TODO: break this multipart upload into a function and retry when it fails
+
   #get ready for multi part
   source_size = os.stat(file_name).st_size
   key_name = bucket_dir + '/' + os.path.basename(file_name)
@@ -128,14 +130,11 @@ if __name__ == "__main__":
   #for each arg
   for f in sys.argv[1:]:
     #check all the files are there
-    try:
-      if stat.S_ISREG(os.stat(f).st_mode) == False:
-        raise
-      #push them to s3
-      else:
-        push_to_s3(f, '<%= node[:valhalla][:bucket] %>', '<%= node[:valhalla][:bucket_dir] %>')
-    except:
-      print('%s is not a regular file' % f)
+    if stat.S_ISREG(os.stat(f).st_mode) == False:
+      raise IOError(f + ' was not found') 
+    #push them to s3
+    else:
+      push_to_s3(f, '<%= node[:valhalla][:bucket] %>', '<%= node[:valhalla][:bucket_dir] %>')
 
   #update the service instances
   elbs = '<%= node[:valhalla][:routing_service_elbs] %>'.split(',')
