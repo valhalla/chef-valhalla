@@ -4,7 +4,7 @@
 # Recipe:: install
 #
 
-%w(tools).each do |layer|
+%w(mjolnir tools).each do |layer|
   # clone software
   execute "clone #{layer}" do
     action    :run
