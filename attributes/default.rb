@@ -32,7 +32,7 @@ default[:valhalla][:with_updates]                                = false
 default[:valhalla][:with_transit]                                = false
 default[:valhalla][:transitland_url]                             = 'http://transit.land'
 default[:valhalla][:transitland_api_key]                         = ''
-default[:valhalla][:transitland_import_level]                    = '2,3,4'
+default[:valhalla][:transitland_import_level]                    = '4'
 
 # where to put fresh tiles and who wants them
 default[:valhalla][:bucket]                                      = 'YOUR_BUCKET'
