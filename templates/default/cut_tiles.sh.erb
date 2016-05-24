@@ -29,10 +29,10 @@ extracts=$(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
 admin_file=$(jq -r '.mjolnir.admin' <%= node[:valhalla][:config] %>)
 timezone_file=$(jq -r '.mjolnir.timezone' <%= node[:valhalla][:config] %>)
 if [ ! -e $admin_file ]; then
-  pbfadminbuilder -c <%= node[:valhalla][:config] %> $(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
+  valhalla_build_admins -c <%= node[:valhalla][:config] %> $(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
 fi
 if [ ! -e $timezone_file ]; then
-  <%= node[:valhalla][:src_dir] %>/mjolnir/scripts/create_tz_db.sh <%= node[:valhalla][:config] %>
+  <%= node[:valhalla][:src_dir] %>/mjolnir/scripts/valhalla_build_timezones <%= node[:valhalla][:config] %>
 fi
 
 #transit data
@@ -43,14 +43,14 @@ if [ -f <%= node[:valhalla][:transit_dir] %>.tgz ]; then
 fi
 
 # cut tiles from the data
-pbfgraphbuilder -c <%= node[:valhalla][:config] %> $(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
+valhalla_build_tiles -c <%= node[:valhalla][:config] %> $(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
 rm -rf *.bin
 set +e
 
 # generate connectivity map geojson, tile dir is as good a place as any
 # we can ship the whole tile dir to s3 anyway, admin connectivity and all
 pushd <%= node[:valhalla][:tile_dir] %>
-connectivitymap -c <%= node[:valhalla][:config] %>
+valhalla_build_connectivity -c <%= node[:valhalla][:config] %>
 stats_file=$(jq -r '.mjolnir.statistics' <%= node[:valhalla][:config] %>)
 mv ${stats_file} $(basename ${stats_file} | sed -e "s/\(\.[^.]\+$\)/_${stamp}\1/g")
 stats_file=$(basename ${stats_file} | sed -e "s/\(\.[^.]\+$\)/_${stamp}\1/g")
