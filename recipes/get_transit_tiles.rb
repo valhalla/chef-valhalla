@@ -12,6 +12,8 @@ execute 'get transit tiles' do
     #{node[:valhalla][:conf_dir]}/get_transit_tiles.sh >>#{node[:valhalla][:log_dir]}/transit.log 2>&1
   EOH
   only_if { node[:valhalla][:with_transit] == true }
+  retries 3
+  timeout 32_000
 end
 
 # or install crontab to get transit tiles all the time
