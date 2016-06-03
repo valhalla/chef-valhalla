@@ -22,7 +22,6 @@ rm -rf ${tile_dir}/2
 
 # name the dir where this will go
 stamp=$(date +%Y_%m_%d-%H_%M_%S)
-cur_tile_dir=$(dirname <%= node[:valhalla][:tile_dir] %>)/tiles_${stamp}
 
 # things we need to make if we dont have them
 extracts=$(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
@@ -47,19 +46,25 @@ valhalla_build_tiles -c <%= node[:valhalla][:config] %> $(find <%= node[:valhall
 rm -rf *.bin
 set +e
 
-# generate connectivity map geojson, tile dir is as good a place as any
-# we can ship the whole tile dir to s3 anyway, admin connectivity and all
-pushd <%= node[:valhalla][:tile_dir] %>
-valhalla_build_connectivity -c <%= node[:valhalla][:config] %>
-stats_file=$(jq -r '.mjolnir.statistics' <%= node[:valhalla][:config] %>)
-mv ${stats_file} $(basename ${stats_file} | sed -e "s/\(\.[^.]\+$\)/_${stamp}\1/g")
-stats_file=$(basename ${stats_file} | sed -e "s/\(\.[^.]\+$\)/_${stamp}\1/g")
-mv connectivity2.geojson connectivity_${stamp}.geojson
-popd
-
-# backup files and tile dirs, keep the admin stuff though
+# package up the tiles and the admin and timezone dbs
+cur_tile_dir=<%= node[:valhalla][:base_dir] %>/tiles_${stamp}
 mkdir -p ${cur_tile_dir}
 mv <%= node[:valhalla][:tile_dir] %>/* ${cur_tile_dir}/
+
+# package up the extra stuff
+cur_extras_dir=<%= node[:valhalla][:base_dir] %>/extras_${stamp}
+mkdir -p ${cur_extras_dir}
+pushd ${cur_extras_dir}
+valhalla_build_connectivity -c <%= node[:valhalla][:config] %>
+for f in connectivity*; do
+  mv $f ${f%.*}_${stamp}.${f##*.}
+done
+stats_file=$(jq -r '.mjolnir.statistics' <%= node[:valhalla][:config] %>)
+mv ${stats_file} $(basename ${stats_file} | sed -e "s/\(\.[^.]\+$\)/_${stamp}\1/g")
+cp -rp <%= node[:valhalla][:transit_dir] %>.tgz <%= node[:valhalla][:transit_dir] %>_${stamp}.tgz
+popd
+
+# backup files and tile dirs, keep the admin and tz stuff though
 cp -rp ${cur_tile_dir}/$(basename ${admin_file}) <%= node[:valhalla][:tile_dir] %>
 cp -rp ${cur_tile_dir}/$(basename ${timezone_file}) <%= node[:valhalla][:tile_dir] %>
 
@@ -67,7 +72,8 @@ cp -rp ${cur_tile_dir}/$(basename ${timezone_file}) <%= node[:valhalla][:tile_di
 if [ "<%= node[:valhalla][:with_updates] %>" == true ]; then
   {
     tar pcf - -C ${cur_tile_dir} . | pigz -9 > ${cur_tile_dir}.tgz
-    <%= node[:valhalla][:conf_dir] %>/push_tiles.py ${cur_tile_dir}/connectivity_${stamp}.geojson ${cur_tile_dir}/${stats_file} ${cur_tile_dir}.tgz
-    rm -rf ${cur_tile_dir} ${cur_tile_dir}.tgz
+    rm -rf ${cur_tile_dir} &
+    <%= node[:valhalla][:conf_dir] %>/push_tiles.py ${cur_extras_dir}/* ${cur_tile_dir}.tgz
+    rm -rf ${cur_extras_dir} ${cur_tile_dir}.tgz
   }&
 fi
