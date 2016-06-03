@@ -7,7 +7,7 @@ DEPENDENCIES
     metadata: true
 
 GRAPH
-  apt (2.7.0)
+  apt (3.0.0)
   packagecloud (0.0.17)
   runit (1.6.0)
     packagecloud (>= 0.0.0)
