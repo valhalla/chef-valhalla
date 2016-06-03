@@ -21,7 +21,7 @@ cron 'get transit tiles' do
   user    node[:valhalla][:user][:name]
   minute  '0'
   hour    '3'
-  weekday '3'
+  weekday '3,6'
   command <<-EOH
     cd #{node[:valhalla][:base_dir]} && #{node[:valhalla][:conf_dir]}/get_transit_tiles.sh >> #{node[:valhalla][:log_dir]}/transit.log 2>&1
   EOH
