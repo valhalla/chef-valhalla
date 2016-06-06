@@ -13,7 +13,7 @@ execute 'get transit tiles' do
   EOH
   only_if { node[:valhalla][:with_transit] == true }
   retries 3
-  timeout 32_000
+  timeout 64_000
 end
 
 # or install crontab to get transit tiles all the time
