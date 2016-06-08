@@ -1,12 +1,22 @@
 #!/bin/bash
 set -e
 
+function mv_stamp() {
+  local b=$(basename ${1})
+  mv ${1} ${b%.*}_${2}.${b##*.}
+}
+
+function cp_stamp() {
+  local b=$(basename ${1})
+  cp -rp ${1} ${b%.*}_${2}.${b##*.}
+}
+
 # make sure only one is running at any time...
 LOCK_FILE="<%= node[:valhalla][:lock_dir] %>/cut_tiles.lock"
 (set -C; : > ${LOCK_FILE}) 2> /dev/null
 if [ $? != "0" ]; then
-   echo "Lock file exists"
-   exit 0
+  echo "Lock file exists"
+  exit 0
 fi
 trap 'rm $LOCK_FILE' EXIT 1 2 3
 
@@ -38,7 +48,7 @@ fi
 if [ -f <%= node[:valhalla][:transit_dir] %>.tgz ]; then
   rm -rf <%= node[:valhalla][:transit_dir] %>
   mkdir <%= node[:valhalla][:transit_dir] %>
-  tar pxvf <%= node[:valhalla][:transit_dir] %>.tgz -C <%= node[:valhalla][:transit_dir] %>
+  tar pxf <%= node[:valhalla][:transit_dir] %>.tgz -C <%= node[:valhalla][:transit_dir] %>
 fi
 
 # cut tiles from the data
@@ -56,12 +66,9 @@ cur_extras_dir=<%= node[:valhalla][:base_dir] %>/extras_${stamp}
 mkdir -p ${cur_extras_dir}
 pushd ${cur_extras_dir}
 valhalla_build_connectivity -c <%= node[:valhalla][:config] %>
-for f in connectivity*; do
-  mv $f ${f%.*}_${stamp}.${f##*.}
-done
-stats_file=$(jq -r '.mjolnir.statistics' <%= node[:valhalla][:config] %>)
-mv ${stats_file} $(basename ${stats_file} | sed -e "s/\(\.[^.]\+$\)/_${stamp}\1/g")
-cp -rp <%= node[:valhalla][:transit_dir] %>.tgz <%= node[:valhalla][:transit_dir] %>_${stamp}.tgz
+for f in connectivity*; do  mv_stamp $f ${stamp}; done
+mv_stamp $(jq -r '.mjolnir.statistics' <%= node[:valhalla][:config] %>) ${stamp}
+cp_stamp <%= node[:valhalla][:transit_dir] %>.tgz ${stamp}
 popd
 
 # backup files and tile dirs, keep the admin and tz stuff though
