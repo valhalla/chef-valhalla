@@ -41,7 +41,7 @@ if [ ! -e $admin_file ]; then
   valhalla_build_admins -c <%= node[:valhalla][:config] %> $(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
 fi
 if [ ! -e $timezone_file ]; then
-  <%= node[:valhalla][:src_dir] %>/mjolnir/scripts/valhalla_build_timezones <%= node[:valhalla][:config] %>
+  valhalla_build_timezones <%= node[:valhalla][:config] %>
 fi
 
 #transit data
@@ -56,11 +56,6 @@ valhalla_build_tiles -c <%= node[:valhalla][:config] %> $(find <%= node[:valhall
 rm -rf *.bin
 set +e
 
-# package up the tiles and the admin and timezone dbs
-cur_tile_dir=<%= node[:valhalla][:base_dir] %>/tiles_${stamp}
-mkdir -p ${cur_tile_dir}
-mv <%= node[:valhalla][:tile_dir] %>/* ${cur_tile_dir}/
-
 # package up the extra stuff
 cur_extras_dir=<%= node[:valhalla][:base_dir] %>/extras_${stamp}
 mkdir -p ${cur_extras_dir}
@@ -70,6 +65,11 @@ for f in connectivity*; do  mv_stamp $f ${stamp}; done
 mv_stamp $(jq -r '.mjolnir.statistics' <%= node[:valhalla][:config] %>) ${stamp}
 cp_stamp <%= node[:valhalla][:transit_dir] %>.tgz ${stamp}
 popd
+
+# package up the tiles and the admin and timezone dbs
+cur_tile_dir=<%= node[:valhalla][:base_dir] %>/tiles_${stamp}
+mkdir -p ${cur_tile_dir}
+mv <%= node[:valhalla][:tile_dir] %>/* ${cur_tile_dir}/
 
 # backup files and tile dirs, keep the admin and tz stuff though
 cp -rp ${cur_tile_dir}/$(basename ${admin_file}) <%= node[:valhalla][:tile_dir] %>
