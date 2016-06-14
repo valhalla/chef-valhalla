@@ -51,11 +51,8 @@ end
 end
 
 # a few things from ppa
-%w(
-  ppa:kevinkreiser/prime-server
-  ppa:valhalla-routing/valhalla
-).each do |ppa|
- execute ppa do
+%w(ppa:kevinkreiser/prime-server ppa:valhalla-routing/valhalla).each do |ppa|
+  execute ppa do
     action   :run
     command  "apt-add-repository -y #{ppa} && apt-get update"
   end

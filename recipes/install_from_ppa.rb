@@ -5,19 +5,19 @@
 #
 
 # remove the packages
-execute package-remove do
+execute package_remove do
   action :run
-  command "rm -rf /usr/local/lib/libvalhalla* /usr/local/include/valhalla /usr/local/bin/valhalla* && apt-get purge -y libvalhalla* valhalla*"
+  command 'rm -rf /usr/local/lib/libvalhalla* /usr/local/include/valhalla /usr/local/bin/valhalla* && apt-get purge -y libvalhalla* valhalla*'
 end
 
 # update the repository
-execute ppa-update do
+execute ppa_update do
   action   :run
-  command  "apt-get update"
+  command  'apt-get update'
 end
 
 # install the packages
-execute package-remove do
+execute package_remove do
   action :run
   command "apt-get install -y libvalhalla#{node[:valhalla][:ppa_version]}-0 libvalhalla#{node[:valhalla][:ppa_version]}-dev valhalla#{node[:valhalla][:ppa_version]}-bin"
 end
