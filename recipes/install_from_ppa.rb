@@ -17,7 +17,7 @@ execute ppa_update do
 end
 
 # install the packages
-execute package_remove do
+execute package_install do
   action :run
   command "apt-get install -y libvalhalla#{node[:valhalla][:ppa_version]}-0 libvalhalla#{node[:valhalla][:ppa_version]}-dev valhalla#{node[:valhalla][:ppa_version]}-bin"
 end
