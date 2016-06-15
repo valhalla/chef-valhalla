@@ -17,9 +17,12 @@ execute 'ppa update' do
 end
 
 # install the packages
-execute 'package install' do
-  action :run
-  command "apt-get install -y libvalhalla#{node[:valhalla][:ppa_version]}-0 libvalhalla#{node[:valhalla][:ppa_version]}-dev valhalla#{node[:valhalla][:ppa_version]}-bin"
+execute 'package install versioned' do
+  action  :run
+  command "d=$(echo #{node[:valhalla][:ppa_version]} | sed -e 's/^.\+$/-/g') && \
+           apt-get install -y libvalhalla#{node[:valhalla][:ppa_version]}${d}0 \
+                              libvalhalla#{node[:valhalla][:ppa_version]}-dev \
+                              valhalla#{node[:valhalla][:ppa_version]}-bin"
 end
 
 # restart the services if they are present
