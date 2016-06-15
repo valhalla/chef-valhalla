@@ -4,10 +4,10 @@
 # Recipe:: install_from_ppa
 #
 
-# remove the packages
+# remove previous software
 execute package_remove do
   action :run
-  command 'rm -rf /usr/local/lib/libvalhalla* /usr/local/include/valhalla /usr/local/bin/valhalla* && apt-get purge -y libvalhalla* valhalla*'
+  command '(apt-get purge -y libvalhalla* valhalla* || true) && rm -rf /usr/local/lib/libvalhalla* /usr/local/include/valhalla /usr/local/bin/valhalla*'
 end
 
 # update the repository

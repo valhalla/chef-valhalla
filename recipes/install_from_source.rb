@@ -4,6 +4,12 @@
 # Recipe:: install_from_source
 #
 
+# remove previous software
+execute package_remove do
+  action :run
+  command '(apt-get purge -y libvalhalla* valhalla* || true) && rm -rf /usr/local/lib/libvalhalla* /usr/local/include/valhalla /usr/local/bin/valhalla*'
+end
+
 %w(midgard baldr sif meili skadi mjolnir loki odin thor tyr tools).each do |layer|
   # clone software
   execute "clone #{layer}" do
