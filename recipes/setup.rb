@@ -84,7 +84,7 @@ end
   libspatialite-dev
   libsqlite3-dev
   protobuf-compiler
-  libboost-filesystemi1.54.0
+  libboost-filesystem1.54.0
   libboost-regex1.54.0
   libboost-system1.54.0
   libboost-thread1.54.0
