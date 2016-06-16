@@ -19,7 +19,7 @@ end
 # install the packages
 execute 'package install versioned' do
   action  :run
-  command "d=$(echo #{node[:valhalla][:ppa_version]} | sed -e 's/^.\+$/-/g') && \
+  command "d=$(echo #{node[:valhalla][:ppa_version]} | sed -e 's/^.\\+$/-/g') && \
            apt-get install -y libvalhalla#{node[:valhalla][:ppa_version]}${d}0 \
                               libvalhalla#{node[:valhalla][:ppa_version]}-dev \
                               valhalla#{node[:valhalla][:ppa_version]}-bin"
