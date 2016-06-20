@@ -15,7 +15,7 @@ end
   execute "clone #{layer}" do
     action    :run
     command   "rm -rf #{layer} && git clone --depth=1 --recurse-submodules --single-branch \
-              --branch=#{node[:valhalla][:revision]} \
+              --branch=#{node[:valhalla][:github][:revision]} \
               #{node[:valhalla][:github][:base]}/#{layer}.git"
     cwd       node[:valhalla][:src_dir]
 
