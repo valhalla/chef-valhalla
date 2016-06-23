@@ -19,6 +19,7 @@ default[:valhalla][:transit_dir]                                 = "#{node[:valh
 # the repos
 default[:valhalla][:github][:base]                               = 'https://github.com/valhalla'
 default[:valhalla][:github][:revision]                           = 'master'
+default[:valhalla][:ppa_version]                                 = ''
 
 # valhalla user to create
 default[:valhalla][:user][:name]                                 = 'valhalla'
