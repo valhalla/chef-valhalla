@@ -61,8 +61,10 @@ cur_extras_dir=<%= node[:valhalla][:base_dir] %>/extras_${stamp}
 mkdir -p ${cur_extras_dir}
 pushd ${cur_extras_dir}
 valhalla_build_connectivity -c <%= node[:valhalla][:config] %>
+valhalla_build_statistics -c <%= node[:valhalla][:config] %>
 for f in connectivity*; do  mv_stamp $f ${stamp}; done
-mv_stamp $(jq -r '.mjolnir.statistics' <%= node[:valhalla][:config] %>) ${stamp}
+mv_stamp statistics.sqlite ${stamp}
+mv_stamp tasks.json ${stamp}
 cp_stamp <%= node[:valhalla][:transit_dir] %>.tgz ${stamp}
 popd
 
