@@ -64,7 +64,7 @@ valhalla_build_connectivity -c <%= node[:valhalla][:config] %>
 valhalla_build_statistics -c <%= node[:valhalla][:config] %>
 for f in connectivity*; do  mv_stamp $f ${stamp}; done
 mv_stamp statistics.sqlite ${stamp}
-mv_stamp tasks.json ${stamp}
+mv_stamp maproulette_tasks.geojson ${stamp}
 cp_stamp <%= node[:valhalla][:transit_dir] %>.tgz ${stamp}
 popd
 
