@@ -68,6 +68,8 @@ end
   parallel
   osmosis
   osmctools
+  autoconf
+  automake
   spatialite-bin
   autotools-dev
   pkg-config
