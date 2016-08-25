@@ -44,7 +44,7 @@ default[:maproulette][:run_admin_tool]                           = false
 default[:maproulette][:admin_dir]                                = "#{node[:valhalla][:src_dir]}/mjonir/py/challenge_admin"
 default[:maproulette][:api_key]                                  = 'YOUR_KEY'
 default[:maproulette][:config]                                   = "#{node[:valhalla][:conf_dir]}/#{node[:maproulette][:config_file]}"
-default[:maproulette][:geojson]                                  = "#{node[:valhalla][:tile_dir]}/#{node[:maproulette][:config_file]}"
+default[:maproulette][:geojson]                                  = "#{node[:valhalla][:tile_dir]}/#{node[:maproulette][:geojson_file]}"
 
 # where to put fresh tiles and who wants them
 default[:valhalla][:bucket]                                      = 'YOUR_BUCKET'
