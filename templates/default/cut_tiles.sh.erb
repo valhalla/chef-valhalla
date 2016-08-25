@@ -1,12 +1,22 @@
 #!/bin/bash
 set -e
 
+function mv_stamp() {
+  local b=$(basename ${1})
+  mv ${1} ${b%.*}_${2}.${b##*.}
+}
+
+function cp_stamp() {
+  local b=$(basename ${1})
+  cp -rp ${1} ${b%.*}_${2}.${b##*.}
+}
+
 # make sure only one is running at any time...
 LOCK_FILE="<%= node[:valhalla][:lock_dir] %>/cut_tiles.lock"
 (set -C; : > ${LOCK_FILE}) 2> /dev/null
 if [ $? != "0" ]; then
-   echo "Lock file exists"
-   exit 0
+  echo "Lock file exists"
+  exit 0
 fi
 trap 'rm $LOCK_FILE' EXIT 1 2 3
 
@@ -31,20 +41,32 @@ if [ ! -e $admin_file ]; then
   valhalla_build_admins -c <%= node[:valhalla][:config] %> $(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
 fi
 if [ ! -e $timezone_file ]; then
-  <%= node[:valhalla][:src_dir] %>/mjolnir/scripts/valhalla_build_timezones <%= node[:valhalla][:config] %>
+  valhalla_build_timezones <%= node[:valhalla][:config] %>
 fi
 
 #transit data
 if [ -f <%= node[:valhalla][:transit_dir] %>.tgz ]; then
   rm -rf <%= node[:valhalla][:transit_dir] %>
   mkdir <%= node[:valhalla][:transit_dir] %>
-  tar pxvf <%= node[:valhalla][:transit_dir] %>.tgz -C <%= node[:valhalla][:transit_dir] %>
+  tar pxf <%= node[:valhalla][:transit_dir] %>.tgz -C <%= node[:valhalla][:transit_dir] %>
 fi
 
 # cut tiles from the data
 valhalla_build_tiles -c <%= node[:valhalla][:config] %> $(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
 rm -rf *.bin
 set +e
+
+# package up the extra stuff
+cur_extras_dir=<%= node[:valhalla][:base_dir] %>/extras_${stamp}
+mkdir -p ${cur_extras_dir}
+pushd ${cur_extras_dir}
+valhalla_build_connectivity -c <%= node[:valhalla][:config] %>
+valhalla_build_statistics -c <%= node[:valhalla][:config] %>
+for f in connectivity*; do  mv_stamp $f ${stamp}; done
+mv_stamp statistics.sqlite ${stamp}
+mv_stamp maproulette_tasks.geojson ${stamp}
+cp_stamp <%= node[:valhalla][:transit_dir] %>.tgz ${stamp}
+popd
 
 # do we want to run map roulette admin tool
 if [ "<%= node[:maproulette][:run_admin_tool] %>" == true ]; then
@@ -55,19 +77,6 @@ fi
 cur_tile_dir=<%= node[:valhalla][:base_dir] %>/tiles_${stamp}
 mkdir -p ${cur_tile_dir}
 mv <%= node[:valhalla][:tile_dir] %>/* ${cur_tile_dir}/
-
-# package up the extra stuff
-cur_extras_dir=<%= node[:valhalla][:base_dir] %>/extras_${stamp}
-mkdir -p ${cur_extras_dir}
-pushd ${cur_extras_dir}
-valhalla_build_connectivity -c <%= node[:valhalla][:config] %>
-for f in connectivity*; do
-  mv $f ${f%.*}_${stamp}.${f##*.}
-done
-stats_file=$(jq -r '.mjolnir.statistics' <%= node[:valhalla][:config] %>)
-mv ${stats_file} $(basename ${stats_file} | sed -e "s/\(\.[^.]\+$\)/_${stamp}\1/g")
-cp -rp <%= node[:valhalla][:transit_dir] %>.tgz <%= node[:valhalla][:transit_dir] %>_${stamp}.tgz
-popd
 
 # backup files and tile dirs, keep the admin and tz stuff though
 cp -rp ${cur_tile_dir}/$(basename ${admin_file}) <%= node[:valhalla][:tile_dir] %>

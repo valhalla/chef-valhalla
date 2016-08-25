@@ -50,7 +50,15 @@ end
   end
 end
 
-# need a few more deps for data stuff
+# a few things from ppa
+%w(ppa:kevinkreiser/prime-server ppa:valhalla-routing/valhalla).each do |ppa|
+  execute ppa do
+    action   :run
+    command  "apt-add-repository -y #{ppa} && apt-get update"
+  end
+end
+
+# need a few more deps
 %w(
   software-properties-common
   git
@@ -60,7 +68,38 @@ end
   parallel
   osmosis
   osmctools
+  autoconf
+  automake
   spatialite-bin
+  autotools-dev
+  pkg-config
+  vim-common
+  locales
+  libboost1.54-all-dev
+  libcurl4-openssl-dev
+  libgeos-dev
+  libgeos++-dev
+  lua5.2
+  liblua5.2-dev
+  libprime-server-dev
+  libprotobuf-dev
+  libspatialite-dev
+  libsqlite3-dev
+  protobuf-compiler
+  libboost-filesystem1.54.0
+  libboost-regex1.54.0
+  libboost-system1.54.0
+  libboost-thread1.54.0
+  liblua5.2-0
+  libprime-server0
+  libspatialite5
+  libspatialite-dev
+  libsqlite3-0
+  libprotobuf8
+  libcurl3
+  libgeos-3.4.2
+  libgeos-c1
+  prime-server-bin
 ).each do |p|
   package p do
     options '--force-yes'
