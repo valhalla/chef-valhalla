@@ -33,16 +33,17 @@ end
   end
 end
 
-# move the config file into place
-conf_file = File.basename(node[:valhalla][:config])
-template node[:valhalla][:config] do
-  source "#{conf_file}.erb"
-  mode   0644
-  owner  node[:valhalla][:user][:name]
+# move the config files into place
+%w(File.basename(node[:valhalla][:config]) File.basename(node[:maproulette][:config])).each do |conf_file|
+  template "#{node[:valhalla][:conf_dir]}/#{conf_file}" do
+    source "#{conf_file}.erb"
+    mode   0644
+    owner  node[:valhalla][:user][:name]
+  end
 end
 
 # install all of the scripts for data motion
-%w(cut_tiles.sh get_transit_tiles.sh minutely_update.sh push_tiles.py health_check.sh).each do |script|
+%w(cut_tiles.sh get_transit_tiles.sh minutely_update.sh push_tiles.py health_check.sh admin_tool.py utils.py).each do |script|
   template "#{node[:valhalla][:conf_dir]}/#{script}" do
     source "#{script}.erb"
     mode   0755
@@ -64,6 +65,7 @@ end
   git
   pigz
   python-pip
+  python3
   jq
   parallel
   osmosis
