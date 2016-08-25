@@ -34,6 +34,17 @@ default[:valhalla][:transitland_url]                             = 'http://trans
 default[:valhalla][:transitland_api_key]                         = ''
 default[:valhalla][:transitland_import_level]                    = '4'
 
+#map roulette
+default[:maproulette][:config_file]                              = 'maproulette.json'
+default[:maproulette][:geojson_file]                             = 'maproulette_tasks.geojson'
+default[:maproulette][:recurring_tasks_file]                     = 'recurring_tasks_file.txt'
+default[:maproulette][:server_url]                               = 'http://localhost:9000'
+default[:maproulette][:run_admin_tool]                           = false
+default[:maproulette][:admin_dir]                                = "#{node[:valhalla][:src_dir]}/mjonir/py/challenge_admin"
+default[:maproulette][:api_key]                                  = 'YOUR_KEY'
+default[:maproulette][:config]                                   = "#{node[:valhalla][:conf_dir]}/#{node[:maproulette][:config_file]}"
+default[:maproulette][:geojson]                                  = "#{node[:valhalla][:tile_dir]}/#{node[:maproulette][:config_file]}"
+
 # where to put fresh tiles and who wants them
 default[:valhalla][:bucket]                                      = 'YOUR_BUCKET'
 default[:valhalla][:bucket_dir]                                  = 'YOUR_DIR'
