@@ -35,7 +35,7 @@ default[:valhalla][:transitland_url]                             = 'http://trans
 default[:valhalla][:transitland_api_key]                         = ''
 default[:valhalla][:transitland_import_level]                    = '4'
 
-#map roulette
+# map roulette
 default[:maproulette][:config_file]                              = 'maproulette.json'
 default[:maproulette][:geojson_file]                             = 'maproulette_tasks.geojson'
 default[:maproulette][:recurring_tasks_file]                     = 'recurring_tasks_file.txt'
