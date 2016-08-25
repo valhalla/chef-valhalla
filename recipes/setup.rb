@@ -64,6 +64,7 @@ end
   git
   pigz
   python-pip
+  python3
   jq
   parallel
   osmosis
