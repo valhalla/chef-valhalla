@@ -33,9 +33,9 @@ end
   end
 end
 
-# move the config file into place
-conf_file = File.basename(node[:valhalla][:config])
-template node[:valhalla][:config] do
+# move the config files into place
+%w(File.basename(node[:valhalla][:config]) File.basename(node[:maproulette][:config])).each do |conf_file|
+template "#{node[:valhalla][:conf_dir]}/#{conf_file}" do
   source "#{conf_file}.erb"
   mode   0644
   owner  node[:valhalla][:user][:name]
