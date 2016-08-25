@@ -33,13 +33,20 @@ end
   end
 end
 
-# move the config files into place
-%w(File.basename(node[:valhalla][:config]) File.basename(node[:maproulette][:config])).each do |conf_file|
-  template "#{node[:valhalla][:conf_dir]}/#{conf_file}" do
-    source "#{conf_file}.erb"
-    mode   0644
-    owner  node[:valhalla][:user][:name]
-  end
+# move the valhalla config file into place
+conf_file = File.basename(node[:valhalla][:config])
+template node[:valhalla][:config] do
+  source "#{conf_file}.erb"
+  mode   0644
+  owner  node[:valhalla][:user][:name]
+end
+
+# move the maproulette config file into place
+conf_file = File.basename(node[:maproulette][:config])
+template node[:maproulette][:config] do
+  source "#{conf_file}.erb"
+  mode   0644
+  owner  node[:valhalla][:user][:name]
 end
 
 # install all of the scripts for data motion
