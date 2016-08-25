@@ -46,6 +46,11 @@ valhalla_build_tiles -c <%= node[:valhalla][:config] %> $(find <%= node[:valhall
 rm -rf *.bin
 set +e
 
+# do we want to run map roulette admin tool
+if [ "<%= node[:maproulette][:run_admin_tool] %>" == true ]; then
+    <%= node[:maproulette][:admin_dir] %>/admin_tool.py -c <%= node[:maproulette][:config] %> -i <%= node[:maproulette][:geojson] %>
+fi
+
 # package up the tiles and the admin and timezone dbs
 cur_tile_dir=<%= node[:valhalla][:base_dir] %>/tiles_${stamp}
 mkdir -p ${cur_tile_dir}
