@@ -41,7 +41,6 @@ default[:maproulette][:geojson_file]                             = 'maproulette_
 default[:maproulette][:recurring_tasks_file]                     = 'recurring_tasks_file.txt'
 default[:maproulette][:server_url]                               = 'http://localhost:9000'
 default[:maproulette][:run_admin_tool]                           = false
-default[:maproulette][:admin_dir]                                = "#{node[:valhalla][:src_dir]}/mjonir/py/challenge_admin"
 default[:maproulette][:api_key]                                  = 'YOUR_KEY'
 default[:maproulette][:config]                                   = "#{node[:valhalla][:conf_dir]}/#{node[:maproulette][:config_file]}"
 default[:maproulette][:geojson]                                  = "#{node[:valhalla][:tile_dir]}/#{node[:maproulette][:geojson_file]}"
