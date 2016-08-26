@@ -50,7 +50,7 @@ template node[:maproulette][:config] do
 end
 
 # install all of the scripts for data motion
-%w(cut_tiles.sh get_transit_tiles.sh minutely_update.sh push_tiles.py health_check.sh admin_tool.py utils.py).each do |script|
+%w(cut_tiles.sh get_transit_tiles.sh minutely_update.sh push_tiles.py health_check.sh admin_tool.py).each do |script|
   template "#{node[:valhalla][:conf_dir]}/#{script}" do
     source "#{script}.erb"
     mode   0755
@@ -72,7 +72,6 @@ end
   git
   pigz
   python-pip
-  python3
   jq
   parallel
   osmosis
@@ -121,6 +120,7 @@ end
   boto
   filechunkio
   awscli==1.6.9
+  requests
 ).each do |p|
   execute p do
     action   :run
