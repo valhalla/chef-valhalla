@@ -43,7 +43,7 @@ end
 end
 
 # install all of the scripts for data motion
-%w(cut_tiles.sh get_transit_tiles.sh minutely_update.sh push_tiles.py health_check.sh admin_tool.py utils.py).each do |script|
+%w(cut_tiles.sh get_transit_tiles.sh minutely_update.sh push_tiles.py health_check.sh admin_tool.py).each do |script|
   template "#{node[:valhalla][:conf_dir]}/#{script}" do
     source "#{script}.erb"
     mode   0755
