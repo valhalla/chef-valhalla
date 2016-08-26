@@ -1,21 +1,20 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import sys
 import os.path
 import getopt
 import requests
 import json
-from utils import utils
-from enum import IntEnum, unique
 
-@unique
-class Status(IntEnum):
-    created = 0
-    fixed = 1
-    false_positive = 2
-    skipped = 3
-    deleted = 4
+class Status:
+    def __init__(self):
+        self.created = 0
+        self.fixed = 1
+        self.false_positive = 2
+        self.skipped = 3
+        self.deleted = 4
 
+status = Status()
 
 class Challenge:
     def __init__(self, id):
@@ -43,7 +42,7 @@ class Challenge:
 class admin_tool:
     def __init__(self, config, geojson):
 
-        utils.status_begin('Initializing')
+        print 'Initializing'
 
         # Read the config file into an object for access
         with open(config) as conf_file:
@@ -80,20 +79,20 @@ class admin_tool:
         with open(geojson) as geojson_file:
             self.geojson = json.loads(geojson_file.read())
 
-        utils.status_done()
+        print 'DONE'
 
 
     def init_challenges(self):
         for challenge in self.challenges:
             # Download tasks for each challenge
-            utils.status_begin('Downloading tasks from challenge ' + challenge)
+            print 'Downloading tasks from challenge ' + challenge
             tasks = self.get_tasks_from_api(challenge).json()
 
             # Build a dictionary of challenge ids (name field from MR)
             for task in tasks:
                 self.challenges[challenge].add_task(task)
 
-            utils.status_done()
+            print 'DONE'
 
 
     def set_resubmit(self):
@@ -136,17 +135,17 @@ class admin_tool:
 
     def upload_tasks(self, tasks):
         '''http POST a list of tasks to maproulette'''
-        utils.status_begin('Uploading {} tasks'.format(len(tasks)))
+        print 'Uploading {} tasks'.format(len(tasks))
         response = requests.post('{}/api/v2/tasks'.format(self.server_url), data=json.dumps(tasks), headers=self.header)
-        utils.status_done()
+        print 'DONE'
         return response
 
     def update_tasks(self, tasks):
         '''http PUT a list of tasks to maproulette'''
-        utils.status_begin('Updating {} tasks'.format(len(tasks)))
+        print 'Updating {} tasks'.format(len(tasks))
         for task in tasks:
             response = requests.put('{}/api/v2/task/{}'.format(self.server_url, task['id']), data=json.dumps(tasks), headers=self.header)
-        utils.status_done()
+        print 'DONE'
         return response
 
 
@@ -161,9 +160,9 @@ class admin_tool:
                 self.upload_tasks(tasks)
             else:
                 # If we have tasks, compare them to the new tasks
-                utils.status_begin('Gathering new tasks')
+                print 'Gathering new tasks'
                 self.compare_tasks(tasks)
-                utils.status_done()
+                print 'DONE'
                 if self.resubmit:
                     # then check for any erroneous 'fixed' tasks is the flag is set
                     self.process_recurring_tasks()
@@ -189,7 +188,7 @@ class admin_tool:
             if not existing:
                 # if the task hasn't existed recently, put it in a list for creation
                 self.new_tasks.append(task)
-            elif existing['status'] == Status.fixed:
+            elif existing['status'] == status.fixed:
                 # if we got a new task that should have been fixed, flag it
                 self.flagged_tasks.append(existing)
 
@@ -221,7 +220,7 @@ class admin_tool:
         # update the tasks that were supposed to be fixed, but weren't
         if len(not_fixed) != 0:
             for task in not_fixed:
-                task['status'] = Status.created
+                task['status'] = status.created
             self.update_tasks(not_fixed)
 
 
@@ -235,6 +234,7 @@ class admin_tool:
 if __name__ == '__main__':
 
     config = ''
+    geojson = ''
     resubmit = False
 
     # Set expected options and parse
@@ -255,6 +255,10 @@ if __name__ == '__main__':
             geojson = arg
         elif opt in ('-r', '--resubmit'):
             resubmit = True
+
+    if not geojson or not config:
+        print('admin_tool.py --config conf/maproulette.json --geojson maproulette.geojson')
+        sys.exit(2)
 
     admin = admin_tool(config, geojson)
     if resubmit:

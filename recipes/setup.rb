@@ -65,7 +65,6 @@ end
   git
   pigz
   python-pip
-  python3
   jq
   parallel
   osmosis
@@ -114,6 +113,7 @@ end
   boto
   filechunkio
   awscli==1.6.9
+  requests
 ).each do |p|
   execute p do
     action   :run
