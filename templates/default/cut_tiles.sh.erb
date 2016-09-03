@@ -56,6 +56,11 @@ valhalla_build_tiles -c <%= node[:valhalla][:config] %> $(find <%= node[:valhall
 rm -rf *.bin
 set +e
 
+# do we want to run map roulette admin tool
+if [ "<%= node[:maproulette][:run_admin_tool] %>" == true ]; then
+  <%= node[:valhalla][:conf_dir] %>/admin_tool.py -c <%= node[:maproulette][:config] %> -i <%= node[:maproulette][:geojson] %>
+fi
+
 # package up the extra stuff
 cur_extras_dir=<%= node[:valhalla][:base_dir] %>/extras_${stamp}
 mkdir -p ${cur_extras_dir}
@@ -67,11 +72,6 @@ mv_stamp statistics.sqlite ${stamp}
 mv_stamp maproulette_tasks.geojson ${stamp}
 cp_stamp <%= node[:valhalla][:transit_dir] %>.tgz ${stamp}
 popd
-
-# do we want to run map roulette admin tool
-if [ "<%= node[:maproulette][:run_admin_tool] %>" == true ]; then
-  <%= node[:valhalla][:conf_dir] %>/admin_tool.py -c <%= node[:maproulette][:config] %> -i ${cur_extras_dir}/maproulette_tasks_${stamp}.geojson
-fi
 
 # package up the tiles and the admin and timezone dbs
 cur_tile_dir=<%= node[:valhalla][:base_dir] %>/tiles_${stamp}
