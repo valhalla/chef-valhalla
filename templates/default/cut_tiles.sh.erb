@@ -70,7 +70,7 @@ popd
 
 # do we want to run map roulette admin tool
 if [ "<%= node[:maproulette][:run_admin_tool] %>" == true ]; then
-  <%= node[:valhalla][:conf_dir] %>/admin_tool.py -c <%= node[:maproulette][:config] %> -i <%= node[:maproulette][:geojson] %>
+  <%= node[:valhalla][:conf_dir] %>/admin_tool.py -c <%= node[:maproulette][:config] %> -i ${cur_extras_dir}/maproulette_tasks_${stamp}.geojson
 fi
 
 # package up the tiles and the admin and timezone dbs
