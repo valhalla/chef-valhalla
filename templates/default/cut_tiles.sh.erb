@@ -64,7 +64,7 @@ valhalla_build_connectivity -c <%= node[:valhalla][:config] %>
 valhalla_build_statistics -c <%= node[:valhalla][:config] %>
 # do we want to run map roulette tool
 if [ "<%= node[:valhalla][:with_map_roulette] %>" == true ]; then
-  <%= node[:valhalla][:conf_dir] %>/map_roulette.py -c <%= node[:maproulette][:config] %> -i <%= node[:maproulette][:geojson_file] %>
+  <%= node[:valhalla][:conf_dir] %>/map_roulette.py -c <%= node[:valhalla][:conf_dir] %>/maproulette.json -i maproulette_tasks.geojson
 fi
 for f in connectivity*; do  mv_stamp $f ${stamp}; done
 mv_stamp statistics.sqlite ${stamp}
