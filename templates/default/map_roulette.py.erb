@@ -126,19 +126,24 @@ class admin_tool:
       task_num += 1
     return tasks
 
+  def is_ok(response):
+    if response.status_code == 200:
+      return response
+    raise '%d: %s' % (response.status_code, response.text)
+
 
   def get_tasks_from_api(self, challenge_id):
     '''http get up to 10000 tasks from maproulette'''
     payload = {'limit': 10000}
     response = requests.get('{}/api/v2/challenge/{}/tasks'.format(self.server_url, challenge_id), headers=self.header, params=payload)
-    return response
+    return is_ok(response)
 
   def upload_tasks(self, tasks):
     '''http POST a list of tasks to maproulette'''
     print 'Uploading {} tasks'.format(len(tasks))
     response = requests.post('{}/api/v2/tasks'.format(self.server_url), data=json.dumps(tasks), headers=self.header)
     print 'DONE'
-    return response
+    return is_ok(response)
 
   def update_tasks(self, tasks):
     '''http PUT a list of tasks to maproulette'''
@@ -146,7 +151,7 @@ class admin_tool:
     for task in tasks:
       response = requests.put('{}/api/v2/task/{}'.format(self.server_url, task['id']), data=json.dumps(tasks), headers=self.header)
     print 'DONE'
-    return response
+    return is_ok(response)
 
 
   def headless_start(self):
