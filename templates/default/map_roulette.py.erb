@@ -49,8 +49,7 @@ class admin_tool:
       conf = json.loads(conf_file.read())
 
     # Set up header for API interactions
-    self.header = {'Content-Type': 'application/json',
-             'apiKey': conf['api_key']}
+    self.header = {'Content-Type': 'application/json', 'apiKey': conf['api_key']}
     # Get server url from config
     self.server_url = conf['server_url']
 
