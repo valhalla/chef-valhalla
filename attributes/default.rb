@@ -31,6 +31,7 @@ default[:valhalla][:extracts]                                    = %w(
 )
 default[:valhalla][:with_updates]                                = false
 default[:valhalla][:with_transit]                                = false
+default[:valhalla][:with_map_roulette]                           = false
 default[:valhalla][:transitland_url]                             = 'http://transit.land'
 default[:valhalla][:transitland_api_key]                         = ''
 default[:valhalla][:transitland_import_level]                    = '4'
@@ -40,7 +41,6 @@ default[:maproulette][:config_file]                              = 'maproulette.
 default[:maproulette][:geojson_file]                             = 'maproulette_tasks.geojson'
 default[:maproulette][:recurring_tasks_file]                     = 'recurring_tasks_file.txt'
 default[:maproulette][:server_url]                               = 'http://localhost:9000'
-default[:maproulette][:run_admin_tool]                           = false
 default[:maproulette][:api_key]                                  = 'YOUR_KEY'
 default[:maproulette][:config]                                   = "#{node[:valhalla][:conf_dir]}/#{node[:maproulette][:config_file]}"
 default[:maproulette][:geojson]                                  = "#{node[:valhalla][:tile_dir]}/#{node[:maproulette][:geojson_file]}"

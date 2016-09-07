@@ -230,6 +230,9 @@ class admin_tool:
       for task in tasks:
         out_file.write(task['name'] + '\n')
 
+def usage(code = None):
+  print('%s --config maproulette.json --geojson maproulette.geojson' % sys.argv[0])
+  sys.exit(code)
 
 if __name__ == '__main__':
 
@@ -241,14 +244,12 @@ if __name__ == '__main__':
   try:
     opts, args = getopt.getopt(sys.argv[1:], 'hc:i:r',['help','config=','geojson=','resubmit'])
   except getopt.GetoptError:
-    print('admin_tool.py --config conf/maproulette.json --geojson maproulette.geojson')
-    sys.exit(2)
+    usage(2)
 
   # Use arguments and flags to set program parameters
   for opt, arg in opts:
     if opt in ('-h', '--help'):
-      print('admin_tool.py --config conf/maproulette.json --geojson maproulette.geojson')
-      sys.exit()
+      usage()
     elif opt in ('-c', '--config'):
       config = arg
     elif opt in ('-i', '--geojson'):
@@ -257,8 +258,7 @@ if __name__ == '__main__':
       resubmit = True
 
   if not geojson or not config:
-    print('admin_tool.py --config conf/maproulette.json --geojson maproulette.geojson')
-    sys.exit(2)
+    usage(2)
 
   admin = admin_tool(config, geojson)
   if resubmit:
