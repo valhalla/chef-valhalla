@@ -126,7 +126,7 @@ class admin_tool:
       task_num += 1
     return tasks
 
-  def is_ok(response):
+  def is_ok(self, response):
     if response.status_code == 200:
       return response
     raise '%d: %s' % (response.status_code, response.text)
