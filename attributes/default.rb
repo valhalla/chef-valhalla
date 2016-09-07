@@ -40,7 +40,7 @@ default[:valhalla][:transitland_import_level]                    = '4'
 default[:maproulette][:recurring_tasks_file]                     = 'recurring_tasks_file.txt'
 default[:maproulette][:server_url]                               = 'http://localhost:9000'
 default[:maproulette][:api_key]                                  = 'YOUR_KEY'
-default[:maproulette][:config]                                   = "#{node[:valhalla][:conf_dir]}/#{node[:maproulette][:config_file]}"
+default[:maproulette][:config]                                   = "#{node[:valhalla][:conf_dir]}/maproulette.json"
 
 # where to put fresh tiles and who wants them
 default[:valhalla][:bucket]                                      = 'YOUR_BUCKET'
