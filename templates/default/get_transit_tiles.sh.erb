@@ -28,3 +28,9 @@ tar pcf - -C <%= node[:valhalla][:transit_dir] %>_temp . | pigz -9 > <%= node[:v
 
 # and move it into place
 mv <%= node[:valhalla][:transit_dir] %>_temp.tgz <%= node[:valhalla][:transit_dir] %>.tgz
+
+# only stop the current run if its in the middle of cutting tiles
+# if its doing anyting else let it carry on
+for p in $(pgrep valhalla_build); do kill ${p}; done
+sleep 5
+for p in $(pgrep valhalla_build); do kill -9 ${p}; done
