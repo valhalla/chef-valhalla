@@ -72,9 +72,9 @@ mkdir -p ${cur_extras_dir}
 pushd ${cur_extras_dir}
 valhalla_build_connectivity -c <%= node[:valhalla][:config] %>
 valhalla_build_statistics -c <%= node[:valhalla][:config] %>
-# do we want to run map roulette admin tool
-if [ "<%= node[:maproulette][:run_admin_tool] %>" == true ]; then
-  <%= node[:valhalla][:conf_dir] %>/admin_tool.py -c <%= node[:maproulette][:config] %> -i <%= node[:maproulette][:geojson_file] %>
+# do we want to run map roulette tool
+if [ "<%= node[:valhalla][:with_map_roulette] %>" == true ]; then
+  <%= node[:valhalla][:conf_dir] %>/map_roulette.py -c <%= node[:maproulette][:config] %> -i maproulette_tasks.geojson
 fi
 for f in connectivity*; do  mv_stamp $f ${stamp}; done
 mv_stamp statistics.sqlite ${stamp}
