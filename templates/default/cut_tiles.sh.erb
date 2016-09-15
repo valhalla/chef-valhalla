@@ -54,19 +54,12 @@ fi
 # cut tiles from the data
 valhalla_build_tiles -c <%= node[:valhalla][:config] %> $(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
 rm -rf *.bin
-set +e
 
-sed "s/DATE_TIME_TAG/`date --date='08:00 next Tue' +%Y-%m-%dT%H:%M`/g" <%= node[:valhalla][:route_scripts] %>requests/transit_routes.tmpl > <%= node[:valhalla][:route_scripts] %>/requests/transit_routes.txt
-<%= node[:valhalla][:route_scripts] %>run.sh <%= node[:valhalla][:route_scripts] %>requests/transit_routes.txt
-fail_count=`grep -ic fail <%= node[:valhalla][:route_scripts] %>results/*_transit_routes/statistics.csv`
-
-if [ $fail_count -gt 0 ]
-then
-  echo "We failed like a champ."
-  exit 0
-fi
+# see if these tiles are any good
+<%= node[:valhalla][:conf_dir] %>/test_tiles.sh
 
 # package up the extra stuff
+set +e
 cur_extras_dir=<%= node[:valhalla][:base_dir] %>/extras_${stamp}
 mkdir -p ${cur_extras_dir}
 pushd ${cur_extras_dir}
