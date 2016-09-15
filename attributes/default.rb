@@ -34,6 +34,7 @@ default[:valhalla][:extracts]                                    = %w(
 default[:valhalla][:with_updates]                                = false
 default[:valhalla][:with_transit]                                = false
 default[:valhalla][:with_map_roulette]                           = false
+default[:valhalla][:transit_test_file]                           = 'transit_dev_routes.tmpl'
 default[:valhalla][:transitland_url]                             = 'http://transit.land'
 default[:valhalla][:transitland_api_key]                         = ''
 default[:valhalla][:transitland_import_level]                    = '4'
