@@ -2,7 +2,7 @@
 set -e
 
 #fill out the template with a date relative to now
-sed "s/DATE_TIME_TAG/`date --date='08:00 next Tue' +%Y-%m-%dT%H:%M`/g" <%= node[:valhalla][:route_scripts] %>requests/<%= node[:valhalla][:transit_test_file] %> > <%= node[:valhalla][:route_scripts] %>/requests/transit_routes.txt
+sed "s/DATE_TIME_TAG/`date --date='08:00 next Tue' +%Y-%m-%dT%H:%M`/g" <%= node[:valhalla][:route_scripts] %>requests/<%= node[:valhalla][:transit_test_file] %> > <%= node[:valhalla][:route_scripts] %>requests/transit_routes.txt
 #RAD those tests
 <%= node[:valhalla][:route_scripts] %>run.sh <%= node[:valhalla][:route_scripts] %>requests/transit_routes.txt
 #check whats going on
