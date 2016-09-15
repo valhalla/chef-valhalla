@@ -25,6 +25,7 @@ default[:valhalla][:ppa_version]                                 = ''
 # valhalla user to create
 default[:valhalla][:user][:name]                                 = 'valhalla'
 default[:valhalla][:user][:home]                                 = '/home/valhalla'
+default[:valhalla][:email]                                       = ''
 
 # the data to create tiles
 default[:valhalla][:extracts]                                    = %w(
