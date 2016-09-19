@@ -30,6 +30,18 @@ end
   end
 end
 
+#update permissions on test dirs
+[
+  node[:valhalla][:route_scripts],
+  node[:valhalla][:test_requests]
+].each do |dir|
+  directory dir do
+    recursive true
+    mode      0777
+    owner     node[:valhalla][:user][:name]
+  end
+end
+
 # restart the services if they are present
 include_recipe 'runit::default'
 stop_service do
