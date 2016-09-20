@@ -1,10 +1,13 @@
 #!/bin/bash
 set -e
 
+pwd_dir=`pwd`
+
 #fill out the template with a date relative to now
 sed "s/DATE_TIME_TAG/`date --date='08:00 next Tue' +%Y-%m-%dT%H:%M`/g" <%= node[:valhalla][:route_scripts] %>requests/<%= node[:valhalla][:transit_test_file] %> > <%= node[:valhalla][:route_scripts] %>requests/transit_routes.txt
 #RAD those tests
-<%= node[:valhalla][:route_scripts] %>run.sh <%= node[:valhalla][:route_scripts] %>requests/transit_routes.txt <%= node[:valhalla][:config] %>
+cd <%= node[:valhalla][:route_scripts] %>
+./run.sh <%= node[:valhalla][:route_scripts] %>requests/transit_routes.txt <%= node[:valhalla][:config] %>
 #check whats going on
 fail_count=`grep -ic fail <%= node[:valhalla][:route_scripts] %>results/*_transit_routes/statistics.csv`
 #this doesnt look good
@@ -17,3 +20,4 @@ $(cat <%= node[:valhalla][:route_scripts] %>results/*_transit_routes/statistics.
 EOF
   exit 1
 fi
+cd $pwd_dir
