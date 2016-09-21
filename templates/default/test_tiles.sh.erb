@@ -4,19 +4,19 @@ set -e
 pwd_dir=`pwd`
 
 #fill out the template with a date relative to now
-sed "s/DATE_TIME_TAG/`date --date='08:00 next Tue' +%Y-%m-%dT%H:%M`/g" <%= node[:valhalla][:route_scripts] %>requests/<%= node[:valhalla][:transit_test_file] %> > <%= node[:valhalla][:route_scripts] %>requests/transit_routes.txt
+sed "s/DATE_TIME_TAG/`date --date='08:00 next Tue' +%Y-%m-%dT%H:%M`/g" <%= node[:valhalla][:route_scripts] %>/requests/<%= node[:valhalla][:transit_test_file] %> > <%= node[:valhalla][:route_scripts] %>/requests/transit_routes.txt
 #RAD those tests
 cd <%= node[:valhalla][:route_scripts] %>
-./run.sh <%= node[:valhalla][:route_scripts] %>requests/transit_routes.txt <%= node[:valhalla][:config] %>
+./run.sh <%= node[:valhalla][:route_scripts] %>/requests/transit_routes.txt <%= node[:valhalla][:config] %>
 #check whats going on
-fail_count=`grep -ic fail <%= node[:valhalla][:route_scripts] %>results/*_transit_routes/statistics.csv`
+fail_count=`grep -ic fail <%= node[:valhalla][:route_scripts] %>/results/*_transit_routes/statistics.csv`
 #this doesnt look good
 if [[ $fail_count -gt 0 && "<%= node[:valhalla][:email] %>" != "" ]]; then
   sendmail <%= node[:valhalla][:failure_email] %> <<EOF
 
 Subject: Tile Tests FAILED!
 
-$(cat <%= node[:valhalla][:route_scripts] %>results/*_transit_routes/statistics.csv)
+$(cat <%= node[:valhalla][:route_scripts] %>/results/*_transit_routes/statistics.csv)
 EOF
   exit 1
 fi
