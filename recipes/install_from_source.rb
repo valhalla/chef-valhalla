@@ -37,9 +37,9 @@ end
   node[:valhalla][:results]
 ].each do |dir|
   directory dir do
+    owner     node[:valhalla][:user][:name]
     recursive true
     mode      0777
-    owner     node[:valhalla][:user][:name]
   end
 end
 
