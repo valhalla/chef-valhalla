@@ -17,7 +17,7 @@ default[:valhalla][:elevation_dir]                               = "#{node[:valh
 default[:valhalla][:transit_dir]                                 = "#{node[:valhalla][:base_dir]}/transit"
 default[:valhalla][:route_scripts]                               = "#{node[:valhalla][:src_dir]}/tools/run_route_scripts/"
 default[:valhalla][:test_requests]                               = "#{node[:valhalla][:src_dir]}/tools/test_requests/"
-default[:valhalla][:results]                                     = "#{node[:valhalla][:src_dir]}/tools/results/"
+default[:valhalla][:results]                                     = "#{node[:valhalla][:src_dir]}/tools/run_route_scripts/results/"
 
 # the repos
 default[:valhalla][:github][:base]                               = 'https://github.com/valhalla'
