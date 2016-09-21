@@ -33,7 +33,8 @@ end
 #update permissions on test dirs
 [
   node[:valhalla][:route_scripts],
-  node[:valhalla][:test_requests]
+  node[:valhalla][:test_requests],
+  node[:valhalla][:results]
 ].each do |dir|
   directory dir do
     recursive true
