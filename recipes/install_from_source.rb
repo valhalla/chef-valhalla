@@ -41,6 +41,7 @@ end
     group     node[:valhalla][:user][:name]
     recursive true
     mode      0777
+    action :create
   end
 end
 
