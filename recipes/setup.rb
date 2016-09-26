@@ -23,7 +23,10 @@ end
   node[:valhalla][:lock_dir],
   node[:valhalla][:extracts_dir],
   node[:valhalla][:temp_dir],
-  node[:valhalla][:elevation_dir]
+  node[:valhalla][:elevation_dir],
+  node[:valhalla][:test_dir],
+  node[:valhalla][:test_requests],
+  node[:valhalla][:test_results]
 ].each do |dir|
   directory dir do
     action    :create
