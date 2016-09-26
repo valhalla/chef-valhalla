@@ -70,6 +70,15 @@ end
   end
 end
 
+# install all of the test requests
+%w(transit_dev_routes.tmpl transit_prod_routes.tmpl).each do |script|
+  template "#{node[:valhalla][:test_requests]}/#{script}" do
+    source "#{script}.erb"
+    mode   0755
+    owner  node[:valhalla][:user][:name]
+  end
+end
+
 # a few things from ppa
 %w(ppa:kevinkreiser/prime-server ppa:valhalla-routing/valhalla).each do |ppa|
   execute ppa do
