@@ -56,7 +56,7 @@ valhalla_build_tiles -c <%= node[:valhalla][:config] %> $(find <%= node[:valhall
 rm -rf *.bin
 
 # see if these tiles are any good
-<%= node[:valhalla][:conf_dir] %>/test_tiles.sh
+<%= node[:valhalla][:test_dir] %>/test_tiles.sh
 
 # package up the extra stuff
 set +e
