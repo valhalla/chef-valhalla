@@ -23,4 +23,5 @@ $(cat <%= node[:valhalla][:test_results] %>/*_transit_routes/statistics.csv)
 EOF
   exit 1
 fi
+rm -rf <%= node[:valhalla][:test_results] %>/*_transit_routes/
 cd $pwd_dir
