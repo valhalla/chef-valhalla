@@ -7,6 +7,8 @@ fi
 
 pwd_dir=`pwd`
 
+cd <%= node[:valhalla][:test_dir] %>
+
 #fill out the template with a date relative to now
 sed "s/DATE_TIME_TAG/`date --date='08:00 next Tue' +%Y-%m-%dT%H:%M`/g" <%= node[:valhalla][:test_requests] %>/<%= node[:valhalla][:transit_test_file] %> > <%= node[:valhalla][:test_requests] %>/transit_routes.txt
 #RAD those tests
