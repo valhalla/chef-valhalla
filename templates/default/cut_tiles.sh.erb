@@ -55,13 +55,8 @@ fi
 valhalla_build_tiles -c <%= node[:valhalla][:config] %> $(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
 rm -rf *.bin
 
-pwd_dir=`pwd`
-cd <%= node[:valhalla][:test_dir] %>
-
 # see if these tiles are any good
-./test_tiles.sh
-
-cd $pwd_dir
+<%= node[:valhalla][:test_dir] %>/test_tiles.sh
 
 # package up the extra stuff
 set +e
