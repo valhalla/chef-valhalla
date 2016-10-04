@@ -4,11 +4,14 @@ if [ "<%= node[:valhalla][:with_testing] %>" != true ]; then
   exit 0
 fi
 
+pwd_dir=`pwd`
+cd <%= node[:valhalla][:test_dir] %>
+
 #fill out the template with a date relative to now
 sed "s/DATE_TIME_TAG/`date --date='08:00 next Tue' +%Y-%m-%dT%H:%M`/g" <%= node[:valhalla][:test_requests] %>/<%= node[:valhalla][:transit_test_file] %> > <%= node[:valhalla][:test_requests] %>/transit_routes.txt
 route_count=$(wc -l <%= node[:valhalla][:test_requests] %>/<%= node[:valhalla][:transit_test_file] %> | awk '{print $1}')
 #RAD those tests
-<%= node[:valhalla][:test_dir] %>/run.sh <%= node[:valhalla][:test_requests] %>/transit_routes.txt <%= node[:valhalla][:config] %>
+./run.sh <%= node[:valhalla][:test_requests] %>/transit_routes.txt <%= node[:valhalla][:config] %>
 #check whats going on
 succeed_count=`grep -ic success <%= node[:valhalla][:test_results] %>/*_transit_routes/statistics.csv`
 #this doesnt look good
@@ -23,3 +26,4 @@ EOF
   exit 1
 fi
 rm -rf <%= node[:valhalla][:test_results] %>
+cd $pwd_dir
