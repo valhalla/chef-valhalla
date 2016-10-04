@@ -20,7 +20,7 @@ if [ $? != "0" ]; then
 fi
 trap 'rm $LOCK_FILE' EXIT 1 2 3
 
-export PATH=$PATH:/usr/local/bin
+export PATH=$PATH:/usr/sbin:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
 tile_dir=$(jq -r '.mjolnir.hierarchy.tile_dir' <%= node[:valhalla][:config] %>)
