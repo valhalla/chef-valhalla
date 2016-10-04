@@ -8,7 +8,7 @@ fi
 sed "s/DATE_TIME_TAG/`date --date='08:00 next Tue' +%Y-%m-%dT%H:%M`/g" <%= node[:valhalla][:test_requests] %>/<%= node[:valhalla][:transit_test_file] %> > <%= node[:valhalla][:test_requests] %>/transit_routes.txt
 route_count=$(wc -l <%= node[:valhalla][:test_requests] %>/<%= node[:valhalla][:transit_test_file] %> | awk '{print $1}')
 #RAD those tests
-./run.sh <%= node[:valhalla][:test_requests] %>/transit_routes.txt <%= node[:valhalla][:config] %>
+<%= node[:valhalla][:test_dir] %>/run.sh <%= node[:valhalla][:test_requests] %>/transit_routes.txt <%= node[:valhalla][:config] %>
 #check whats going on
 succeed_count=`grep -ic success <%= node[:valhalla][:test_results] %>/*_transit_routes/statistics.csv`
 #this doesnt look good
