@@ -17,8 +17,8 @@ succeed_count=`grep -ic success <%= node[:valhalla][:test_results] %>/*_transit_
 #this doesnt look good
 if [[ ${succeed_count} != ${route_count} ]]; then
 $(cat <%= node[:valhalla][:test_results] %>/*_transit_routes/statistics.csv) << EOF | /usr/sbin/sendmail -t
-to:<%= node[:valhalla][:to_email]
-from:<%= node[:valhalla][:from_email]
+to:<%= node[:valhalla][:to_email] %>
+from:<%= node[:valhalla][:from_email] %>
 subject:Tile Tests FAILED!
 
 EOF
