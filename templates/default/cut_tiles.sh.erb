@@ -89,7 +89,7 @@ if [ "<%= node[:valhalla][:with_updates] %>" == true ]; then
   {
     tar pcf - -C ${cur_tile_dir} . | pigz -9 > ${cur_tile_dir}.tgz
     rm -rf ${cur_tile_dir} &
-    <%= node[:valhalla][:conf_dir] %>/push_tiles.py ${cur_extras_dir}/* ${cur_tile_dir}.tgz
+    <%= node[:valhalla][:conf_dir] %>/push_tiles.py ${cur_tile_dir}.tgz ${cur_extras_dir}/*
     rm -rf ${cur_extras_dir} ${cur_tile_dir}.tgz
   }&
 fi
