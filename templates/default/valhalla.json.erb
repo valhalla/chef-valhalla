@@ -1,7 +1,7 @@
 {
   "mjolnir": {
     "concurrency": <%= node[:valhalla][:mjolnir][:concurrency] %>,
-    "tile_dir": "<%= node[:valhalla][:tile_dir] %>",
+    "tile_extract": "<%= node[:valhalla][:base_dir] %>/planet.tar",
     "max_cache_size": <%= node[:valhalla][:max_cache_size] %>,
     "statistics": "<%= node[:valhalla][:tile_dir] %>/statistics.sqlite",
     "admin": "<%= node[:valhalla][:tile_dir] %>/admin.sqlite",
