@@ -11,6 +11,16 @@ function cp_stamp() {
   cp -rp ${1} ${b%.*}_${2}.${b##*.}
 }
 
+function clean_s3() {
+  cutoff=$(date -d "-${2} days" +%s)
+  aws s3 ls ${1} | tail -n +2 | while read record; do
+    added=$(date -d "$(echo ${record} | awk '{print $1" "$2}')" +%s)
+    if [[ ${added} -lt ${cutoff} ]]; then
+      aws s3 rm ${1}$(echo ${record} | awk '{print $4}')
+    fi
+  done
+}
+
 # make sure only one is running at any time...
 LOCK_FILE="<%= node[:valhalla][:lock_dir] %>/cut_tiles.lock"
 (set -C; : > ${LOCK_FILE}) 2> /dev/null
@@ -22,13 +32,6 @@ trap 'rm $LOCK_FILE' EXIT 1 2 3
 
 export PATH=$PATH:/usr/sbin:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
-
-tile_dir=$(jq -r '.mjolnir.hierarchy.tile_dir' <%= node[:valhalla][:config] %>)
-
-#remove the hierarchy dirs.  if we crashed they are left around.
-rm -rf ${tile_dir}/0
-rm -rf ${tile_dir}/1
-rm -rf ${tile_dir}/2
 
 # name the dir where this will go
 stamp=$(date +%Y_%m_%d-%H_%M_%S)
@@ -60,11 +63,13 @@ rm -rf *.bin
 
 # package up the extra stuff
 set +e
+tile_dir=<%= node[:valhalla][:tile_dir] %>
 cur_extras_dir=<%= node[:valhalla][:base_dir] %>/extras_${stamp}
 mkdir -p ${cur_extras_dir}
 pushd ${cur_extras_dir}
 valhalla_build_connectivity -c <%= node[:valhalla][:config] %>
 valhalla_build_statistics -c <%= node[:valhalla][:config] %>
+valhalla_export_edges -c <%= node[:valhalla][:config] %> > edges_${stamp}.0sv
 # do we want to run map roulette tool
 if [ "<%= node[:valhalla][:with_map_roulette] %>" == true ]; then
   <%= node[:valhalla][:conf_dir] %>/map_roulette.py -c <%= node[:maproulette][:config] %> -i maproulette_tasks.geojson
@@ -73,23 +78,26 @@ for f in connectivity*; do  mv_stamp $f ${stamp}; done
 mv_stamp statistics.sqlite ${stamp}
 mv_stamp maproulette_tasks.geojson ${stamp}
 cp_stamp <%= node[:valhalla][:transit_dir] %>.tgz ${stamp}
+cp_stamp ${tile_dir}/$(basename ${admin_file}) ${stamp}
+cp_stamp ${tile_dir}/$(basename ${timezone_file}) ${stamp}
+find ${tile_dir}/* | sort -n | tar cf planet_${stamp}.tar --no-recursion -T -
 popd
-
-# package up the tiles and the admin and timezone dbs
-cur_tile_dir=<%= node[:valhalla][:base_dir] %>/tiles_${stamp}
-mkdir -p ${cur_tile_dir}
-mv <%= node[:valhalla][:tile_dir] %>/* ${cur_tile_dir}/
-
-# backup files and tile dirs, keep the admin and tz stuff though
-cp -rp ${cur_tile_dir}/$(basename ${admin_file}) <%= node[:valhalla][:tile_dir] %>
-cp -rp ${cur_tile_dir}/$(basename ${timezone_file}) <%= node[:valhalla][:tile_dir] %>
 
 # do we want to send this update to s3 (do so in the background)
 if [ "<%= node[:valhalla][:with_updates] %>" == true ]; then
   {
-    tar pcf - -C ${cur_tile_dir} . | pigz -9 > ${cur_tile_dir}.tgz
-    rm -rf ${cur_tile_dir} &
-    <%= node[:valhalla][:conf_dir] %>/push_tiles.py ${cur_tile_dir}.tgz ${cur_extras_dir}/*
-    rm -rf ${cur_extras_dir} ${cur_tile_dir}.tgz
+    #clean up s3 old files
+    clean_s3 s3://<%= node[:valhalla][:bucket] %>/<%= node[:valhalla][:bucket_dir] %>/ 30
+    #push up s3 new files
+    for f in ${cur_extras_dir}/*; do
+      aws s3 mv ${f} s3://<%= node[:valhalla][:bucket] %>/<%= node[:valhalla][:bucket_dir] %>/ --acl public-read
+    done
+    #signal other stacks to get new data
+    aws s3 ls s3://<%= node[:valhalla][:bucket] %>/<%= node[:valhalla][:bucket_dir] %>/planet_${stamp}.tar
+    if [[ $? -eq 0 ]]; then
+      <%= node[:valhalla][:conf_dir] %>/push_tiles.py
+    fi
+    #clean it up the new stuff
+    rm -rf ${cur_extras_dir}
   }&
 fi
