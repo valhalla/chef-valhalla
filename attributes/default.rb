@@ -15,9 +15,9 @@ default[:valhalla][:lock_dir]                                    = "#{node[:valh
 default[:valhalla][:extracts_dir]                                = "#{node[:valhalla][:base_dir]}/extracts"
 default[:valhalla][:elevation_dir]                               = "#{node[:valhalla][:base_dir]}/elevation"
 default[:valhalla][:transit_dir]                                 = "#{node[:valhalla][:base_dir]}/transit"
-default[:valhalla][:route_scripts]                               = "#{node[:valhalla][:src_dir]}/tools/run_route_scripts"
-default[:valhalla][:test_requests]                               = "#{node[:valhalla][:src_dir]}/tools/test_requests"
-default[:valhalla][:results]                                     = "#{node[:valhalla][:src_dir]}/tools/run_route_scripts/results"
+default[:valhalla][:test_dir]                                    = "#{node[:valhalla][:conf_dir]}/tests"
+default[:valhalla][:test_requests]                               = "#{node[:valhalla][:test_dir]}/test_requests"
+default[:valhalla][:test_results]                                = "#{node[:valhalla][:test_dir]}/results"
 
 # the repos
 default[:valhalla][:github][:base]                               = 'https://github.com/valhalla'
@@ -27,7 +27,8 @@ default[:valhalla][:ppa_version]                                 = ''
 # valhalla user to create
 default[:valhalla][:user][:name]                                 = 'valhalla'
 default[:valhalla][:user][:home]                                 = '/home/valhalla'
-default[:valhalla][:email]                                       = ''
+default[:valhalla][:from_email]                                  = ''
+default[:valhalla][:to_email]                                    = ''
 
 # the data to create tiles
 default[:valhalla][:extracts]                                    = %w(
@@ -36,6 +37,7 @@ default[:valhalla][:extracts]                                    = %w(
 default[:valhalla][:with_updates]                                = false
 default[:valhalla][:with_transit]                                = false
 default[:valhalla][:with_map_roulette]                           = false
+default[:valhalla][:with_testing]                                = true
 default[:valhalla][:transit_test_file]                           = 'transit_dev_routes.tmpl'
 default[:valhalla][:transitland_url]                             = 'http://transit.land'
 default[:valhalla][:transitland_api_key]                         = ''

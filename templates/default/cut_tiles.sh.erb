@@ -30,7 +30,7 @@ if [ $? != "0" ]; then
 fi
 trap 'rm $LOCK_FILE' EXIT 1 2 3
 
-export PATH=$PATH:/usr/local/bin
+export PATH=$PATH:/usr/sbin:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
 # name the dir where this will go
@@ -59,7 +59,7 @@ valhalla_build_tiles -c <%= node[:valhalla][:config] %> $(find <%= node[:valhall
 rm -rf *.bin
 
 # see if these tiles are any good
-<%= node[:valhalla][:conf_dir] %>/test_tiles.sh
+<%= node[:valhalla][:test_dir] %>/test_tiles.sh
 
 # package up the extra stuff
 set +e
@@ -93,8 +93,9 @@ if [ "<%= node[:valhalla][:with_updates] %>" == true ]; then
       aws s3 mv ${f} s3://<%= node[:valhalla][:bucket] %>/<%= node[:valhalla][:bucket_dir] %>/ --acl public-read
     done
     #signal other stacks to get new data
+    aws s3 ls s3://<%= node[:valhalla][:bucket] %>/<%= node[:valhalla][:bucket_dir] %>/planet_${stamp}.tar
     if [[ $? -eq 0 ]]; then
-      <%= node[:valhalla][:conf_dir] %>/push_tiles.py ${cur_extras_dir}/*
+      <%= node[:valhalla][:conf_dir] %>/push_tiles.py
     fi
     #clean it up the new stuff
     rm -rf ${cur_extras_dir}

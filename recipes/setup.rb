@@ -23,7 +23,10 @@ end
   node[:valhalla][:lock_dir],
   node[:valhalla][:extracts_dir],
   node[:valhalla][:temp_dir],
-  node[:valhalla][:elevation_dir]
+  node[:valhalla][:elevation_dir],
+  node[:valhalla][:test_dir],
+  node[:valhalla][:test_requests],
+  node[:valhalla][:test_results]
 ].each do |dir|
   directory dir do
     action    :create
@@ -50,8 +53,26 @@ template node[:maproulette][:config] do
 end
 
 # install all of the scripts for data motion
-%w(cut_tiles.sh test_tiles.sh get_transit_tiles.sh minutely_update.sh push_tiles.py health_check.sh map_roulette.py).each do |script|
+%w(cut_tiles.sh get_transit_tiles.sh minutely_update.sh push_tiles.py health_check.sh map_roulette.py).each do |script|
   template "#{node[:valhalla][:conf_dir]}/#{script}" do
+    source "#{script}.erb"
+    mode   0755
+    owner  node[:valhalla][:user][:name]
+  end
+end
+
+# install all of the scripts for testing
+%w(batch.sh run.sh test_tiles.sh).each do |script|
+  template "#{node[:valhalla][:test_dir]}/#{script}" do
+    source "#{script}.erb"
+    mode   0755
+    owner  node[:valhalla][:user][:name]
+  end
+end
+
+# install all of the test requests
+%w(transit_dev_routes.tmpl transit_prod_routes.tmpl).each do |script|
+  template "#{node[:valhalla][:test_requests]}/#{script}" do
     source "#{script}.erb"
     mode   0755
     owner  node[:valhalla][:user][:name]
