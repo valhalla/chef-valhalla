@@ -7,6 +7,11 @@
 # stop everything from running, while we get new tiles
 include_recipe 'runit::default'
 stop_service do
+  notifies :run, 'execute[sync tiles]', :immediately
+end
+
+# get them from s3
+execute 'sync tiles' do
   action  :run
   user    node[:valhalla][:user][:name]
   cwd     node[:valhalla][:base_dir]
