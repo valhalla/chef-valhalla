@@ -18,7 +18,7 @@ execute 'sync tiles' do
   command <<-EOH
     echo -n s3://#{node[:valhalla][:bucket]}/#{node[:valhalla][:bucket_dir]}/ > latest_tiles.txt &&
     aws --region us-east-1 s3 ls $(cat latest_tiles.txt) | grep -F planet_ | awk '{print $4}' | sort | tail -n 1 >> latest_tiles.txt &&
-    aws --region us-east-1 s3 cp $(cat latest_tiles.txt) .
+    aws --region us-east-1 s3 cp $(cat latest_tiles.txt) . && mv $(cat latest_tiles.txt) planet.tar
   EOH
 end
 
