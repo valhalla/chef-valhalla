@@ -69,7 +69,7 @@ mkdir -p ${cur_extras_dir}
 pushd ${cur_extras_dir}
 valhalla_build_connectivity -c <%= node[:valhalla][:config] %>
 valhalla_build_statistics -c <%= node[:valhalla][:config] %>
-valhalla_export_edges -c <%= node[:valhalla][:config] %> > edges_${stamp}.0sv
+valhalla_export_edges --config <%= node[:valhalla][:config] %> > edges_${stamp}.0sv
 # do we want to run map roulette tool
 if [ "<%= node[:valhalla][:with_map_roulette] %>" == true ]; then
   <%= node[:valhalla][:conf_dir] %>/map_roulette.py -c <%= node[:maproulette][:config] %> -i maproulette_tasks.geojson
