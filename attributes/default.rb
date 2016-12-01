@@ -74,9 +74,9 @@ else
   default[:valhalla][:max_cache_size]                            = "#{((node.memory.total.to_f / (node.cpu.total.to_f * 2)) * 0.9).floor * 1024}"
 end
 if !node[:opsworks]
-  default[:valhalla][:actions]                                   = '["locate","route","one_to_many","many_to_one","many_to_many","optimized_route","isochrone"]'
+  default[:valhalla][:actions]                                   = '["locate","route","one_to_many","many_to_one","many_to_many","optimized_route","isochrone","sources_to_targets"]'
 elsif node[:opsworks][:layers][:'matrix'] && node[:opsworks][:instance][:layers].include?('matrix')
-  default[:valhalla][:actions]                                   = '["one_to_many","many_to_one","many_to_many","optimized_route","isochrone"]'
+  default[:valhalla][:actions]                                   = '["one_to_many","many_to_one","many_to_many","optimized_route","isochrone","sources_to_targets"]'
 else
   default[:valhalla][:actions]                                   = '["locate","route"]'
 end
