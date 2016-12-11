@@ -111,7 +111,7 @@ end
   libgeos++-dev
   lua5.2
   liblua5.2-dev
-  libprime-server-dev
+  libprime-server0.4.0-dev
   libprotobuf-dev
   libspatialite-dev
   libsqlite3-dev
@@ -121,7 +121,7 @@ end
   libboost-system1.54.0
   libboost-thread1.54.0
   liblua5.2-0
-  libprime-server0
+  libprime-server0.4.0
   libspatialite5
   libspatialite-dev
   libsqlite3-0
@@ -129,7 +129,7 @@ end
   libcurl3
   libgeos-3.4.2
   libgeos-c1
-  prime-server-bin
+  prime-server0.4.0-bin
 ).each do |p|
   package p do
     options '--force-yes'
