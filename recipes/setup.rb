@@ -95,16 +95,10 @@ end
   end
 end
 
-# update repositories
-execute aptupdate do
+# remove previous software
+execute 'package purge' do
   action :run
-  command 'apt-get update'
-end
-
-# purge some stuff that might be new
-execut purgesoft do
-  action :run
-  command 'apt-get purge libvalhalla* valhalla* libprime-serv* prime-serv*'
+  command 'apt-get purge -y lbprime-serv* prime-serv* && apt-get update'
 end
 
 # need a few more deps
