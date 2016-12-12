@@ -98,7 +98,7 @@ end
 # update repositories
 execute aptupdate do
   action :run
-  command "apt-get update"
+  command 'apt-get update'
 end
 
 # need a few more deps
