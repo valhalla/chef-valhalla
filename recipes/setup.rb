@@ -101,6 +101,12 @@ execute aptupdate do
   command 'apt-get update'
 end
 
+# purge some stuff that might be new
+execut purgesoft do
+  action :run
+  command 'apt-get purge libvalhalla* valhalla* libprime-serv* prime-serv*'
+end
+
 # need a few more deps
 %w(
   software-properties-common
