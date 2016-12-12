@@ -88,7 +88,7 @@ end
 end
 
 # extra dependencies if you are on old crusty trusty
-%w(libsodium libpgm zeromq3 cmzq).each do |package|
+%w(libsodium libpgm zeromq3 czmq).each do |package|
   execute package do
     action :run
     command "if [ $(grep -cF trusty /etc/lsb-release) -gt 0 ]; then apt-add-repository -y ppa:kevinkreiser/#{package}; fi"
