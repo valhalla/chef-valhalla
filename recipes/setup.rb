@@ -91,7 +91,7 @@ end
 %w(libsodium libpgm zeromq3 cmzq).each do |package|
   execute package do
     action :run
-    command "if [ $(grep -cF trusty /etc/lsb-release) -gt 0) ]; then apt-add-repository -y ppa:kevinkreiser/#{package}; fi"
+    command "if [ $(grep -cF trusty /etc/lsb-release) -gt 0 ]; then apt-add-repository -y ppa:kevinkreiser/#{package}; fi"
   end
 end
 
