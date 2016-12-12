@@ -83,8 +83,22 @@ end
 %w(ppa:kevinkreiser/prime-server ppa:valhalla-routing/valhalla).each do |ppa|
   execute ppa do
     action   :run
-    command  "apt-add-repository -y #{ppa} && apt-get update"
+    command  "apt-add-repository -y #{ppa}"
   end
+end
+
+# extra dependencies if you are on old crusty trusty
+%w(libsodium libpgm zeromq3 cmzq).each do |package|
+  execute package do
+    action :run
+    command "if [ $(grep -cF trusty /etc/lsb-release) -gt 0) ]; then apt-add-repository -y ppa:kevinkreiser/#{ppa}; fi"
+  end
+end
+
+# update repositories
+execute aptupdate do
+  action :run
+  command "apt-get update"
 end
 
 # need a few more deps
@@ -111,7 +125,7 @@ end
   libgeos++-dev
   lua5.2
   liblua5.2-dev
-  libprime-server0.4.0-dev
+  libprime-server0.6.0-dev
   libprotobuf-dev
   libspatialite-dev
   libsqlite3-dev
@@ -121,7 +135,7 @@ end
   libboost-system1.54.0
   libboost-thread1.54.0
   liblua5.2-0
-  libprime-server0.4.0
+  libprime-server0.6.0
   libspatialite5
   libspatialite-dev
   libsqlite3-0
@@ -129,7 +143,7 @@ end
   libcurl3
   libgeos-3.4.2
   libgeos-c1
-  prime-server0.4.0-bin
+  prime-server0.6.0-bin
 ).each do |p|
   package p do
     options '--force-yes'
