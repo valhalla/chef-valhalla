@@ -135,7 +135,7 @@ end
   libboost-system1.54.0
   libboost-thread1.54.0
   liblua5.2-0
-  libprime-server0.4.0
+  libprime-server0.4.0-0
   libspatialite5
   libspatialite-dev
   libsqlite3-0
