@@ -98,7 +98,7 @@ end
 # remove previous software
 execute 'package purge' do
   action :run
-  command 'apt-get purge -y libprime-serv* prime-serv* && apt-get update -y'
+  command '(apt-get purge -y libprime-serv* prime-serv* || true) && apt-get update -y'
 end
 
 # need a few more deps
