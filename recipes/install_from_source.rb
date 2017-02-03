@@ -11,7 +11,7 @@ execute 'package remove' do
 end
 
 # clone software
-execute "clone libvalhalla" do
+execute 'clone libvalhalla' do
   action    :run
   command   "rm -rf libvalhalla && git clone --depth=1 --recurse-submodules --single-branch \
             --branch=#{node[:valhalla][:github][:revision]} \
@@ -22,7 +22,7 @@ execute "clone libvalhalla" do
 end
 
 # install
-execute "install libvalhalla" do
+execute 'install libvalhalla' do
   action  :nothing
   command 'scripts/install.sh'
   cwd     "#{node[:valhalla][:src_dir]}/libvalhalla"
