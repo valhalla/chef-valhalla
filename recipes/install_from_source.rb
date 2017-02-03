@@ -13,7 +13,7 @@ end
 # clone software
 execute 'clone libvalhalla' do
   action    :run
-  command   "rm -rf libvalhalla && git clone --depth=1 --recurse-submodules --single-branch \
+  command   "rm -rf valhalla && git clone --depth=1 --recurse-submodules --single-branch \
             --branch=#{node[:valhalla][:github][:revision]} \
             #{node[:valhalla][:github][:base]}/valhalla.git"
   cwd       node[:valhalla][:src_dir]
