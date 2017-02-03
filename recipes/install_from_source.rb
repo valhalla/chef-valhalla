@@ -15,7 +15,7 @@ execute 'clone libvalhalla' do
   action    :run
   command   "rm -rf libvalhalla && git clone --depth=1 --recurse-submodules --single-branch \
             --branch=#{node[:valhalla][:github][:revision]} \
-            #{node[:valhalla][:github][:base]}/libvalhalla.git"
+            #{node[:valhalla][:github][:base]}/valhalla.git"
   cwd       node[:valhalla][:src_dir]
 
   notifies  :run, 'execute[install libvalhalla]',       :immediately
@@ -25,7 +25,7 @@ end
 execute 'install libvalhalla' do
   action  :nothing
   command 'scripts/install.sh'
-  cwd     "#{node[:valhalla][:src_dir]}/libvalhalla"
+  cwd     "#{node[:valhalla][:src_dir]}/valhalla"
 end
 
 # restart the services if they are present
