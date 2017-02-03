@@ -18,7 +18,7 @@ execute 'clone libvalhalla' do
             #{node[:valhalla][:github][:base]}/libvalhalla.git"
   cwd       node[:valhalla][:src_dir]
 
-  notifies  :run, "execute[install libvalhalla]",       :immediately
+  notifies  :run, 'execute[install libvalhalla]',       :immediately
 end
 
 # install
