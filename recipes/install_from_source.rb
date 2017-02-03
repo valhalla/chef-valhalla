@@ -24,7 +24,7 @@ end
 # install
 execute 'install libvalhalla' do
   action  :nothing
-  command 'scripts/install.sh'
+  command './autogen.sh && ./configure && make -j$(nproc) && make install'
   cwd     "#{node[:valhalla][:src_dir]}/valhalla"
 end
 
