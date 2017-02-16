@@ -27,7 +27,7 @@ to:<%= node[:valhalla][:to_email] %>
 from:<%= node[:valhalla][:from_email] %>
 subject:Cut tiles failed!
 
-$(tail -n 100 #{node[:valhalla][:log_dir]}/cut_tiles.log)
+$(tail -n 100 <%= node[:valhalla][:log_dir] %>/cut_tiles.log)
 EOF
 }
 
