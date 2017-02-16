@@ -21,6 +21,17 @@ function clean_s3() {
   done
 }
 
+function fail() {
+  /usr/sbin/sendmail -t - << EOF
+to:<%= node[:valhalla][:to_email] %>
+from:<%= node[:valhalla][:from_email] %>
+subject:Cut tiles failed!
+
+$(tail -n 100 #{node[:valhalla][:log_dir]}/cut_tiles.log)
+EOF
+}
+
+
 # make sure only one is running at any time...
 LOCK_FILE="<%= node[:valhalla][:lock_dir] %>/cut_tiles.lock"
 (set -C; : > ${LOCK_FILE}) 2> /dev/null
@@ -28,7 +39,7 @@ if [ $? != "0" ]; then
   echo "Lock file exists"
   exit 0
 fi
-trap 'rm $LOCK_FILE' EXIT 1 2 3
+trap 'rm $LOCK_FILE && fail' EXIT 1 2 3
 
 export PATH=$PATH:/usr/sbin:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
