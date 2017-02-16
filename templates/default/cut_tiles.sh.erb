@@ -22,7 +22,7 @@ function clean_s3() {
 }
 
 function fail() {
-/usr/sbin/sendmail -t - << EOF
+  /usr/sbin/sendmail -t - << EOF
 to:<%= node[:valhalla][:to_email] %>
 from:<%= node[:valhalla][:from_email] %>
 subject:Cut tiles failed!
