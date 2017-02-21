@@ -91,7 +91,9 @@ mv_stamp maproulette_tasks.geojson ${stamp}
 cp_stamp <%= node[:valhalla][:transit_dir] %>.tgz ${stamp}
 cp_stamp ${tile_dir}/$(basename ${admin_file}) ${stamp}
 cp_stamp ${tile_dir}/$(basename ${timezone_file}) ${stamp}
-find ${tile_dir}/* | sort -n | sed "s|^/||" | tar -C / -cf planet_${stamp}.tar --no-recursion -T -
+pushd ${tile_dir}
+find . | sort -n | tar -cf ${cur_extras_dir}/planet_${stamp}.tar --no-recursion -T -
+popd
 popd
 
 # do we want to send this update to s3 (do so in the background)
