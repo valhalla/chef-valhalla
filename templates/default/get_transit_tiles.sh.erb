@@ -32,5 +32,6 @@ mv <%= node[:valhalla][:transit_dir] %>_temp.tgz <%= node[:valhalla][:transit_di
 # only stop the current run if its in the middle of cutting tiles
 # if its doing anyting else let it carry on
 for p in $(pgrep valhalla_build); do kill ${p}; done
-sleep 5
+sleep 10
 for p in $(pgrep valhalla_build); do kill -9 ${p}; done
+sleep 10
