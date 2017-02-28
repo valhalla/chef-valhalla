@@ -73,11 +73,15 @@ fi
 valhalla_build_tiles -c <%= node[:valhalla][:config] %> $(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
 rm -rf *.bin
 
-# see if these tiles are any good
-<%= node[:valhalla][:test_dir] %>/test_tiles.sh
-
 # package up the extra stuff
 set +e
+
+# see if these tiles are any good
+<%= node[:valhalla][:test_dir] %>/test_tiles.sh
+if [ $? -ne 0 ]; then
+  exit 0
+fi
+
 tile_dir=<%= node[:valhalla][:tile_dir] %>
 cur_extras_dir=<%= node[:valhalla][:base_dir] %>/extras_${stamp}
 mkdir -p ${cur_extras_dir}
