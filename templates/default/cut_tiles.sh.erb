@@ -19,6 +19,23 @@ function clean_s3() {
   done
 }
 
+function get_latest_transit() {
+  file=$(aws s3 ls ${1}transit_ | sort | tail -1)
+  file_name=$(echo ${file} | awk '{print $4}')
+  latest_upload=${1}${file_name}
+
+  #use the latest...if not already
+  if [ ! -f <%= node[:valhalla][:base_dir] %>/${file_name} ]; then
+    # rm old tarball
+    rm -f <%= node[:valhalla][:base_dir] %>/transit_*.tgz
+    aws s3 cp $latest_upload <%= node[:valhalla][:base_dir] %>/${file_name}
+    # remove old data
+    rm -rf <%= node[:valhalla][:transit_dir] %>
+    mkdir <%= node[:valhalla][:transit_dir] %>
+    tar pxf <%= node[:valhalla][:base_dir] %>/${file_name} -C <%= node[:valhalla][:transit_dir] %>
+  fi
+}
+
 function fail() {
   if [[ $1 -ne 0 ]]; then
     if [[ -e <%= node[:valhalla][:lock_dir] %>/cut_transit_tiles.lock ]]; then
@@ -63,11 +80,7 @@ if [ ! -e $timezone_file ]; then
 fi
 
 #transit data
-if [ -f <%= node[:valhalla][:transit_dir] %>.tgz ]; then
-  rm -rf <%= node[:valhalla][:transit_dir] %>
-  mkdir <%= node[:valhalla][:transit_dir] %>
-  tar pxf <%= node[:valhalla][:transit_dir] %>.tgz -C <%= node[:valhalla][:transit_dir] %>
-fi
+get_latest_transit s3://<%= node[:valhalla][:bucket] %>/<%= node[:valhalla][:bucket_dir] %>/
 
 # cut tiles from the data
 valhalla_build_tiles -c <%= node[:valhalla][:config] %> $(find <%= node[:valhalla][:extracts_dir] %> -type f -name "*.pbf")
@@ -96,7 +109,6 @@ fi
 for f in connectivity*; do  mv_stamp $f ${stamp}; done
 mv_stamp statistics.sqlite ${stamp}
 mv_stamp maproulette_tasks.geojson ${stamp}
-cp_stamp <%= node[:valhalla][:transit_dir] %>.tgz ${stamp}
 cp_stamp ${tile_dir}/$(basename ${admin_file}) ${stamp}
 cp_stamp ${tile_dir}/$(basename ${timezone_file}) ${stamp}
 pushd ${tile_dir}
