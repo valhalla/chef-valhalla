@@ -27,7 +27,7 @@ function get_latest_transit() {
   #use the latest...if not already
   if [ ! -f <%= node[:valhalla][:base_dir] %>/${file_name} ]; then
     # rm old tarball
-    rm <%= node[:valhalla][:base_dir] %>/transit_*.tgz
+    rm -f <%= node[:valhalla][:base_dir] %>/transit_*.tgz
     aws s3 cp $latest_upload <%= node[:valhalla][:base_dir] %>/${file_name}
     # remove old data
     rm -rf <%= node[:valhalla][:transit_dir] %>
