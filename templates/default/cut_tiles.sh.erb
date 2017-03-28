@@ -20,36 +20,19 @@ function clean_s3() {
 }
 
 function get_latest_transit() {
-  latest=0
-  latest_upload=""
-  files=$(aws s3 ls ${1}transit_)
-  while read record; do
-    added=$(date -d "$(echo ${record} | awk '{print $1" "$2}')" +%s)
-    if [[ ${added} -gt ${latest} ]]; then
-      latest=${added}
-      latest_upload=${1}$(echo ${record} | awk '{print $4}')
-    fi
-  done <<< "$files"
+  file=$(aws s3 ls ${1}transit_ | sort | tail -1)
+  file_name=$(echo ${file} | awk '{print $4}')
+  latest_upload=${1}${file_name}
 
-  aws s3 cp $latest_upload <%= node[:valhalla][:transit_dir] %>_latest.tgz
-
-  #if first run, use the latest.
-  if [ ! -f <%= node[:valhalla][:transit_dir] %>.tgz ]; then
-    mv <%= node[:valhalla][:transit_dir] %>_latest.tgz <%= node[:valhalla][:transit_dir] %>.tgz
-  else
-    latest=$(md5sum <%= node[:valhalla][:transit_dir] %>_latest.tgz)
-    in_use=$(md5sum <%= node[:valhalla][:transit_dir] %>.tgz)
-
-    # new version has been uploaded.
-    if [ "$latest" -ne "$in_use" ]; then
-      mv <%= node[:valhalla][:transit_dir] %>_latest.tgz <%= node[:valhalla][:transit_dir] %>.tgz
-
-      rm -rf <%= node[:valhalla][:transit_dir] %>
-      mkdir <%= node[:valhalla][:transit_dir] %>
-      tar pxf <%= node[:valhalla][:transit_dir] %>.tgz -C <%= node[:valhalla][:transit_dir] %>
-    else
-      rm <%= node[:valhalla][:transit_dir] %>_latest.tgz
-    fi
+  #use the latest...if not already
+  if [ ! -f <%= node[:valhalla][:base_dir] %>/${file_name} ]; then
+    # rm old tarball
+    rm <%= node[:valhalla][:base_dir] %>/transit_*.tgz
+    aws s3 cp $latest_upload <%= node[:valhalla][:base_dir] %>/${file_name}
+    # remove old data
+    rm -rf <%= node[:valhalla][:transit_dir] %>
+    mkdir <%= node[:valhalla][:transit_dir] %>
+    tar pxf <%= node[:valhalla][:base_dir] %>/${file_name} -C <%= node[:valhalla][:transit_dir] %>
   fi
 }
 
