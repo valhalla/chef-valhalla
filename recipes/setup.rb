@@ -80,19 +80,9 @@ end
 end
 
 # a few things from ppa
-%w(ppa:kevinkreiser/prime-server ppa:valhalla-routing/valhalla).each do |ppa|
-  execute ppa do
-    action   :run
-    command  "apt-add-repository -y #{ppa}"
-  end
-end
-
-# extra dependencies if you are on old crusty trusty
-%w(libsodium libpgm zeromq3 czmq).each do |package|
-  execute package do
-    action :run
-    command "if [ $(grep -cF trusty /etc/lsb-release) -gt 0 ]; then apt-add-repository -y ppa:kevinkreiser/#{package}; fi"
-  end
+execute 'add ppa' do
+  action   :run
+  command  'apt-add-repository -y ppa:valhalla-core/valhalla'
 end
 
 # remove previous software
