@@ -36,6 +36,10 @@
     },
     "service": {
       "proxy": "ipc://<%= node[:valhalla][:conf_dir] %>/loki"
+    },
+    "service_defaults": {
+      "minimum_reachability": 50,
+      "radius": 0
     }
   },
   "thor": {
@@ -174,6 +178,8 @@
       "max_search_radius": 100,
       "max_shape": 16000
     },
-    "max_avoid_locations": 50
+    "max_avoid_locations": 50,
+    "max_reachability": 100,
+    "max_radius": 200,
   }
 }
