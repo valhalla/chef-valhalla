@@ -103,16 +103,6 @@
       "cache_size": 100240
     }
   },
-  "tyr": {
-    "logging": {
-      "type": "std_out",
-      "color": false,
-      "long_request": 100.0
-    },
-    "service": {
-      "proxy": "ipc://<%= node[:valhalla][:conf_dir] %>/tyr"
-    }
-  },
   "httpd": {
     "service": {
       "listen": "tcp://<%= node[:valhalla][:httpd][:listen_address] %>:<%= node[:valhalla][:httpd][:port] %>",

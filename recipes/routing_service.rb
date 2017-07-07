@@ -20,7 +20,7 @@ runit_service 'prime-httpd' do
 end
 
 # cake layers
-%w(loki thor odin tyr).each do |layer|
+%w(loki thor odin).each do |layer|
   # proxy
   runit_service "proxyd-#{layer}" do
     action            :enable
