@@ -12,7 +12,7 @@ define :start_service do
   end
 
   # cake layers
-  %w(skadi loki thor odin tyr).each do |layer|
+  %w(skadi loki thor odin).each do |layer|
     # proxy
     runit_service "proxyd-#{layer}" do
       action  :start
