@@ -6,7 +6,7 @@ maintainer_email 'valhalla@mapzen.com'
 license          'MIT'
 description      'Installs/Configures valhalla'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '1.0.5'
+version          '1.0.6'
 
 recipe 'valhalla', 'Installs valhalla'
 
