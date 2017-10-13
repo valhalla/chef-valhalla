@@ -29,6 +29,7 @@
   },
   "loki": {
     "actions": <%= node[:valhalla][:actions] %>,
+    "use_connectivity": true,
     "logging": {
       "type": "std_out",
       "color": false,
@@ -145,6 +146,12 @@
       "min_transit_walking_distance": 1,
       "max_transit_walking_distance": 10000
     },
+    "motor_scooter": {
+      "max_distance": 500000.0,
+      "max_locations": 50,
+      "max_matrix_distance": 200000.0,
+      "max_matrix_locations": 50
+    },
     "bicycle": {
       "max_distance": 500000.0,
       "max_locations": 50,
@@ -187,7 +194,7 @@
       "max_best_paths": 4,
       "max_best_paths_shape": 100
     },
-    "max_avoid_locations": 50,
+    "max_avoid_locations": 70,
     "max_reachability": 100,
     "max_radius": 200
   }
