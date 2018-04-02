@@ -78,7 +78,7 @@ initialize() {
   
   $OSMOSIS --read-replication-interval-init workingDirectory=$WORKDIR_OSM
 
-  baseUrl=http://planet.openstreetmap.org/replication/minute
+  baseUrl=https://planet.openstreetmap.org/replication/minute
   replacement="s@^\(baseUrl\s*=\s*\).*\$@\1${baseUrl}@"  
   sed -i $replacement $WORKDIR_OSM/configuration.txt
   sed -i "s/^\(maxInterval\s*=\s*\).*\$/\10/" $WORKDIR_OSM/configuration.txt
